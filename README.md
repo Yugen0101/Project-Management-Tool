@@ -114,6 +114,9 @@ npm install
 
 # Start development
 npm run dev
+
+# Access the application
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 ```
 
 ---
