@@ -1,5 +1,4 @@
-import { createServerClient } from '@supabase/ssr';
-import { cookies } from 'next/headers';
+import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
 import {
     CalendarIcon,
@@ -24,18 +23,7 @@ import { getCurrentUser } from '@/lib/auth/session';
 
 export default async function ProjectDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
-    const cookieStore = await cookies();
-    const supabase = createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        {
-            cookies: {
-                getAll() {
-                    return cookieStore.getAll();
-                },
-            },
-        }
-    );
+    const supabase = await createClient();
 
     const user = await getCurrentUser();
     if (!user) return notFound();
@@ -104,7 +92,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
 
                     {/* Zoom Meetings Integration */}
                     <div className="card p-6">
-                        <ProjectMeetings 
+                        <ProjectMeetings
                             projectId={id}
                             members={project.user_projects || []}
                             currentUser={user}
