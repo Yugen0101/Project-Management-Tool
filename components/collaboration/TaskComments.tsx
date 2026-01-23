@@ -10,6 +10,7 @@ import {
     ArrowPathIcon
 } from '@heroicons/react/24/outline';
 import { formatDistanceToNow } from 'date-fns';
+import { getUsersForMentions } from '@/app/actions/users';
 
 export default function TaskComments({ taskId, projectPath }: { taskId: string, projectPath: string }) {
     const [comments, setComments] = useState<any[]>([]);
@@ -17,19 +18,48 @@ export default function TaskComments({ taskId, projectPath }: { taskId: string, 
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
     const [currentUser, setCurrentUser] = useState<any>(null);
+    const [allUsers, setAllUsers] = useState<any[]>([]);
+    const [mentionSearch, setMentionSearch] = useState('');
+    const [showMentionList, setShowMentionList] = useState(false);
 
     useEffect(() => {
         async function loadData() {
-            const [cRes, uRes] = await Promise.all([
+            const [cRes, uRes, usersRes] = await Promise.all([
                 getComments(taskId),
-                getCurrentUser()
+                getCurrentUser(),
+                getUsersForMentions()
             ]);
             if (cRes.success) setComments(cRes.data ?? []);
+            if (usersRes.success) setAllUsers(usersRes.data ?? []);
             setCurrentUser(uRes);
             setLoading(false);
         }
         loadData();
     }, [taskId]);
+
+    const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        const value = e.target.value;
+        setNewComment(value);
+
+        // Simple mention detection logic
+        const lastChar = value[value.length - 1];
+        const lastWord = value.split(/\s/).pop() || '';
+
+        if (lastWord.startsWith('@')) {
+            setMentionSearch(lastWord.slice(1));
+            setShowMentionList(true);
+        } else {
+            setShowMentionList(false);
+        }
+    };
+
+    const insertMention = (user: any) => {
+        const words = newComment.split(/\s/);
+        words.pop(); // Remove the partial name
+        const updatedText = [...words, `@[${user.id}]`].join(' ') + ' ';
+        setNewComment(updatedText);
+        setShowMentionList(false);
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -100,11 +130,46 @@ export default function TaskComments({ taskId, projectPath }: { taskId: string, 
                     <div className="relative group">
                         <textarea
                             value={newComment}
-                            onChange={(e) => setNewComment(e.target.value)}
+                            onChange={handleTextChange}
                             placeholder="Add a comment... (use @ to mention users)"
                             className="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl p-4 pr-12 text-sm focus:bg-white focus:border-primary-500 transition-all outline-none resize-none h-24 shadow-inner"
                             disabled={submitting}
                         />
+
+                        {/* Mention Autocomplete List */}
+                        {showMentionList && (
+                            <div className="absolute bottom-full left-0 mb-2 w-64 bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden z-50 animate-in slide-in-from-bottom-2 duration-200">
+                                <div className="p-2 bg-slate-50 border-b border-slate-50">
+                                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Mention User</span>
+                                </div>
+                                <div className="max-h-48 overflow-y-auto">
+                                    {allUsers
+                                        .filter(u => u.full_name.toLowerCase().includes(mentionSearch.toLowerCase()))
+                                        .map(user => (
+                                            <button
+                                                key={user.id}
+                                                type="button"
+                                                onClick={() => insertMention(user)}
+                                                className="w-full flex items-center gap-3 p-3 hover:bg-primary-50 text-left transition-colors border-b border-slate-50 last:border-0"
+                                            >
+                                                <div className="w-6 h-6 rounded-full bg-primary-100 flex items-center justify-center text-[10px] font-black text-primary-600">
+                                                    {user.full_name.charAt(0)}
+                                                </div>
+                                                <div className="flex-1">
+                                                    <p className="text-xs font-bold text-slate-900">{user.full_name}</p>
+                                                    <p className="text-[10px] text-slate-400">{user.email}</p>
+                                                </div>
+                                            </button>
+                                        ))
+                                    }
+                                    {allUsers.filter(u => u.full_name.toLowerCase().includes(mentionSearch.toLowerCase())).length === 0 && (
+                                        <div className="p-4 text-center">
+                                            <p className="text-[10px] font-bold text-slate-400 uppercase">No users found</p>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        )}
                         <div className="absolute top-4 right-4 text-slate-300">
                             <AtSymbolIcon className="w-5 h-5" />
                         </div>

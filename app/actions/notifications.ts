@@ -3,10 +3,11 @@
 import { createClient } from '@/lib/supabase/server';
 import { getCurrentUser } from '@/lib/auth/session';
 import { revalidatePath } from 'next/cache';
+import { handleActionError, successResponse } from '@/lib/errors';
 
 export async function getNotifications() {
     const user = await getCurrentUser();
-    if (!user) return { error: 'Unauthorized' };
+    if (!user) return handleActionError({ message: 'Unauthorized', status: 401 });
 
     const supabase = await createClient();
     const { data, error } = await supabase
@@ -15,31 +16,30 @@ export async function getNotifications() {
         .eq('user_id', user.id)
         .order('created_at', { ascending: false });
 
-    if (error) return { error: error.message };
-    return { success: true, data };
+    if (error) return handleActionError(error);
+    return successResponse(data);
 }
 
 export async function markAsRead(notificationId: string) {
     const user = await getCurrentUser();
-    if (!user) return { error: 'Unauthorized' };
+    if (!user) return handleActionError({ message: 'Unauthorized', status: 401 });
 
     const supabase = await createClient();
     const { error } = await supabase
         .from('notifications')
         .update({ is_read: true })
         .eq('id', notificationId)
-        .eq('user_id', user.id); // Ensure ownership
+        .eq('user_id', user.id);
 
-    if (error) return { error: error.message };
+    if (error) return handleActionError(error);
 
-    // Path-based revalidation (usually global header)
     revalidatePath('/', 'layout');
-    return { success: true };
+    return successResponse();
 }
 
 export async function clearAllNotifications() {
     const user = await getCurrentUser();
-    if (!user) return { error: 'Unauthorized' };
+    if (!user) return handleActionError({ message: 'Unauthorized', status: 401 });
 
     const supabase = await createClient();
     const { error } = await supabase
@@ -47,19 +47,14 @@ export async function clearAllNotifications() {
         .update({ is_read: true })
         .eq('user_id', user.id);
 
-    if (error) return { error: error.message };
+    if (error) return handleActionError(error);
 
     revalidatePath('/', 'layout');
-    return { success: true };
+    return successResponse();
 }
 
 /**
  * Utility to parse @mentions in a comment and create notifications
- * Logic: Extract @[id] or @email or similar. For simplicity here, 
- * we will assume @Full Name format or similar if possible, 
- * but usually this is handled by a sophisticated editor.
- * 
- * For this phase, we will look for "@[UserID]" which is stable.
  */
 export async function processMentions(content: string, taskId: string, taskTitle: string) {
     const user = await getCurrentUser();

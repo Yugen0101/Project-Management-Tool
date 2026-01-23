@@ -32,7 +32,7 @@ export default async function MemberLayout({
                     </h1>
 
                     <nav className="hidden md:flex items-center gap-2">
-                        <Link href="/member/dashboard" className="px-4 py-2 text-sm font-bold text-slate-600 hover:text-purple-600 transition-colors bg-slate-50 rounded-lg">
+                        <Link href="/member/tasks" className="px-4 py-2 text-sm font-bold text-slate-600 hover:text-purple-600 transition-colors bg-slate-50 rounded-lg">
                             My Tasks
                         </Link>
                         <Link href="/member/activity" className="px-4 py-2 text-sm font-bold text-slate-600 hover:text-purple-600 transition-colors">

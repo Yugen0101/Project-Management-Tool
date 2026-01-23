@@ -159,3 +159,18 @@ export async function restoreUser(userId: string) {
     revalidatePath('/admin/users');
     return successResponse();
 }
+
+export async function getUsersForMentions() {
+    const currentUser = await getCurrentUser();
+    if (!currentUser) return handleActionError({ message: 'Unauthorized', status: 401 });
+
+    const supabase = await createClient();
+    const { data, error } = await supabase
+        .from('users')
+        .select('id, full_name, email')
+        .eq('is_active', true)
+        .is('deleted_at', null);
+
+    if (error) return handleActionError(error);
+    return successResponse(data);
+}
