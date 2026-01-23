@@ -23,47 +23,46 @@ export default function Pagination({
     if (totalPages <= 1) return null;
 
     return (
-        <div className="flex items-center justify-between px-6 py-4 border-t border-slate-100 bg-white">
+        <div className="flex items-center justify-between px-6 py-4 border-t border-slate-800/50 bg-slate-900/40 backdrop-blur-md rounded-2xl">
             <div className="flex flex-1 justify-between sm:hidden">
                 <button
                     onClick={() => router.push(createPageURL(currentPage - 1))}
                     disabled={currentPage <= 1}
-                    className="relative inline-flex items-center rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50 transition-colors"
+                    className="relative inline-flex items-center rounded-xl border border-slate-800 bg-slate-900 px-4 py-2 text-sm font-black uppercase tracking-widest text-slate-400 hover:bg-slate-800 disabled:opacity-50 transition-colors"
                 >
-                    Previous
+                    Prev
                 </button>
                 <button
                     onClick={() => router.push(createPageURL(currentPage + 1))}
                     disabled={currentPage >= totalPages}
-                    className="relative ml-3 inline-flex items-center rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50 transition-colors"
+                    className="relative ml-3 inline-flex items-center rounded-xl border border-slate-800 bg-slate-900 px-4 py-2 text-sm font-black uppercase tracking-widest text-slate-400 hover:bg-slate-800 disabled:opacity-50 transition-colors"
                 >
                     Next
                 </button>
             </div>
             <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
                 <div>
-                    <p className="text-sm text-slate-500 font-medium">
-                        Page <span className="font-black text-slate-900">{currentPage}</span> of{' '}
-                        <span className="font-black text-slate-900">{totalPages}</span>
+                    <p className="text-xs text-slate-500 font-black uppercase tracking-[0.2em]">
+                        Index <span className="text-white">{currentPage}</span> / <span className="text-slate-600">{totalPages}</span>
                     </p>
                 </div>
                 <div>
-                    <nav className="isolate inline-flex -space-x-px rounded-xl shadow-sm overflow-hidden border border-slate-200" aria-label="Pagination">
+                    <nav className="isolate inline-flex -space-x-px rounded-xl shadow-lg shadow-black/20 overflow-hidden border border-slate-800" aria-label="Pagination">
                         <button
                             onClick={() => router.push(createPageURL(currentPage - 1))}
                             disabled={currentPage <= 1}
-                            className="relative inline-flex items-center px-3 py-2 text-slate-400 bg-white hover:bg-slate-50 disabled:opacity-50 transition-colors border-r border-slate-200"
+                            className="relative inline-flex items-center px-4 py-2 text-slate-400 bg-slate-900 hover:bg-slate-800 disabled:opacity-50 transition-colors border-r border-slate-800"
                         >
                             <span className="sr-only">Previous</span>
-                            <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
+                            <ChevronLeftIcon className="h-4 w-4" aria-hidden="true" />
                         </button>
                         <button
                             onClick={() => router.push(createPageURL(currentPage + 1))}
                             disabled={currentPage >= totalPages}
-                            className="relative inline-flex items-center px-3 py-2 text-slate-400 bg-white hover:bg-slate-50 disabled:opacity-50 transition-colors"
+                            className="relative inline-flex items-center px-4 py-2 text-slate-400 bg-slate-900 hover:bg-slate-800 disabled:opacity-50 transition-colors"
                         >
                             <span className="sr-only">Next</span>
-                            <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
+                            <ChevronRightIcon className="h-4 w-4" aria-hidden="true" />
                         </button>
                     </nav>
                 </div>

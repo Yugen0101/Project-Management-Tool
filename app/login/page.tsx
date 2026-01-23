@@ -48,27 +48,33 @@ function LoginForm() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-slate-50 to-primary-100">
-            <div className="w-full max-w-md">
-                <div className="card">
-                    <div className="text-center mb-8">
-                        <h1 className="text-3xl font-bold text-slate-900 mb-2">
-                            Project Manager
+        <div className="min-h-screen flex items-center justify-center bg-slate-950 relative overflow-hidden px-6">
+            {/* Background Glow */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary-500/10 blur-[150px] rounded-full"></div>
+
+            <div className="w-full max-w-md relative z-10">
+                <div className="card border-slate-800/50 bg-slate-900/40 shadow-2xl shadow-primary-500/5">
+                    <div className="text-center mb-10">
+                        <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-accent-purple rounded-xl flex items-center justify-center text-white font-black italic text-xl mx-auto mb-4 shadow-lg shadow-primary-500/20">
+                            T
+                        </div>
+                        <h1 className="text-3xl font-black text-white mb-2 tracking-tight">
+                            Task<span className="text-primary-500">Forge</span>
                         </h1>
-                        <p className="text-slate-600">
-                            Sign in to your account
+                        <p className="text-slate-500 font-medium">
+                            Enter the workspace
                         </p>
                     </div>
 
                     <form onSubmit={handleLogin} className="space-y-6">
                         {error && (
-                            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+                            <div className="bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-3 rounded-xl text-sm font-medium">
                                 {error}
                             </div>
                         )}
 
-                        <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-2">
+                        <div className="space-y-2">
+                            <label htmlFor="email" className="block text-xs font-black uppercase tracking-widest text-slate-500 ml-1">
                                 Email Address
                             </label>
                             <input
@@ -83,10 +89,13 @@ function LoginForm() {
                             />
                         </div>
 
-                        <div>
-                            <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-2">
-                                Password
-                            </label>
+                        <div className="space-y-2">
+                            <div className="flex justify-between items-center ml-1">
+                                <label htmlFor="password" className="block text-xs font-black uppercase tracking-widest text-slate-500">
+                                    Password
+                                </label>
+                                <a href="#" className="text-[10px] font-black uppercase tracking-widest text-primary-500 hover:text-primary-400">Forgot?</a>
+                            </div>
                             <input
                                 id="password"
                                 type="password"
@@ -102,20 +111,19 @@ function LoginForm() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full btn-primary py-3 disabled:opacity-50 disabled:cursor-not-allowed text-base font-black uppercase tracking-widest"
                         >
-                            {loading ? 'Signing in...' : 'Sign In'}
+                            {loading ? 'Authorizing...' : 'Sign In'}
                         </button>
                     </form>
 
-                    <div className="mt-6 text-center text-sm text-slate-600">
-                        <p>No public registration available.</p>
-                        <p className="mt-1">Contact your administrator for access.</p>
+                    <div className="mt-8 text-center uppercase tracking-widest">
+                        <p className="text-[10px] font-black text-slate-600">Restricted Access</p>
                     </div>
                 </div>
 
-                <div className="mt-8 text-center text-xs text-slate-500">
-                    <p>© 2026 Project Manager. All rights reserved.</p>
+                <div className="mt-8 text-center text-[10px] font-black uppercase tracking-[0.2em] text-slate-600">
+                    <p>© 2026 TaskForge. Secure Project Management.</p>
                 </div>
             </div>
         </div>

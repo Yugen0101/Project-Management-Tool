@@ -21,36 +21,36 @@ export default async function MemberLayout({
     const user = await getCurrentUser();
 
     return (
-        <div className="min-h-screen bg-white flex flex-col">
+        <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
             <Toaster position="top-right" richColors />
             {/* Simple Top Navigation */}
-            <header className="h-16 bg-white border-b border-slate-100 px-6 sm:px-12 flex items-center justify-between sticky top-0 z-20 shadow-sm">
+            <header className="h-16 bg-slate-900/50 border-b border-slate-800/50 px-6 sm:px-12 flex items-center justify-between sticky top-0 z-20 backdrop-blur-xl shadow-lg shadow-primary-500/5">
                 <div className="flex items-center gap-8">
-                    <h1 className="text-xl font-black tracking-tighter text-slate-900 flex items-center gap-2">
-                        <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center text-white font-black italic">P</div>
-                        ProjectManager
+                    <h1 className="text-xl font-black tracking-tighter text-white flex items-center gap-2">
+                        <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-accent-purple rounded-lg flex items-center justify-center text-white font-black italic shadow-lg shadow-primary-500/20">T</div>
+                        TaskForge
                     </h1>
 
                     <nav className="hidden md:flex items-center gap-2">
-                        <Link href="/member/tasks" className="px-4 py-2 text-sm font-bold text-slate-600 hover:text-purple-600 transition-colors bg-slate-50 rounded-lg">
-                            My Tasks
+                        <Link href="/member/tasks" className="px-4 py-2 text-xs font-black uppercase tracking-widest text-slate-400 hover:text-primary-400 transition-all bg-slate-900/50 rounded-lg border border-slate-800/50">
+                            Workspace
                         </Link>
-                        <Link href="/member/activity" className="px-4 py-2 text-sm font-bold text-slate-600 hover:text-purple-600 transition-colors">
-                            Recent Activity
+                        <Link href="/member/activity" className="px-4 py-2 text-xs font-black uppercase tracking-widest text-slate-400 hover:text-primary-400 transition-all">
+                            Activity
                         </Link>
                     </nav>
                 </div>
 
                 <div className="flex items-center gap-4">
                     <NotificationCenter />
-                    <div className="h-8 w-px bg-slate-100 mx-1"></div>
+                    <div className="h-8 w-px bg-slate-800 mx-1"></div>
                     <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-xs font-bold text-purple-600 border border-purple-200">
+                        <div className="w-8 h-8 rounded-lg bg-primary-500/10 flex items-center justify-center text-xs font-bold text-primary-400 border border-primary-500/20 shadow-inner">
                             {user?.full_name?.charAt(0) || 'M'}
                         </div>
                         <div className="hidden sm:block">
-                            <p className="text-xs font-bold text-slate-900 leading-none">{user?.full_name}</p>
-                            <p className="text-[10px] font-bold text-purple-500 uppercase tracking-widest mt-1">
+                            <p className="text-xs font-bold text-white leading-none">{user?.full_name}</p>
+                            <p className="text-[10px] font-black text-primary-500 uppercase tracking-widest mt-1">
                                 {user?.role === 'admin' ? 'Administrator' :
                                     user?.role === 'associate' ? 'Project Lead' :
                                         user?.role === 'guest' ? 'Guest View' : 'Contributor'}

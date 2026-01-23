@@ -21,14 +21,14 @@ export default async function AssociateLayout({
     const user = await getCurrentUser();
 
     return (
-        <div className="min-h-screen bg-slate-50 flex">
+        <div className="min-h-screen bg-slate-950 text-slate-100 flex">
             {/* Sidebar */}
             <aside className="w-64 bg-slate-900 text-white hidden lg:flex flex-col fixed inset-y-0 shadow-2xl z-20">
                 <div className="p-6">
                     <h1 className="text-xl font-black tracking-tight text-white flex items-center gap-2">
-                        <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-white font-black italic">P</div>
-                        ProjectManager
-                        <span className="text-[10px] bg-blue-500/20 text-blue-400 px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">Assoc</span>
+                        <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-accent-purple rounded-lg flex items-center justify-center text-white font-black italic shadow-lg shadow-primary-500/20">T</div>
+                        TaskForge
+                        <span className="text-[10px] bg-primary-500/20 text-primary-400 px-1.5 py-0.5 rounded font-black uppercase tracking-wider">Lead</span>
                     </h1>
                 </div>
 
@@ -55,14 +55,14 @@ export default async function AssociateLayout({
                     </Link>
                 </nav>
 
-                <div className="p-4 mt-auto border-t border-white/5">
-                    <div className="flex items-center gap-3 px-4 py-3 mb-2 bg-white/5 rounded-xl">
-                        <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-xs font-bold ring-2 ring-white/10">
+                <div className="p-4 mt-auto border-t border-slate-800/50">
+                    <div className="flex items-center gap-3 px-4 py-3 mb-2 bg-slate-900/50 rounded-xl border border-slate-800/50">
+                        <div className="w-8 h-8 rounded-lg bg-primary-500/10 flex items-center justify-center text-xs font-bold text-primary-400 border border-primary-500/20 shadow-inner">
                             {user?.full_name?.charAt(0) || 'A'}
                         </div>
                         <div className="flex-1 min-w-0">
-                            <p className="text-sm font-bold truncate">{user?.full_name}</p>
-                            <p className="text-[10px] text-slate-400 uppercase font-black truncate">Associate Lead</p>
+                            <p className="text-sm font-bold text-white truncate">{user?.full_name}</p>
+                            <p className="text-[10px] text-primary-500 uppercase font-black truncate">Associate Lead</p>
                         </div>
                     </div>
                 </div>
@@ -71,13 +71,13 @@ export default async function AssociateLayout({
             {/* Main Content */}
             <main className="flex-1 lg:ml-64 min-h-screen">
                 {/* Header */}
-                <header className="h-16 bg-white border-b border-slate-200 sticky top-0 z-10 px-8 flex items-center justify-between shadow-sm">
+                <header className="h-16 bg-slate-900/50 backdrop-blur-xl border-b border-slate-800/50 sticky top-0 z-10 px-8 flex items-center justify-between shadow-lg shadow-primary-500/5">
                     <div className="lg:hidden flex items-center gap-2">
-                        <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center text-white font-black italic">P</div>
-                        <h1 className="text-sm font-black">ProjectManager</h1>
+                        <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-accent-purple rounded-lg flex items-center justify-center text-white font-black italic">T</div>
+                        <h1 className="text-sm font-black text-white">TaskForge</h1>
                     </div>
                     <div className="hidden lg:block relative w-96">
-                        <input type="text" placeholder="Global search tasks or projects..." className="w-full bg-slate-50 border-0 rounded-lg py-2 pl-4 text-sm focus:ring-2 ring-blue-500/20" />
+                        <input type="text" placeholder="Global search tasks or projects..." className="w-full bg-slate-950 border border-slate-800 rounded-xl py-2 pl-4 text-sm focus:ring-2 ring-primary-500/20 text-slate-100 placeholder-slate-500" />
                     </div>
                     <div className="flex items-center gap-4">
                         <button className="p-2 text-slate-400 hover:bg-slate-50 rounded-lg transition-colors relative">

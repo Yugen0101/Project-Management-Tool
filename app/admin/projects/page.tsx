@@ -51,8 +51,8 @@ export default async function AdminProjectsPage({
             {/* Header section */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold text-slate-900">Project Management</h1>
-                    <p className="text-slate-500 mt-1">Manage and monitor all organizational projects.</p>
+                    <h1 className="text-3xl font-black text-white tracking-tight">Project Projections</h1>
+                    <p className="text-slate-500 font-bold uppercase tracking-widest text-[10px] mt-1">Strategic Operations Control</p>
                 </div>
                 <Link href="/admin/projects/new" className="btn-primary flex items-center gap-2 self-start md:self-auto">
                     <PlusIcon className="w-5 h-5" />
@@ -63,29 +63,29 @@ export default async function AdminProjectsPage({
             {/* Stats and filters bar */}
             <div className="flex flex-col lg:flex-row gap-4">
                 <div className="relative flex-1">
-                    <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                    <MagnifyingGlassIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
                     <input
                         type="text"
-                        placeholder="Search projects by name or owner..."
-                        className="input pl-10 w-full"
+                        placeholder="Search project database..."
+                        className="w-full bg-slate-900/50 border border-slate-800 rounded-xl py-3 pl-12 text-sm focus:ring-2 ring-primary-500/20 text-slate-100 placeholder-slate-500 transition-all focus:border-primary-500/50"
                     />
                 </div>
                 <div className="flex gap-2">
                     <Link
                         href="/admin/projects?status=active"
-                        className={`px-4 py-2 rounded-xl text-sm font-bold border transition-all ${filterStatus === 'active' ? 'bg-primary-600 border-primary-600 text-white shadow-lg shadow-primary-200' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'}`}
+                        className={`px-6 py-2 rounded-xl text-xs font-black uppercase tracking-widest border transition-all ${filterStatus === 'active' ? 'bg-primary-600 border-primary-600 text-white shadow-lg shadow-primary-500/20' : 'bg-slate-900/50 border-slate-800 text-slate-500 hover:bg-slate-800 hover:text-slate-300'}`}
                     >
                         Active
                     </Link>
                     <Link
                         href="/admin/projects?status=completed"
-                        className={`px-4 py-2 rounded-xl text-sm font-bold border transition-all ${filterStatus === 'completed' ? 'bg-primary-600 border-primary-600 text-white shadow-lg shadow-primary-200' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'}`}
+                        className={`px-6 py-2 rounded-xl text-xs font-black uppercase tracking-widest border transition-all ${filterStatus === 'completed' ? 'bg-primary-600 border-primary-600 text-white shadow-lg shadow-primary-500/20' : 'bg-slate-900/50 border-slate-800 text-slate-500 hover:bg-slate-800 hover:text-slate-300'}`}
                     >
-                        Completed
+                        Finished
                     </Link>
                     <Link
                         href="/admin/projects?status=archived"
-                        className={`px-4 py-2 rounded-xl text-sm font-bold border transition-all ${filterStatus === 'archived' ? 'bg-primary-600 border-primary-600 text-white shadow-lg shadow-primary-200' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'}`}
+                        className={`px-6 py-2 rounded-xl text-xs font-black uppercase tracking-widest border transition-all ${filterStatus === 'archived' ? 'bg-primary-600 border-primary-600 text-white shadow-lg shadow-primary-500/20' : 'bg-slate-900/50 border-slate-800 text-slate-500 hover:bg-slate-800 hover:text-slate-300'}`}
                     >
                         Archived
                     </Link>
@@ -107,11 +107,11 @@ export default async function AdminProjectsPage({
                             </span>
                         </div>
 
-                        <h3 className="text-lg font-bold text-slate-900 mb-2 truncate group-hover:text-primary-600 transition-colors">
+                        <h3 className="text-lg font-black text-white mb-2 truncate group-hover:text-primary-400 transition-colors">
                             {project.name}
                         </h3>
-                        <p className="text-slate-600 text-sm line-clamp-2 mb-6 h-10">
-                            {project.description || 'No description provided.'}
+                        <p className="text-slate-500 text-xs font-medium line-clamp-2 mb-6 h-10">
+                            {project.description || 'No project briefing provided.'}
                         </p>
 
                         <div className="space-y-3 mb-6">
@@ -130,22 +130,22 @@ export default async function AdminProjectsPage({
                         </div>
 
                         {/* Progress bar */}
-                        <div className="space-y-2 mb-6">
-                            <div className="flex justify-between text-xs font-semibold text-slate-600">
-                                <span>Progress</span>
-                                <span>65%</span>
+                        <div className="space-y-3 mb-6">
+                            <div className="flex justify-between text-[10px] font-black uppercase tracking-widest text-slate-500">
+                                <span>Optimization</span>
+                                <span className="text-primary-400">65%</span>
                             </div>
-                            <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                                <div className="h-full bg-primary-500" style={{ width: '65%' }}></div>
+                            <div className="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div className="h-full bg-gradient-to-r from-primary-600 to-primary-400 rounded-full" style={{ width: '65%' }}></div>
                             </div>
                         </div>
 
                         <Link
                             href={`/admin/projects/${project.id}`}
-                            className="flex items-center justify-center gap-2 text-sm font-bold text-primary-600 hover:text-primary-700 w-full pt-4 border-t border-slate-100"
+                            className="flex items-center justify-center gap-2 text-xs font-black uppercase tracking-widest text-primary-500 hover:text-primary-400 w-full pt-4 border-t border-slate-800/50 transition-colors"
                         >
-                            View Details
-                            <ChevronRightIcon className="w-4 h-4 text-primary-500" />
+                            Analyze Details
+                            <ChevronRightIcon className="w-4 h-4" />
                         </Link>
                     </div>
                 ))}

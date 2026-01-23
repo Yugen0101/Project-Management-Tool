@@ -76,14 +76,14 @@ export default function TaskComments({ taskId, projectPath }: { taskId: string, 
         setSubmitting(false);
     };
 
-    if (loading) return <div className="h-32 animate-pulse bg-slate-50 rounded-xl" />;
+    if (loading) return <div className="h-32 animate-pulse bg-slate-900/40 rounded-2xl border border-slate-800/50" />;
 
     return (
         <div className="space-y-6">
-            <div className="flex items-center gap-2 text-slate-900 mb-4">
-                <ChatBubbleLeftRightIcon className="w-5 h-5 text-primary-600" />
-                <h3 className="font-bold">Discussion</h3>
-                <span className="text-xs text-slate-400 font-bold bg-slate-100 px-2 py-0.5 rounded-full">{comments.length}</span>
+            <div className="flex items-center gap-2 text-white mb-4">
+                <ChatBubbleLeftRightIcon className="w-5 h-5 text-primary-500" />
+                <h3 className="font-black uppercase tracking-widest text-xs">Discussion Thread</h3>
+                <span className="text-[10px] text-primary-400 font-black bg-primary-500/10 border border-primary-500/20 px-2 py-0.5 rounded-full">{comments.length}</span>
             </div>
 
             <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
@@ -93,14 +93,14 @@ export default function TaskComments({ taskId, projectPath }: { taskId: string, 
                             {comment.user.full_name.charAt(0)}
                         </div>
                         <div className="flex-1">
-                            <div className="bg-slate-50 rounded-2xl rounded-tl-none p-3 border border-slate-100 group-hover:bg-white group-hover:shadow-md transition-all duration-300">
+                            <div className="bg-slate-900/40 backdrop-blur-md rounded-2xl rounded-tl-none p-4 border border-slate-800/50 group-hover:bg-slate-900/60 group-hover:border-primary-500/30 transition-all duration-300">
                                 <div className="flex items-center justify-between mb-1">
-                                    <span className="text-[11px] font-black text-slate-900 uppercase tracking-tighter">{comment.user.full_name}</span>
-                                    <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">
+                                    <span className="text-xs font-black text-white uppercase tracking-tighter">{comment.user.full_name}</span>
+                                    <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">
                                         {formatDistanceToNow(new Date(comment.created_at), { addSuffix: true })}
                                     </span>
                                 </div>
-                                <p className="text-sm text-slate-600 leading-relaxed whitespace-pre-wrap">
+                                <p className="text-sm text-slate-400 leading-relaxed whitespace-pre-wrap font-medium">
                                     {comment.content}
                                 </p>
                             </div>
@@ -132,15 +132,15 @@ export default function TaskComments({ taskId, projectPath }: { taskId: string, 
                             value={newComment}
                             onChange={handleTextChange}
                             placeholder="Add a comment... (use @ to mention users)"
-                            className="w-full bg-slate-50 border-2 border-slate-100 rounded-2xl p-4 pr-12 text-sm focus:bg-white focus:border-primary-500 transition-all outline-none resize-none h-24 shadow-inner"
+                            className="w-full bg-slate-900/50 border-2 border-slate-800/50 rounded-2xl p-4 pr-12 text-sm focus:bg-slate-900 focus:border-primary-500/50 transition-all outline-none resize-none h-24 shadow-inner text-slate-200 placeholder-slate-600"
                             disabled={submitting}
                         />
 
                         {/* Mention Autocomplete List */}
                         {showMentionList && (
-                            <div className="absolute bottom-full left-0 mb-2 w-64 bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden z-50 animate-in slide-in-from-bottom-2 duration-200">
-                                <div className="p-2 bg-slate-50 border-b border-slate-50">
-                                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Mention User</span>
+                            <div className="absolute bottom-full left-0 mb-2 w-64 bg-slate-950 rounded-xl shadow-2xl border border-slate-800 overflow-hidden z-50 animate-in slide-in-from-bottom-2 duration-200">
+                                <div className="p-2 bg-slate-900 border-b border-slate-800">
+                                    <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Mention Node</span>
                                 </div>
                                 <div className="max-h-48 overflow-y-auto">
                                     {allUsers
@@ -150,14 +150,14 @@ export default function TaskComments({ taskId, projectPath }: { taskId: string, 
                                                 key={user.id}
                                                 type="button"
                                                 onClick={() => insertMention(user)}
-                                                className="w-full flex items-center gap-3 p-3 hover:bg-primary-50 text-left transition-colors border-b border-slate-50 last:border-0"
+                                                className="w-full flex items-center gap-3 p-3 hover:bg-primary-500/10 text-left transition-colors border-b border-slate-800/50 last:border-0"
                                             >
-                                                <div className="w-6 h-6 rounded-full bg-primary-100 flex items-center justify-center text-[10px] font-black text-primary-600">
+                                                <div className="w-6 h-6 rounded-full bg-primary-500/20 flex items-center justify-center text-[10px] font-black text-primary-400">
                                                     {user.full_name.charAt(0)}
                                                 </div>
                                                 <div className="flex-1">
-                                                    <p className="text-xs font-bold text-slate-900">{user.full_name}</p>
-                                                    <p className="text-[10px] text-slate-400">{user.email}</p>
+                                                    <p className="text-xs font-black text-white">{user.full_name}</p>
+                                                    <p className="text-[10px] text-slate-500 font-medium">{user.email}</p>
                                                 </div>
                                             </button>
                                         ))

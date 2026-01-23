@@ -54,32 +54,32 @@ export default function NewProjectForm() {
                 Back to Projects
             </Link>
 
-            <div className="card shadow-2xl shadow-primary-900/5 overflow-hidden">
-                <div className="bg-primary-600 p-8 text-white relative">
+            <div className="card shadow-2xl shadow-black/20 overflow-hidden border border-slate-800/50 backdrop-blur-md">
+                <div className="bg-gradient-to-br from-primary-600 to-primary-800 p-8 text-white relative">
                     <div className="relative z-10">
-                        <h1 className="text-2xl font-bold flex items-center gap-3">
+                        <h1 className="text-2xl font-black flex items-center gap-3 tracking-tight">
                             <RocketLaunchIcon className="w-8 h-8" />
-                            Launch New Project
+                            Initialize Project Node
                         </h1>
-                        <p className="text-primary-100 mt-2">
-                            Initialize a new workspace for your team to start collaborating.
+                        <p className="text-primary-100 text-sm font-medium opacity-80">
+                            Deploy a new operational workspace for strategic coordination.
                         </p>
                     </div>
                     {/* Decorative element */}
                     <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
                 </div>
 
-                <form onSubmit={handleSubmit} className="p-8 space-y-6 bg-white">
+                <form onSubmit={handleSubmit} className="p-8 space-y-6 bg-slate-900/40">
                     {error && (
-                        <div className="bg-red-50 border border-red-100 text-red-700 px-4 py-3 rounded-xl text-sm font-medium">
+                        <div className="bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-3 rounded-xl text-xs font-black uppercase tracking-widest">
                             {error}
                         </div>
                     )}
 
                     <div className="space-y-4">
                         <div>
-                            <label className="block text-sm font-bold text-slate-700 mb-2">
-                                Project Name
+                            <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2 px-1">
+                                Project Designation
                             </label>
                             <input
                                 name="name"
@@ -91,8 +91,8 @@ export default function NewProjectForm() {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-bold text-slate-700 mb-2">
-                                Description
+                            <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2 px-1">
+                                Operational Briefing
                             </label>
                             <textarea
                                 name="description"
@@ -103,8 +103,8 @@ export default function NewProjectForm() {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-bold text-slate-700 mb-2">
-                                Target Completion Date
+                            <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2 px-1">
+                                Deadline Synchronicity
                             </label>
                             <input
                                 name="end_date"
@@ -115,24 +115,24 @@ export default function NewProjectForm() {
                         </div>
                     </div>
 
-                    <div className="pt-4 flex items-center gap-4">
+                    <div className="pt-6 flex items-center gap-4">
                         <button
                             type="submit"
                             disabled={loading}
-                            className={`flex-1 btn-primary py-3 flex items-center justify-center gap-2 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            className={`flex-1 btn-primary py-4 flex items-center justify-center gap-2 text-xs font-black uppercase tracking-widest ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
                         >
                             {loading ? (
                                 <>
-                                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                                    Launching...
+                                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                                    Initializing...
                                 </>
-                            ) : 'Create & Initialize Project'}
+                            ) : 'Establish Workspace'}
                         </button>
                         <Link
                             href="/admin/projects"
-                            className="px-6 py-3 text-slate-500 font-bold hover:text-slate-700 transition-colors"
+                            className="px-6 py-4 text-slate-500 font-black uppercase tracking-widest hover:text-white transition-all text-[10px]"
                         >
-                            Cancel
+                            Abort
                         </Link>
                     </div>
                 </form>

@@ -31,29 +31,31 @@ export default async function AdminLayout({
         .select('*', { count: 'exact', head: true });
 
     return (
-        <div className="min-h-screen bg-slate-50">
+        <div className="min-h-screen bg-slate-950 text-slate-100">
             <Toaster position="top-right" richColors />
             {/* Header */}
-            <header className="bg-white border-b border-slate-200 sticky top-0 z-10">
+            <header className="bg-slate-900/50 border-b border-slate-800/50 sticky top-0 z-10 backdrop-blur-xl">
                 <div className="px-6 py-4">
                     <div className="flex items-center justify-between">
                         <div>
-                            <h1 className="text-2xl font-bold text-slate-900">Project Manager</h1>
-                            <p className="text-sm text-slate-600">Admin Dashboard</p>
+                            <h1 className="text-2xl font-black text-slate-900 tracking-tight">TaskForge</h1>
+                            <p className="text-xs font-bold text-primary-500 uppercase tracking-widest">Admin Control Center</p>
                         </div>
                         <div className="flex items-center gap-6">
                             <NotificationCenter />
-                            <div className="flex items-center gap-4 border-l border-slate-200 pl-6">
-                                <div className="text-right">
-                                    <p className="text-sm font-medium text-slate-900">{user.full_name}</p>
-                                    <p className="text-xs text-slate-500 capitalize">{user.role}</p>
+                            {user && (
+                                <div className="flex items-center gap-4 border-l border-slate-800 pl-6">
+                                    <div className="text-right">
+                                        <p className="text-sm font-bold text-white">{user.full_name}</p>
+                                        <p className="text-[10px] font-black uppercase tracking-widest text-primary-500">{user.role}</p>
+                                    </div>
+                                    <form action="/api/auth/signout" method="POST">
+                                        <button type="submit" className="btn-secondary text-sm">
+                                            Sign Out
+                                        </button>
+                                    </form>
                                 </div>
-                                <form action="/api/auth/signout" method="POST">
-                                    <button type="submit" className="btn-secondary text-sm">
-                                        Sign Out
-                                    </button>
-                                </form>
-                            </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -61,14 +63,14 @@ export default async function AdminLayout({
 
             <div className="flex">
                 {/* Sidebar */}
-                <aside className="w-64 bg-white border-r border-slate-200 min-h-[calc(100vh-73px)]">
+                <aside className="w-64 bg-slate-900/30 border-r border-slate-800/50 min-h-[calc(100vh-73px)] backdrop-blur-sm">
                     <nav className="p-4 space-y-2">
                         <a
                             href="/admin/dashboard"
-                            className="block px-4 py-2 rounded-lg text-slate-700 hover:bg-primary-50 hover:text-primary-700 transition-colors"
+                            className="block px-4 py-2 rounded-xl text-slate-400 hover:bg-primary-500/10 hover:text-primary-400 transition-all duration-300 group"
                         >
                             <div className="flex items-center gap-3">
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                                 </svg>
                                 <span className="font-medium">Dashboard</span>
@@ -77,10 +79,10 @@ export default async function AdminLayout({
 
                         <a
                             href="/admin/projects"
-                            className="block px-4 py-2 rounded-lg text-slate-700 hover:bg-primary-50 hover:text-primary-700 transition-colors"
+                            className="block px-4 py-2 rounded-xl text-slate-400 hover:bg-primary-500/10 hover:text-primary-400 transition-all duration-300 group"
                         >
                             <div className="flex items-center gap-3">
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                                 </svg>
                                 <span className="font-medium">Projects</span>
@@ -90,10 +92,10 @@ export default async function AdminLayout({
 
                         <a
                             href="/admin/users"
-                            className="block px-4 py-2 rounded-lg text-slate-700 hover:bg-primary-50 hover:text-primary-700 transition-colors"
+                            className="block px-4 py-2 rounded-xl text-slate-400 hover:bg-primary-500/10 hover:text-primary-400 transition-all duration-300 group"
                         >
                             <div className="flex items-center gap-3">
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                                 </svg>
                                 <span className="font-medium">Users</span>
@@ -103,10 +105,10 @@ export default async function AdminLayout({
 
                         <a
                             href="/admin/tasks"
-                            className="block px-4 py-2 rounded-lg text-slate-700 hover:bg-primary-50 hover:text-primary-700 transition-colors"
+                            className="block px-4 py-2 rounded-xl text-slate-400 hover:bg-primary-500/10 hover:text-primary-400 transition-all duration-300 group"
                         >
                             <div className="flex items-center gap-3">
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
                                 </svg>
                                 <span className="font-medium">All Tasks</span>
