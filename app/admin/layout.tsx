@@ -38,13 +38,13 @@ export default async function AdminLayout({
             <header className="bg-white/80 border-b border-[#e5dec9] sticky top-0 z-50 backdrop-blur-xl">
                 <div className="px-8 py-4">
                     <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4">
-                            <div className="relative w-8 h-8">
+                        <div className="flex items-center gap-5">
+                            <div className="relative w-12 h-12">
                                 <Image src="/logo.png" alt="Logo" fill className="object-contain" />
                             </div>
                             <div>
-                                <h1 className="text-xl font-black text-[#1c1917] tracking-tight">TaskForge</h1>
-                                <p className="text-[9px] font-black text-[#d97757] uppercase tracking-[0.2em]">Operations HUB</p>
+                                <h1 className="text-2xl font-black text-[#1c1917] tracking-tight">TaskForge</h1>
+                                <p className="text-[10px] font-black text-[#d97757] uppercase tracking-[0.2em]">Operations HUB</p>
                             </div>
                         </div>
                         <div className="flex items-center gap-6">

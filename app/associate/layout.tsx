@@ -26,13 +26,13 @@ export default async function AssociateLayout({
             {/* Sidebar */}
             <aside className="w-72 bg-white border-r border-[#e5dec9] hidden lg:flex flex-col fixed inset-y-0 z-50">
                 <div className="p-8">
-                    <div className="flex items-center gap-3">
-                        <div className="relative w-8 h-8">
+                    <div className="flex items-center gap-4">
+                        <div className="relative w-12 h-12">
                             <Image src="/logo.png" alt="Logo" fill className="object-contain" />
                         </div>
-                        <h1 className="text-xl font-black tracking-tighter text-[#1c1917]">
+                        <h1 className="text-2xl font-black tracking-tighter text-[#1c1917]">
                             TaskForge
-                            <span className="block text-[9px] text-[#d97757] uppercase tracking-[0.2em]">Project Lead</span>
+                            <span className="block text-[10px] text-[#d97757] uppercase tracking-[0.2em]">Project Lead</span>
                         </h1>
                     </div>
                 </div>
@@ -77,11 +77,11 @@ export default async function AssociateLayout({
             <main className="flex-1 lg:ml-72 min-h-screen">
                 {/* Header */}
                 <header className="h-20 bg-white/80 backdrop-blur-xl border-b border-[#e5dec9] sticky top-0 z-40 px-10 flex items-center justify-between">
-                    <div className="lg:hidden flex items-center gap-3">
-                        <div className="relative w-8 h-8">
+                    <div className="lg:hidden flex items-center gap-4">
+                        <div className="relative w-10 h-10">
                             <Image src="/logo.png" alt="Logo" fill className="object-contain" />
                         </div>
-                        <h1 className="text-sm font-black text-[#1c1917]">TaskForge</h1>
+                        <h1 className="text-lg font-black text-[#1c1917]">TaskForge</h1>
                     </div>
                     <div className="hidden lg:block relative w-96">
                         <input type="text" placeholder="Global search..." className="input bg-white/50" />
