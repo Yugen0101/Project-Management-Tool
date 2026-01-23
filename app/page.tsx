@@ -46,7 +46,7 @@ export default function HomePage() {
 
                     <div className="flex flex-col sm:flex-row gap-4 pt-4">
                         <a href="/login" className="btn-primary px-10 py-5 text-sm">
-                            Initialize Node
+                            Initialise Node
                         </a>
                         <a href="/login" className="btn-secondary px-10 py-5 text-sm">
                             Read More...

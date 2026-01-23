@@ -109,7 +109,7 @@ export default function ActivityFeed({
                                             <span className="italic font-serif ml-1">
                                                 {item.action_type === 'status_changed' ? `moved unit to ${item.new_value}` :
                                                     item.action_type === 'assigned' ? `reallocated asset to unit` :
-                                                        item.action_type === 'created' ? `initialized the node` :
+                                                        item.action_type === 'created' ? `initialised the node` :
                                                             item.action_type === 'completed' ? `finalized the objective` :
                                                                 'updated node parameters'}
                                             </span>

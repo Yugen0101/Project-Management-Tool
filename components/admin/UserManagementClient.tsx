@@ -92,8 +92,8 @@ export default function UserManagementClient({ initialUsers }: { initialUsers: U
                     <div className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-lg overflow-hidden border border-[#e5dec9] animate-in zoom-in-95 duration-500">
                         <div className="px-10 py-8 border-b border-[#f7f3ed] flex items-center justify-between bg-[#f7f3ed]/30">
                             <div>
-                                <h2 className="text-2xl font-black text-[#1c1917] tracking-tight uppercase">PERSONNEL ENROLLMENT</h2>
-                                <p className="text-[10px] font-black text-[#1c1917]/30 uppercase tracking-[0.2em] mt-1">Initialize system access node</p>
+                                <h2 className="text-2xl font-black text-[#1c1917] tracking-tight uppercase">PERSONNEL ENROLMENT</h2>
+                                <p className="text-[10px] font-black text-[#1c1917]/30 uppercase tracking-[0.2em] mt-1">Initialise system access node</p>
                             </div>
                             <button onClick={() => setIsModalOpen(false)} className="w-10 h-10 rounded-full bg-white border border-[#e5dec9] flex items-center justify-center text-[#1c1917]/40 hover:text-[#d97757] transition-all">
                                 <XMarkIcon className="w-6 h-6" />
@@ -170,7 +170,7 @@ export default function UserManagementClient({ initialUsers }: { initialUsers: U
                                     disabled={loading}
                                     className="btn-primary flex-1 py-4 disabled:opacity-50"
                                 >
-                                    {loading ? 'SYNCING...' : 'ENROLL ASSET'}
+                                    {loading ? 'SYNCING...' : 'ENROL ASSET'}
                                 </button>
                             </div>
                         </form>

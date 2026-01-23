@@ -150,7 +150,7 @@ export default async function AdminProjectsPage({
                             <FolderIcon className="w-10 h-10" />
                         </div>
                         <h3 className="text-xl font-black text-[#1c1917] tracking-tight uppercase">Repository Empty</h3>
-                        <p className="text-[11px] font-black text-[#1c1917]/40 uppercase tracking-[0.2em] mt-2 mb-8">Initialize first project node</p>
+                        <p className="text-[11px] font-black text-[#1c1917]/40 uppercase tracking-[0.2em] mt-2 mb-8">Initialise first project node</p>
                         <Link href="/admin/projects/new" className="btn-primary flex items-center gap-2 px-10 py-4">
                             <PlusIcon className="w-5 h-5" />
                             <span className="text-[11px]">New Project</span>

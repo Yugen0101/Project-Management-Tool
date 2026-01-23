@@ -144,10 +144,10 @@ export default async function AdminDashboard() {
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <a href="/admin/projects?action=create" className="btn-primary py-4 text-[10px] text-center shadow-lg shadow-[#d97757]/20">
-                            + Initialize Project
+                            + Initialise Project
                         </a>
                         <a href="/admin/users?action=create" className="btn-primary py-4 text-[10px] text-center shadow-lg shadow-[#d97757]/20">
-                            + Enroll Personnel
+                            + Enrol Personnel
                         </a>
                         <a href="/admin/tasks" className="btn-secondary py-4 text-[10px] text-center bg-white">
                             Access All Registries
