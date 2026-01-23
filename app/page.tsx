@@ -11,7 +11,7 @@ export default function HomePage() {
 
             {/* Navigation / Header */}
             <header className="relative z-50 px-8 py-6 flex items-center justify-between max-w-7xl mx-auto w-full">
-                <div className="flex items-center gap-8">
+                <div className="flex items-center gap-12">
                     <div className="relative w-40 h-40">
                         <Image src="/logo.png" alt="TaskForge Logo" fill className="object-contain" />
                     </div>

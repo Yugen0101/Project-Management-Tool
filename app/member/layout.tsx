@@ -27,7 +27,7 @@ export default async function MemberLayout({
             {/* Simple Top Navigation */}
             <header className="h-20 bg-white/80 border-b border-[#e5dec9] px-6 sm:px-12 flex items-center justify-between sticky top-0 z-50 backdrop-blur-xl">
                 <div className="flex items-center gap-8">
-                    <div className="flex items-center gap-8">
+                    <div className="flex items-center gap-10">
                         <div className="relative w-24 h-24">
                             <Image src="/logo.png" alt="Logo" fill className="object-contain" />
                         </div>
