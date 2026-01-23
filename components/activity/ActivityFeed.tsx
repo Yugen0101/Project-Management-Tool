@@ -21,12 +21,12 @@ const actionIcons = {
 };
 
 const actionColors = {
-    'created': 'bg-emerald-100 text-emerald-600',
-    'assigned': 'bg-blue-100 text-blue-600',
-    'status_changed': 'bg-orange-100 text-orange-600',
-    'completed': 'bg-emerald-100 text-emerald-600',
-    'updated': 'bg-slate-100 text-slate-600',
-    'comment': 'bg-purple-100 text-purple-600'
+    'created': 'bg-[#f7f3ed] text-[#d97757] border-[#e5dec9]',
+    'assigned': 'bg-[#f7f3ed] text-[#1c1917]/60 border-[#e5dec9]',
+    'status_changed': 'bg-[#f7f3ed] text-[#d97757] border-[#e5dec9]',
+    'completed': 'bg-[#d97757] text-white border-[#d97757]',
+    'updated': 'bg-[#f7f3ed] text-[#1c1917]/40 border-[#e5dec9]',
+    'comment': 'bg-[#f7f3ed] text-[#1c1917]/60 border-[#e5dec9]'
 };
 
 export default function ActivityFeed({
@@ -67,11 +67,11 @@ export default function ActivityFeed({
         return (
             <div className="space-y-4 animate-pulse">
                 {[1, 2, 3].map(i => (
-                    <div key={i} className="flex gap-3">
-                        <div className="w-8 h-8 bg-slate-100 rounded-lg"></div>
-                        <div className="flex-1 space-y-2">
-                            <div className="h-3 bg-slate-100 rounded w-3/4"></div>
-                            <div className="h-2 bg-slate-100 rounded w-1/4"></div>
+                    <div key={i} className="flex gap-4">
+                        <div className="w-10 h-10 bg-[#f7f3ed] rounded-xl"></div>
+                        <div className="flex-1 space-y-3 px-2">
+                            <div className="h-4 bg-[#f7f3ed] rounded w-3/4"></div>
+                            <div className="h-3 bg-[#f7f3ed] rounded w-1/4"></div>
                         </div>
                     </div>
                 ))}
@@ -81,39 +81,41 @@ export default function ActivityFeed({
 
     if (!activities || activities.length === 0) {
         return (
-            <div className="py-12 text-center">
-                <p className="text-xs font-black uppercase text-slate-400 tracking-widest">No activity logged yet</p>
+            <div className="py-20 text-center border-2 border-dashed border-[#e5dec9] rounded-[2.5rem]">
+                <p className="text-[10px] font-black uppercase text-[#1c1917]/20 tracking-[0.3em] font-serif italic">No operational logs recorded</p>
             </div>
         );
     }
 
     return (
-        <div className="flow-root">
-            <ul role="list" className="-mb-8">
+        <div className="flow-root px-2">
+            <ul role="list" className="-mb-10">
                 {activities.map((item, idx) => (
                     <li key={item.id}>
-                        <div className="relative pb-8">
+                        <div className="relative pb-10">
                             {idx !== activities.length - 1 && (
-                                <span className="absolute left-4 top-4 -ml-px h-full w-0.5 bg-slate-100" aria-hidden="true" />
+                                <span className="absolute left-5 top-5 -ml-px h-full w-px bg-[#e5dec9]" aria-hidden="true" />
                             )}
-                            <div className="relative flex space-x-3">
-                                <div>
-                                    <span className={`h-8 w-8 rounded-lg flex items-center justify-center ring-4 ring-white ${actionColors[item.action_type as keyof typeof actionColors] || 'bg-slate-100 text-slate-500'}`}>
-                                        {actionIcons[item.action_type as keyof typeof actionIcons] || <ArrowPathIcon className="w-3.5 h-3.5" />}
+                            <div className="relative flex space-x-5">
+                                <div className="z-10">
+                                    <span className={`h-10 w-10 rounded-xl flex items-center justify-center border shadow-sm transition-all group-hover:shadow-md ${actionColors[item.action_type as keyof typeof actionColors] || 'bg-[#f7f3ed] text-[#1c1917]/20 border-[#e5dec9]'}`}>
+                                        {actionIcons[item.action_type as keyof typeof actionIcons] || <ArrowPathIcon className="w-4 h-4" />}
                                     </span>
                                 </div>
-                                <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
+                                <div className="flex min-w-0 flex-1 justify-between space-x-6 pt-2">
                                     <div>
-                                        <p className="text-sm text-slate-600">
-                                            <span className="font-bold text-slate-900">{item.user?.full_name || 'System'}</span>
-                                            {' '}{item.action_type === 'status_changed' ? `moved task to ${item.new_value}` :
-                                                item.action_type === 'assigned' ? `assigned task to user` :
-                                                    item.action_type === 'created' ? `created the task` :
-                                                        item.action_type === 'completed' ? `completed the task` :
-                                                            'updated the task'}
+                                        <p className="text-sm text-[#1c1917]/60 leading-tight">
+                                            <span className="font-black text-[#1c1917] uppercase tracking-tight">{item.user?.full_name || 'System'}</span>
+                                            <span className="italic font-serif ml-1">
+                                                {item.action_type === 'status_changed' ? `moved unit to ${item.new_value}` :
+                                                    item.action_type === 'assigned' ? `reallocated asset to unit` :
+                                                        item.action_type === 'created' ? `initialized the node` :
+                                                            item.action_type === 'completed' ? `finalized the objective` :
+                                                                'updated node parameters'}
+                                            </span>
                                         </p>
                                     </div>
-                                    <div className="whitespace-nowrap text-right text-[10px] font-black uppercase tracking-widest text-slate-400">
+                                    <div className="whitespace-nowrap text-right text-[9px] font-black uppercase tracking-[0.2em] text-[#1c1917]/20">
                                         <time dateTime={item.created_at}>
                                             {formatDistanceToNow(new Date(item.created_at), { addSuffix: true })}
                                         </time>
