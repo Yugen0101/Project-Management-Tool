@@ -81,53 +81,65 @@ export default function NotificationCenter() {
         <div className="relative" ref={dropdownRef}>
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="relative p-2 text-slate-400 hover:text-primary-400 transition-all bg-slate-900/40 backdrop-blur-md border border-slate-800/50 rounded-xl shadow-lg hover:shadow-primary-500/10"
+                className="relative w-11 h-11 flex items-center justify-center bg-[#f7f3ed] hover:bg-[#d97757] hover:text-white rounded-xl text-[#1c1917]/20 border border-[#e5dec9] transition-all duration-300 shadow-sm"
             >
                 <BellIcon className="w-6 h-6" />
                 {unreadCount > 0 && (
-                    <span className="absolute top-1.5 right-1.5 w-4.5 h-4.5 bg-red-600 text-white text-[10px] font-black flex items-center justify-center rounded-full ring-2 ring-white animate-pulse">
+                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-[#d97757] text-white text-[9px] font-black flex items-center justify-center rounded-full ring-4 ring-white shadow-lg transition-transform hover:scale-110">
                         {unreadCount}
                     </span>
                 )}
             </button>
 
             {isOpen && (
-                <div className="absolute right-0 mt-3 w-80 bg-slate-950/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-slate-800/50 z-50 overflow-hidden transform origin-top-right transition-all animate-in fade-in zoom-in duration-200">
-                    <div className="p-4 border-b border-slate-800/50 flex items-center justify-between bg-slate-900/50">
-                        <h3 className="text-xs font-black uppercase tracking-widest text-slate-500">Notifications</h3>
+                <div className="absolute right-0 mt-4 w-96 bg-white rounded-[2.5rem] shadow-2xl shadow-[#d9cfb0]/30 border border-[#e5dec9] z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-500">
+                    <div className="px-8 py-6 border-b border-[#f7f3ed] flex items-center justify-between bg-[#f7f3ed]/30">
+                        <div>
+                            <h3 className="text-[11px] font-black uppercase tracking-[0.4em] text-[#1c1917] flex items-center gap-3">
+                                <span className="w-2 h-2 rounded-full bg-[#d97757]"></span>
+                                Notifications
+                            </h3>
+                            <p className="text-[9px] font-black text-[#1c1917]/20 uppercase tracking-[0.2em] mt-1 italic font-serif">Live Transmission Feed</p>
+                        </div>
                         {unreadCount > 0 && (
                             <button
                                 onClick={handleClearAll}
-                                className="text-[10px] font-black uppercase text-primary-500 hover:text-primary-400"
+                                className="text-[9px] font-black uppercase tracking-widest text-[#d97757] hover:opacity-70 transition-opacity flex items-center gap-2"
                             >
+                                <TrashIcon className="w-3.5 h-3.5" />
                                 Clear All
                             </button>
                         )}
                     </div>
 
-                    <div className="max-h-[400px] overflow-y-auto custom-scrollbar">
+                    <div className="max-h-[450px] overflow-y-auto custom-scrollbar bg-white">
                         {notifications.length === 0 && !loading && (
-                            <div className="p-10 text-center">
-                                <InboxIcon className="w-10 h-10 text-slate-800 mx-auto mb-2" />
-                                <p className="text-xs font-black text-slate-600 uppercase tracking-widest">No signals detected</p>
+                            <div className="py-20 text-center px-10">
+                                <div className="w-16 h-16 bg-[#f7f3ed] rounded-2xl flex items-center justify-center text-[#e5dec9] mx-auto mb-6">
+                                    <InboxIcon className="w-8 h-8" />
+                                </div>
+                                <h3 className="text-sm font-black text-[#1c1917] uppercase tracking-tighter">No Active Signals</h3>
+                                <p className="text-[9px] font-black text-[#1c1917]/20 uppercase tracking-[0.2em] mt-2 italic font-serif">Registry is currently synchronized.</p>
                             </div>
                         )}
 
                         {notifications.map((n) => (
                             <div
                                 key={n.id}
-                                className={`p-4 border-b border-slate-800/50 hover:bg-slate-900 transition-colors group relative ${!n.is_read ? 'bg-primary-500/5' : ''}`}
+                                className={`p-6 border-b border-[#f7f3ed] hover:bg-[#fdfcf9] transition-all group relative ${!n.is_read ? 'bg-[#f7f3ed]/20' : ''}`}
                             >
-                                <div className="flex gap-3">
-                                    <div className={`shrink-0 w-8 h-8 rounded-lg flex items-center justify-center ${n.type === 'task_assigned' ? 'bg-blue-100 text-blue-600' :
-                                        n.type === 'mention' ? 'bg-purple-100 text-purple-600' :
-                                            'bg-slate-100 text-slate-600'
-                                        }`}>
-                                        <BellIcon className="w-4 h-4" />
+                                <div className="flex gap-5">
+                                    <div className={`shrink-0 w-10 h-10 rounded-xl flex items-center justify-center border shadow-sm ${!n.is_read ? 'bg-white border-[#d97757]/30 text-[#d97757]' : 'bg-[#f7f3ed] border-[#e5dec9] text-[#1c1917]/20'}`}>
+                                        <BellIcon className="w-5 h-5" />
                                     </div>
-                                    <div className="flex-1 space-y-1">
-                                        <p className="text-sm font-black text-white leading-tight">{n.title}</p>
-                                        <p className="text-xs font-medium text-slate-400 leading-snug">{n.content}</p>
+                                    <div className="flex-1 space-y-2">
+                                        <div className="flex items-center justify-between">
+                                            <p className="text-[13px] font-black text-[#1c1917] leading-none uppercase tracking-tight">{n.title}</p>
+                                            {!n.is_read && (
+                                                <span className="w-1.5 h-1.5 rounded-full bg-[#d97757]"></span>
+                                            )}
+                                        </div>
+                                        <p className="text-xs font-black text-[#1c1917]/40 leading-snug italic font-serif">{n.content}</p>
                                         {n.link && (
                                             <Link
                                                 href={n.link}
@@ -135,28 +147,29 @@ export default function NotificationCenter() {
                                                     setIsOpen(false);
                                                     handleMarkAsRead(n.id);
                                                 }}
-                                                className="text-[10px] font-black text-primary-500 uppercase hover:text-primary-400 block pt-1"
+                                                className="inline-block text-[9px] font-black text-[#d97757] uppercase tracking-widest hover:opacity-70 transition-opacity border-b border-[#d97757]/30 pb-0.5 mt-2"
                                             >
-                                                View Details
+                                                View Transmission Details →
                                             </Link>
                                         )}
                                     </div>
-                                    {!n.is_read && (
-                                        <button
-                                            onClick={() => handleMarkAsRead(n.id)}
-                                            className="opacity-0 group-hover:opacity-100 p-1 text-slate-300 hover:text-emerald-500 transition-all"
-                                        >
-                                            <CheckCircleIcon className="w-5 h-5" />
-                                        </button>
-                                    )}
                                 </div>
+                                {!n.is_read && (
+                                    <button
+                                        onClick={() => handleMarkAsRead(n.id)}
+                                        className="opacity-0 group-hover:opacity-100 absolute top-6 right-6 p-2 text-[#d97757] hover:bg-[#d97757] hover:text-white rounded-lg transition-all shadow-sm"
+                                        title="Archive Signal"
+                                    >
+                                        <CheckCircleIcon className="w-4 h-4" />
+                                    </button>
+                                )}
                             </div>
                         ))}
                     </div>
 
-                    <div className="p-3 bg-slate-900/50 text-center border-t border-slate-800/50">
-                        <button className="text-[10px] font-black uppercase text-slate-500 hover:text-primary-500 transition-colors">
-                            Control Interface
+                    <div className="p-6 bg-[#f7f3ed]/30 text-center border-t border-[#f7f3ed]">
+                        <button className="text-[10px] font-black uppercase tracking-[0.3em] text-[#1c1917]/30 hover:text-[#d97757] transition-all italic font-serif">
+                            Access Control Interface
                         </button>
                     </div>
                 </div>
