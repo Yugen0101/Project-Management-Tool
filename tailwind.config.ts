@@ -9,32 +9,39 @@ const config: Config = {
     theme: {
         extend: {
             colors: {
-                // Primary brand colors
+                // TaskForge Beige Premium Palette
                 primary: {
-                    50: '#eff6ff',
-                    100: '#dbeafe',
-                    200: '#bfdbfe',
-                    300: '#93c5fd',
-                    400: '#60a5fa',
-                    500: '#3b82f6',
-                    600: '#2563eb',
-                    700: '#1d4ed8',
-                    800: '#1e40af',
-                    900: '#1e3a8a',
+                    50: '#fdfcf9',
+                    100: '#f7f3ed',
+                    200: '#f1ede4',
+                    300: '#e5dec9',
+                    400: '#d9cfb0',
+                    500: '#d97757', // Terracotta Accent
+                    600: '#c26242',
+                    700: '#8e4832',
+                    800: '#5c2d20',
+                    900: '#2e160e',
+                    950: '#1c1917', // Stone Dark
                 },
-                // Status colors
+                accent: {
+                    beige: '#fdfcf9',
+                    stone: '#1c1917',
+                    terracotta: '#d97757',
+                    navy: '#0f172a',
+                },
+                // Status colors (Refined for beige)
                 status: {
-                    overdue: '#ef4444',
-                    warning: '#f59e0b',
-                    success: '#10b981',
-                    info: '#3b82f6',
+                    overdue: '#991b1b',
+                    warning: '#92400e',
+                    success: '#065f46',
+                    info: '#1e40af',
                 },
-                // Priority colors
+                // Priority colors (Refined for beige)
                 priority: {
-                    low: '#6b7280',
-                    medium: '#f59e0b',
-                    high: '#f97316',
-                    critical: '#ef4444',
+                    low: '#78716c',
+                    medium: '#d97757',
+                    high: '#9a3412',
+                    critical: '#7f1d1d',
                 },
             },
             fontFamily: {

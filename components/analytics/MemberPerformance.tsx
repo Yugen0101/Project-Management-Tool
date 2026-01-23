@@ -21,43 +21,43 @@ export default function MemberPerformance() {
         loadData();
     }, []);
 
-    if (loading) return <div className="h-24 animate-pulse bg-slate-100 rounded-xl" />;
+    if (loading) return <div className="h-24 animate-pulse bg-slate-900/40 rounded-xl border border-slate-800/50" />;
     if (!metrics) return null;
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="card p-4 bg-white border-slate-100 shadow-sm">
-                <div className="flex items-center gap-3">
-                    <div className="p-2 bg-emerald-50 rounded-lg text-emerald-600">
+            <div className="card p-5 bg-slate-900/40 border border-slate-800/50 hover:border-primary-500/30 transition-all">
+                <div className="flex items-center gap-4">
+                    <div className="p-2.5 bg-emerald-500/10 rounded-xl text-emerald-500 border border-emerald-500/20">
                         <CheckBadgeIcon className="w-5 h-5" />
                     </div>
                     <div>
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Lifetime</p>
-                        <p className="text-xl font-black text-slate-900">{metrics.completed_tasks}</p>
+                        <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none mb-1.5">Optimization Rate</p>
+                        <p className="text-2xl font-black text-white">{metrics.completed_tasks}</p>
                     </div>
                 </div>
             </div>
 
-            <div className="card p-4 bg-white border-slate-100 shadow-sm">
-                <div className="flex items-center gap-3">
-                    <div className="p-2 bg-orange-50 rounded-lg text-orange-600">
+            <div className="card p-5 bg-slate-900/40 border border-slate-800/50 hover:border-red-500/30 transition-all">
+                <div className="flex items-center gap-4">
+                    <div className="p-2.5 bg-red-500/10 rounded-xl text-red-500 border border-red-500/20">
                         <ClockIcon className="w-5 h-5" />
                     </div>
                     <div>
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Overdue</p>
-                        <p className="text-xl font-black text-slate-900">{metrics.overdue_tasks}</p>
+                        <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none mb-1.5">Overdue Latency</p>
+                        <p className="text-2xl font-black text-white">{metrics.overdue_tasks}</p>
                     </div>
                 </div>
             </div>
 
-            <div className="card p-4 bg-white border-slate-100 shadow-sm">
-                <div className="flex items-center gap-3">
-                    <div className="p-2 bg-purple-50 rounded-lg text-purple-600">
+            <div className="card p-5 bg-slate-900/40 border border-slate-800/50 hover:border-primary-500/30 transition-all">
+                <div className="flex items-center gap-4">
+                    <div className="p-2.5 bg-primary-500/10 rounded-xl text-primary-400 border border-primary-500/20">
                         <BoltIcon className="w-5 h-5" />
                     </div>
                     <div>
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-1">Efficiency</p>
-                        <p className="text-xl font-black text-slate-900">
+                        <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest leading-none mb-1.5">System Efficiency</p>
+                        <p className="text-2xl font-black text-white">
                             {metrics.completed_tasks + metrics.active_tasks > 0
                                 ? Math.round((metrics.completed_tasks / (metrics.completed_tasks + metrics.active_tasks)) * 100)
                                 : 0}%

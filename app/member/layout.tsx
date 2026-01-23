@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { createClient } from '@/lib/supabase/server';
 import { getCurrentUser } from '@/lib/auth/session';
 import {
@@ -21,22 +22,26 @@ export default async function MemberLayout({
     const user = await getCurrentUser();
 
     return (
-        <div className="min-h-screen bg-white flex flex-col">
+        <div className="min-h-screen bg-[#fdfcf9] text-[#1c1917] flex flex-col">
             <Toaster position="top-right" richColors />
             {/* Simple Top Navigation */}
-            <header className="h-16 bg-white border-b border-slate-100 px-6 sm:px-12 flex items-center justify-between sticky top-0 z-20 shadow-sm">
+            <header className="h-20 bg-white/80 border-b border-[#e5dec9] px-6 sm:px-12 flex items-center justify-between sticky top-0 z-50 backdrop-blur-xl">
                 <div className="flex items-center gap-8">
-                    <h1 className="text-xl font-black tracking-tighter text-slate-900 flex items-center gap-2">
-                        <div className="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center text-white font-black italic">P</div>
-                        ProjectManager
-                    </h1>
+                    <div className="flex items-center gap-10">
+                        <div className="relative w-24 h-24">
+                            <Image src="/logo.png" alt="Logo" fill className="object-contain" />
+                        </div>
+                        <h1 className="text-4xl font-black tracking-tighter text-[#1c1917]">
+                            TaskForge
+                        </h1>
+                    </div>
 
                     <nav className="hidden md:flex items-center gap-2">
-                        <Link href="/member/dashboard" className="px-4 py-2 text-sm font-bold text-slate-600 hover:text-purple-600 transition-colors bg-slate-50 rounded-lg">
-                            My Tasks
+                        <Link href="/member/tasks" className="px-5 py-2 text-[10px] font-black uppercase tracking-widest text-[#1c1917] hover:text-[#d97757] transition-all bg-[#f7f3ed] rounded-lg border border-[#e5dec9]">
+                            Workspace
                         </Link>
-                        <Link href="/member/activity" className="px-4 py-2 text-sm font-bold text-slate-600 hover:text-purple-600 transition-colors">
-                            Recent Activity
+                        <Link href="/member/activity" className="px-5 py-2 text-[10px] font-black uppercase tracking-widest text-[#1c1917]/50 hover:text-[#d97757] transition-all">
+                            Activity
                         </Link>
                         <Link href="/member/meetings" className="px-4 py-2 text-sm font-bold text-slate-600 hover:text-purple-600 transition-colors">
                             Meetings
@@ -46,14 +51,14 @@ export default async function MemberLayout({
 
                 <div className="flex items-center gap-4">
                     <NotificationCenter />
-                    <div className="h-8 w-px bg-slate-100 mx-1"></div>
+                    <div className="h-8 w-px bg-[#e5dec9] mx-1"></div>
                     <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-xs font-bold text-purple-600 border border-purple-200">
+                        <div className="w-9 h-9 rounded-lg bg-[#f7f3ed] flex items-center justify-center text-xs font-black text-[#d97757] border border-[#e5dec9]">
                             {user?.full_name?.charAt(0) || 'M'}
                         </div>
                         <div className="hidden sm:block">
-                            <p className="text-xs font-bold text-slate-900 leading-none">{user?.full_name}</p>
-                            <p className="text-[10px] font-bold text-purple-500 uppercase tracking-widest mt-1">
+                            <p className="text-xs font-black text-[#1c1917] leading-none">{user?.full_name}</p>
+                            <p className="text-[9px] font-black text-[#d97757] uppercase tracking-widest mt-1">
                                 {user?.role === 'admin' ? 'Administrator' :
                                     user?.role === 'associate' ? 'Project Lead' :
                                         user?.role === 'guest' ? 'Guest View' : 'Contributor'}
@@ -65,7 +70,7 @@ export default async function MemberLayout({
             </header>
 
             {/* Content Area */}
-            <main className="flex-1 max-w-6xl mx-auto w-full p-6 sm:p-12">
+            <main className="flex-1 max-w-7xl mx-auto w-full p-8 sm:p-12">
                 {children}
             </main>
         </div>

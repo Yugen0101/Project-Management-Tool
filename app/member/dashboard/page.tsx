@@ -74,17 +74,17 @@ export default async function MemberDashboard() {
             {/* Header section with Personal Stats */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div className="space-y-1">
-                    <h2 className="text-sm font-bold text-purple-600 uppercase tracking-widest">Workspace</h2>
-                    <h1 className="text-4xl font-black text-slate-900">Hello, {user?.full_name?.split(' ')[0]}!</h1>
-                    <p className="text-slate-500 text-lg font-medium">You have {activeTasks.length} tasks in your queue today.</p>
+                    <h2 className="text-sm font-black text-primary-500 uppercase tracking-widest">Workspace Operational</h2>
+                    <h1 className="text-4xl font-black text-white tracking-tight">Active, {user?.full_name?.split(' ')[0]}</h1>
+                    <p className="text-slate-500 text-lg font-medium">System reports {activeTasks.length} active threads in your queue.</p>
                 </div>
 
                 <div className="flex gap-4">
-                    <div className="card p-4 border-slate-100 flex items-center gap-4 bg-purple-50/50">
-                        <FireIcon className="w-8 h-8 text-orange-500" />
+                    <div className="card p-4 border-slate-800/50 flex items-center gap-4 bg-primary-500/5 backdrop-blur-md">
+                        <FireIcon className="w-8 h-8 text-primary-500" />
                         <div>
-                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Streak</p>
-                            <p className="text-xl font-black text-slate-900">12 Days</p>
+                            <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Efficiency</p>
+                            <p className="text-xl font-black text-white">98%</p>
                         </div>
                     </div>
                 </div>
@@ -95,20 +95,26 @@ export default async function MemberDashboard() {
 
             {/* Focus Stats */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                <div className="card p-6 flex flex-col items-center text-center space-y-2 border-b-4 border-b-orange-500">
-                    <ClockIcon className="w-8 h-8 text-orange-500" />
-                    <h3 className="text-3xl font-black text-slate-900">{activeTasks.length}</h3>
-                    <p className="text-xs font-bold text-slate-500 uppercase">Todo / In Progress</p>
+                <div className="card p-8 flex flex-col items-center text-center space-y-3 border-b-2 border-b-primary-500/50 bg-slate-900/40">
+                    <div className="p-3 bg-primary-500/10 rounded-2xl border border-primary-500/20 mb-2">
+                        <ClockIcon className="w-8 h-8 text-primary-400" />
+                    </div>
+                    <h3 className="text-4xl font-black text-white">{activeTasks.length}</h3>
+                    <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Active Threads</p>
                 </div>
-                <div className="card p-6 flex flex-col items-center text-center space-y-2 border-b-4 border-b-red-500">
-                    <FireIcon className="w-8 h-8 text-red-500" />
-                    <h3 className="text-3xl font-black text-slate-900">{urgentTasks}</h3>
-                    <p className="text-xs font-bold text-slate-500 uppercase">Urgent Priority</p>
+                <div className="card p-8 flex flex-col items-center text-center space-y-3 border-b-2 border-b-red-500/50 bg-slate-900/40">
+                    <div className="p-3 bg-red-500/10 rounded-2xl border border-red-500/20 mb-2">
+                        <FireIcon className="w-8 h-8 text-red-500" />
+                    </div>
+                    <h3 className="text-4xl font-black text-white">{urgentTasks}</h3>
+                    <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Critical Overload</p>
                 </div>
-                <div className="card p-6 flex flex-col items-center text-center space-y-2 border-b-4 border-b-emerald-500">
-                    <CheckBadgeIcon className="w-8 h-8 text-emerald-500" />
-                    <h3 className="text-3xl font-black text-slate-900">{completedThisWeek}</h3>
-                    <p className="text-xs font-bold text-slate-500 uppercase">Tasks Completed</p>
+                <div className="card p-8 flex flex-col items-center text-center space-y-3 border-b-2 border-b-emerald-500/50 bg-slate-900/40">
+                    <div className="p-3 bg-emerald-500/10 rounded-2xl border border-emerald-500/20 mb-2">
+                        <CheckBadgeIcon className="w-8 h-8 text-emerald-500" />
+                    </div>
+                    <h3 className="text-4xl font-black text-white">{completedThisWeek}</h3>
+                    <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">Resolved Tasks</p>
                 </div>
             </div>
 
@@ -154,32 +160,32 @@ export default async function MemberDashboard() {
                                             {task.project?.name}
                                         </span>
                                     </div>
-                                    <h4 className="text-xl font-bold text-slate-900 group-hover:text-purple-600 transition-colors">
+                                    <h4 className="text-xl font-black text-white group-hover:text-primary-400 transition-colors">
                                         {task.title}
                                     </h4>
-                                    <p className="text-slate-500 text-sm line-clamp-1 italic">
+                                    <p className="text-slate-500 text-sm line-clamp-1 italic font-medium">
                                         {task.description || 'No additional details provided.'}
                                     </p>
                                 </div>
 
                                 <div className="flex items-center gap-8 shrink-0">
                                     <div className="text-right">
-                                        <div className="flex items-center gap-1.5 justify-end text-sm font-bold text-slate-400">
-                                            <ClockIcon className="w-4 h-4" />
+                                        <div className="flex items-center gap-1.5 justify-end text-xs font-black text-slate-400 uppercase tracking-widest">
+                                            <ClockIcon className="w-4 h-4 text-primary-500" />
                                             {task.due_date ? format(new Date(task.due_date), 'MMM d, yyyy') : 'No date'}
                                         </div>
-                                        <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest mt-1">Deadline</p>
+                                        <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest mt-1">Operational Window</p>
                                     </div>
 
-                                    <div className="h-10 w-px bg-slate-100 hidden md:block"></div>
+                                    <div className="h-10 w-px bg-slate-800 hidden md:block"></div>
 
                                     <div className="flex items-center gap-2">
-                                        <button className="btn-secondary py-2 border-slate-200 hover:border-purple-300 hover:text-purple-600 bg-white shadow-none text-xs">
-                                            Update Status
+                                        <button className="px-4 py-2 border border-slate-800 hover:border-primary-500/50 hover:text-primary-400 bg-slate-900/50 text-slate-500 rounded-xl transition-all text-xs font-black uppercase tracking-widest">
+                                            Status
                                         </button>
                                         <Link
                                             href={`/member/tasks/${task.id}`}
-                                            className="p-2.5 bg-slate-50 text-slate-400 hover:bg-purple-600 hover:text-white rounded-xl transition-all"
+                                            className="p-2.5 bg-slate-900/50 text-slate-500 border border-slate-800 hover:bg-primary-500/10 hover:text-primary-400 hover:border-primary-500/50 rounded-xl transition-all"
                                         >
                                             <ChevronRightIcon className="w-5 h-5" />
                                         </Link>

@@ -57,9 +57,9 @@ export default async function AdminDashboard() {
     return (
         <div className="space-y-8">
             {/* Welcome Section */}
-            <div>
-                <h2 className="text-3xl font-bold text-slate-900">Welcome back, {user.full_name}!</h2>
-                <p className="text-slate-600 mt-1">Here's what's happening with your projects today.</p>
+            <div className="flex flex-col gap-2">
+                <h2 className="text-4xl font-black text-white tracking-tight">System Online, {user.full_name.split(' ')[0]}</h2>
+                <p className="text-slate-400 font-bold uppercase tracking-[0.2em] text-xs">Environment: TaskForge Intelligence</p>
             </div>
 
             {/* Stats Grid */}
@@ -118,8 +118,8 @@ export default async function AdminDashboard() {
             </div>
 
             {/* Quick Actions */}
-            <div className="card">
-                <h3 className="text-lg font-semibold text-slate-900 mb-4">Quick Actions</h3>
+            <div className="card border-slate-800/50 bg-slate-900/40">
+                <h3 className="text-sm font-black uppercase tracking-widest text-slate-500 mb-6">Operations Hub</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <a href="/admin/projects?action=create" className="btn-primary text-center">
                         + Create New Project
@@ -137,8 +137,8 @@ export default async function AdminDashboard() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Recent Projects */}
                 <div className="card">
-                    <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-lg font-semibold text-slate-900">Recent Projects</h3>
+                    <div className="flex items-center justify-between mb-6">
+                        <h3 className="text-sm font-black uppercase tracking-widest text-slate-500">Active Projections</h3>
                         <a href="/admin/projects" className="text-sm text-primary-600 hover:text-primary-700">
                             View all →
                         </a>
@@ -146,16 +146,16 @@ export default async function AdminDashboard() {
                     <div className="space-y-3">
                         {recentProjects && recentProjects.length > 0 ? (
                             recentProjects.map((project: any) => (
-                                <div key={project.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                                <div key={project.id} className="flex items-center justify-between p-4 bg-slate-950/50 border border-slate-800/50 rounded-xl hover:border-primary-500/30 transition-all group">
                                     <div>
-                                        <p className="font-medium text-slate-900">{project.name}</p>
-                                        <p className="text-sm text-slate-600">
-                                            Created by {project.created_by?.full_name || 'Unknown'}
+                                        <p className="font-bold text-white group-hover:text-primary-400 transition-colors">{project.name}</p>
+                                        <p className="text-xs text-slate-500 font-medium">
+                                            Origin: {project.created_by?.full_name || 'System'}
                                         </p>
                                     </div>
                                     <span className={`badge ${project.status === 'active' ? 'badge-success' :
-                                            project.status === 'completed' ? 'badge-info' :
-                                                'badge-warning'
+                                        project.status === 'completed' ? 'badge-info' :
+                                            'badge-warning'
                                         }`}>
                                         {project.status}
                                     </span>
@@ -169,8 +169,8 @@ export default async function AdminDashboard() {
 
                 {/* Recent Users */}
                 <div className="card">
-                    <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-lg font-semibold text-slate-900">Recent Users</h3>
+                    <div className="flex items-center justify-between mb-6">
+                        <h3 className="text-sm font-black uppercase tracking-widest text-slate-500">Personnel Roster</h3>
                         <a href="/admin/users" className="text-sm text-primary-600 hover:text-primary-700">
                             View all →
                         </a>
@@ -178,15 +178,20 @@ export default async function AdminDashboard() {
                     <div className="space-y-3">
                         {recentUsers && recentUsers.length > 0 ? (
                             recentUsers.map((u: any) => (
-                                <div key={u.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-                                    <div>
-                                        <p className="font-medium text-slate-900">{u.full_name}</p>
-                                        <p className="text-sm text-slate-600">{u.email}</p>
+                                <div key={u.id} className="flex items-center justify-between p-4 bg-slate-950/50 border border-slate-800/50 rounded-xl">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 rounded-lg bg-primary-500/10 flex items-center justify-center text-primary-400 font-bold border border-primary-500/20">
+                                            {u.full_name.charAt(0)}
+                                        </div>
+                                        <div>
+                                            <p className="font-bold text-white">{u.full_name}</p>
+                                            <p className="text-xs text-slate-500 font-medium">{u.email}</p>
+                                        </div>
                                     </div>
                                     <div className="text-right">
                                         <span className={`badge ${u.role === 'admin' ? 'badge-danger' :
-                                                u.role === 'associate' ? 'badge-info' :
-                                                    'badge-success'
+                                            u.role === 'associate' ? 'badge-info' :
+                                                'badge-success'
                                             }`}>
                                             {u.role}
                                         </span>

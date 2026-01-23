@@ -5,6 +5,7 @@ import { getCurrentUser } from '@/lib/auth/session';
 import { revalidatePath } from 'next/cache';
 import { logAudit } from '@/lib/audit';
 import { handleActionError, successResponse } from '@/lib/errors';
+import { sendSlackNotification } from './integrations';
 
 export async function createProject(projectData: { name: string; description?: string; end_date: string; priority?: string }) {
     const currentUser = await getCurrentUser();
@@ -136,6 +137,10 @@ export async function archiveProject(projectId: string) {
 
     revalidatePath('/admin/projects');
     revalidatePath(`/admin/projects/${projectId}`);
+
+    // Notify via Slack
+    await sendSlackNotification(projectId, '⚠️ This project has been *archived* by an administrator.');
+
     return successResponse();
 }
 
@@ -166,6 +171,10 @@ export async function restoreProject(projectId: string) {
 
     revalidatePath('/admin/projects');
     revalidatePath(`/admin/projects/${projectId}`);
+
+    // Notify via Slack
+    await sendSlackNotification(projectId, '✅ This project has been *restored* and is now active.');
+
     return successResponse();
 }
 
