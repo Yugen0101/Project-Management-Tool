@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import NotificationCenter from '@/components/notifications/NotificationCenter';
 import { Toaster } from 'sonner';
+import { VideoCameraIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 
 export default async function AdminLayout({
@@ -119,6 +120,16 @@ export default async function AdminLayout({
                                 </svg>
                                 <span className="text-[11px] font-black uppercase tracking-widest">All Tasks</span>
                                 <span className="ml-auto badge badge-info">{taskCount || 0}</span>
+                            </div>
+                        </a>
+
+                        <a
+                            href="/admin/meetings"
+                            className="block px-4 py-2 rounded-lg text-slate-700 hover:bg-primary-50 hover:text-primary-700 transition-colors"
+                        >
+                            <div className="flex items-center gap-3">
+                                <VideoCameraIcon className="w-5 h-5 text-indigo-500" />
+                                <span className="font-medium">Meetings</span>
                             </div>
                         </a>
 

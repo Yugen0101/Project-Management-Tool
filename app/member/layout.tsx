@@ -43,6 +43,9 @@ export default async function MemberLayout({
                         <Link href="/member/activity" className="px-5 py-2 text-[10px] font-black uppercase tracking-widest text-[#1c1917]/50 hover:text-[#d97757] transition-all">
                             Activity
                         </Link>
+                        <Link href="/member/meetings" className="px-4 py-2 text-sm font-bold text-slate-600 hover:text-purple-600 transition-colors">
+                            Meetings
+                        </Link>
                     </nav>
                 </div>
 

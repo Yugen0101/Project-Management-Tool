@@ -1,0 +1,102 @@
+/**
+ * Zoom API Service (Server-side only)
+ * Handles Server-to-Server OAuth and Meeting Creation
+ */
+
+interface ZoomTokenResponse {
+    access_token: string;
+    token_type: string;
+    expires_in: number;
+    scope: string;
+}
+
+interface ZoomMeetingOptions {
+    topic: string;
+    agenda?: string;
+    start_time: string; // ISO 8601
+    duration: number;   // Minutes
+    timezone?: string;
+}
+
+export async function getZoomAccessToken(): Promise<string> {
+    const accountId = process.env.ZOOM_ACCOUNT_ID;
+    const clientId = process.env.ZOOM_CLIENT_ID;
+    const clientSecret = process.env.ZOOM_CLIENT_SECRET;
+
+    if (!accountId || !clientId || !clientSecret) {
+        throw new Error('Zoom API credentials are not configured.');
+    }
+
+    const auth = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
+
+    const response = await fetch(`https://zoom.us/oauth/token?grant_type=account_credentials&account_id=${accountId}`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Basic ${auth}`,
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+    });
+
+    if (!response.ok) {
+        const error = await response.json();
+        console.error('Zoom Auth Error:', error);
+        throw new Error('Failed to authenticate with Zoom.');
+    }
+
+    const data: ZoomTokenResponse = await response.json();
+    return data.access_token;
+}
+
+export async function createZoomMeeting(options: ZoomMeetingOptions) {
+    const token = await getZoomAccessToken();
+
+    const response = await fetch('https://api.zoom.us/v2/users/me/meetings', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            topic: options.topic,
+            agenda: options.agenda || '',
+            start_time: options.start_time,
+            duration: options.duration,
+            type: 2, // Scheduled meeting
+            settings: {
+                host_video: true,
+                participant_video: true,
+                join_before_host: false,
+                mute_upon_entry: true,
+                waiting_room: true,
+                meeting_authentication: false,
+            },
+        }),
+    });
+
+    if (!response.ok) {
+        const error = await response.json();
+        console.error('Zoom Create Meeting Error:', error);
+        throw new Error(error.message || 'Failed to create Zoom meeting.');
+    }
+
+    return await response.json();
+}
+
+export async function cancelZoomMeeting(meetingId: string) {
+    const token = await getZoomAccessToken();
+
+    const response = await fetch(`https://api.zoom.us/v2/meetings/${meetingId}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        },
+    });
+
+    if (!response.ok && response.status !== 404) {
+        const error = await response.json();
+        console.error('Zoom Cancel Meeting Error:', error);
+        throw new Error(error.message || 'Failed to cancel Zoom meeting.');
+    }
+
+    return true;
+}

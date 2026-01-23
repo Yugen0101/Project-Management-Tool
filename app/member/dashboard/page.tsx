@@ -7,11 +7,14 @@ import {
     FireIcon,
     ChatBubbleLeftIcon,
     ChevronRightIcon,
-    ArrowPathIcon
+    ArrowPathIcon,
+    VideoCameraIcon
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import MemberPerformance from '@/components/analytics/MemberPerformance';
+import MeetingList from '@/components/meetings/MeetingList';
+import { getProjectMeetings } from '@/app/actions/meetings';
 
 export default async function MemberDashboard() {
     const user = await getCurrentUser();
@@ -42,6 +45,29 @@ export default async function MemberDashboard() {
     const activeTasks = tasks?.filter((t: any) => t.status !== 'completed') || [];
     const urgentTasks = activeTasks.filter((t: any) => t.priority === 'high').length;
     const completedThisWeek = tasks?.filter((t: any) => t.status === 'completed').length || 0;
+
+    // Fetch meetings for all assigned projects
+    const { data: userProjects } = await supabase
+        .from('user_projects')
+        .select('project_id')
+        .eq('user_id', user?.id);
+    
+    const projectIds = userProjects?.map((up: any) => up.project_id) || [];
+    let allMeetings: any[] = [];
+
+    if (projectIds.length > 0) {
+        const { data: meetings } = await supabase
+            .from('meetings')
+            .select(`
+                *,
+                creator:users!meetings_created_by_fkey(full_name)
+            `)
+            .in('project_id', projectIds)
+            .neq('status', 'cancelled')
+            .order('scheduled_at', { ascending: true });
+        
+        allMeetings = meetings || [];
+    }
 
     return (
         <div className="space-y-12 animate-in fade-in duration-1000">
@@ -100,15 +126,40 @@ export default async function MemberDashboard() {
                 </div>
             </div>
 
-            {/* Performance Visualization Placeholder */}
-            <div className="bg-white border border-[#e5dec9] rounded-[2.5rem] p-4 shadow-sm overflow-hidden">
-                <MemberPerformance />
+            {/* Upcoming Meetings & Performance Visualization */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div className="space-y-8">
+                    <div className="flex items-center gap-3">
+                        <span className="w-8 h-px bg-[#d97757]"></span>
+                        <h3 className="text-xl font-black text-[#1c1917] tracking-tight uppercase">UPCOMING SYNC</h3>
+                    </div>
+                    <div className="card bg-white border-[#e5dec9] p-2 overflow-hidden">
+                        <MeetingList 
+                            meetings={allMeetings} 
+                            projectId="" 
+                            currentUser={user}
+                        />
+                    </div>
+                </div>
+
+                <div className="space-y-8">
+                    <div className="flex items-center gap-3">
+                        <span className="w-8 h-px bg-[#d97757]"></span>
+                        <h3 className="text-xl font-black text-[#1c1917] tracking-tight uppercase">MEMBER VELOCITY</h3>
+                    </div>
+                    <div className="bg-white border border-[#e5dec9] rounded-[2.5rem] p-4 shadow-sm overflow-hidden h-full">
+                        <MemberPerformance />
+                    </div>
+                </div>
             </div>
 
             {/* Tasks Repository */}
             <div className="space-y-8">
                 <div className="flex items-center justify-between px-2">
-                    <h3 className="text-3xl font-black text-[#1c1917] tracking-tight uppercase">REGISTRY SYNC</h3>
+                    <div className="flex items-center gap-3">
+                        <span className="w-8 h-px bg-[#d97757]"></span>
+                        <h3 className="text-3xl font-black text-[#1c1917] tracking-tight uppercase">REGISTRY SYNC</h3>
+                    </div>
                     <div className="flex items-center gap-4">
                         <p className="text-[10px] font-black text-[#1c1917]/30 uppercase tracking-widest italic font-serif">Live Buffer</p>
                         <button className="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-[#e5dec9] text-[#1c1917]/40 hover:text-[#d97757] transition-all">

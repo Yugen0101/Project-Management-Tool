@@ -10,7 +10,8 @@ import {
     ChartBarIcon,
     ArrowRightOnRectangleIcon,
     BellIcon,
-    UserCircleIcon
+    UserCircleIcon,
+    VideoCameraIcon
 } from '@heroicons/react/24/outline';
 import SignOutButton from '@/components/auth/SignOutButton';
 
@@ -57,6 +58,10 @@ export default async function AssociateLayout({
                     <Link href="/associate/reports" className="flex items-center gap-3 px-4 py-3 text-[#1c1917]/60 hover:text-[#d97757] hover:bg-[#f7f3ed] rounded-xl transition-all">
                         <ChartBarIcon className="w-5 h-5" />
                         <span className="text-[11px] font-black uppercase tracking-widest">Analytics</span>
+                    </Link>
+                    <Link href="/associate/meetings" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white hover:bg-white/5 rounded-xl transition-all font-medium">
+                        <VideoCameraIcon className="w-5 h-5 text-indigo-400" />
+                        Meetings
                     </Link>
                 </nav>
 
