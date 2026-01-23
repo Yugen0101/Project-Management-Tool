@@ -27,11 +27,11 @@ export default async function MemberLayout({
             {/* Simple Top Navigation */}
             <header className="h-20 bg-white/80 border-b border-[#e5dec9] px-6 sm:px-12 flex items-center justify-between sticky top-0 z-50 backdrop-blur-xl">
                 <div className="flex items-center gap-8">
-                    <div className="flex items-center gap-4">
-                        <div className="relative w-12 h-12">
+                    <div className="flex items-center gap-6">
+                        <div className="relative w-16 h-16">
                             <Image src="/logo.png" alt="Logo" fill className="object-contain" />
                         </div>
-                        <h1 className="text-2xl font-black tracking-tighter text-[#1c1917]">
+                        <h1 className="text-3xl font-black tracking-tighter text-[#1c1917]">
                             TaskForge
                         </h1>
                     </div>
