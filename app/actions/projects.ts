@@ -144,67 +144,6 @@ export async function archiveProject(projectId: string) {
     return successResponse();
 }
 
-export async function restoreProject(projectId: string) {
-    const currentUser = await getCurrentUser();
-
-    if (!currentUser || currentUser.role !== 'admin') {
-        return handleActionError({ message: 'Unauthorized', status: 401 });
-    }
-
-    const supabase = await createClient();
-
-    const { error } = await supabase
-        .from('projects')
-        .update({
-            status: 'active',
-            deleted_at: null
-        })
-        .eq('id', projectId);
-
-    if (error) return handleActionError(error);
-
-    await logAudit({
-        action_type: 'PROJECT_RESTORED',
-        resource_type: 'project',
-        resource_id: projectId
-    });
-
-    revalidatePath('/admin/projects');
-    revalidatePath(`/admin/projects/${projectId}`);
-
-    // Notify via Slack
-    await sendSlackNotification(projectId, '✅ This project has been *restored* and is now active.');
-
-    return successResponse();
-}
-
-export async function deleteProjectSoft(projectId: string) {
-    const currentUser = await getCurrentUser();
-
-    if (!currentUser || currentUser.role !== 'admin') {
-        return handleActionError({ message: 'Unauthorized', status: 401 });
-    }
-
-    const supabase = await createClient();
-
-    const { error } = await supabase
-        .from('projects')
-        .update({
-            deleted_at: new Date().toISOString()
-        })
-        .eq('id', projectId);
-
-    if (error) return handleActionError(error);
-
-    await logAudit({
-        action_type: 'PROJECT_DELETED_SOFT',
-        resource_type: 'project',
-        resource_id: projectId
-    });
-
-    revalidatePath('/admin/projects');
-    return successResponse();
-}
 
 export async function deleteProject(projectId: string) {
     const currentUser = await getCurrentUser();

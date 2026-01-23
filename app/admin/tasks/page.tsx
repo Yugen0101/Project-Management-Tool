@@ -31,8 +31,7 @@ export default async function AdminTasksPage({
             *,
             project:projects(name),
             assigned_user:users(full_name, email)
-        `, { count: 'exact' })
-        .is('deleted_at', null);
+        `, { count: 'exact' });
 
     if (filterStatus !== 'all') {
         query = query.eq('status', filterStatus);

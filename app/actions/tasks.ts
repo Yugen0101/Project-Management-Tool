@@ -135,7 +135,8 @@ export async function createTask(data: any) {
     return successResponse();
 }
 
-export async function deleteTaskSoft(taskId: string, projectId: string) {
+
+export async function assignTask(taskId: string, userId: string) {
     const user = await getCurrentUser();
     if (!user) return handleActionError({ message: 'Unauthorized', status: 401 });
 
@@ -144,45 +145,20 @@ export async function deleteTaskSoft(taskId: string, projectId: string) {
     const { error } = await supabase
         .from('tasks')
         .update({
-            deleted_at: new Date().toISOString()
+            assigned_to: userId || null,
+            updated_at: new Date().toISOString()
         })
         .eq('id', taskId);
 
     if (error) return handleActionError(error);
 
     await logAudit({
-        action_type: 'TASK_DELETED_SOFT',
+        action_type: 'TASK_REASSIGNED',
         resource_type: 'task',
         resource_id: taskId,
-        details: { project_id: projectId }
+        details: { new_assignee_id: userId }
     });
 
-    revalidatePath(`/admin/projects/${projectId}`);
-    return successResponse();
-}
-
-export async function restoreTask(taskId: string, projectId: string) {
-    const user = await getCurrentUser();
-    if (!user) return handleActionError({ message: 'Unauthorized', status: 401 });
-
-    const supabase = await createClient();
-
-    const { error } = await supabase
-        .from('tasks')
-        .update({
-            deleted_at: null
-        })
-        .eq('id', taskId);
-
-    if (error) return handleActionError(error);
-
-    await logAudit({
-        action_type: 'TASK_RESTORED',
-        resource_type: 'task',
-        resource_id: taskId,
-        details: { project_id: projectId }
-    });
-
-    revalidatePath(`/admin/projects/${projectId}`);
+    revalidatePath(`/admin/tasks/${taskId}`);
     return successResponse();
 }

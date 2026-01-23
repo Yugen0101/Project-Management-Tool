@@ -195,8 +195,7 @@ export async function getUsersForMentions() {
     const { data, error } = await supabase
         .from('users')
         .select('id, full_name, email')
-        .eq('is_active', true)
-        .is('deleted_at', null);
+        .eq('is_active', true);
 
     if (error) return handleActionError(error);
     return successResponse(data);

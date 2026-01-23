@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { ShareIcon, ArchiveBoxIcon, ArrowPathIcon, ArrowDownTrayIcon, TrashIcon } from '@heroicons/react/24/outline';
 import ShareModal from '@/components/admin/ShareModal';
-import { archiveProject, restoreProject, exportProjectData, deleteProject } from '@/app/actions/projects';
+import { archiveProject, exportProjectData, deleteProject } from '@/app/actions/projects';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
@@ -34,17 +34,6 @@ export default function ProjectActions({
             toast.success('Project archived successfully');
         } else {
             toast.error(result.error || 'Failed to archive project');
-        }
-        setIsArchiving(false);
-    }
-
-    async function handleRestore() {
-        setIsArchiving(true);
-        const result = await restoreProject(projectId);
-        if (result.success) {
-            toast.success('Project restored successfully');
-        } else {
-            toast.error(result.error || 'Failed to restore project');
         }
         setIsArchiving(false);
     }
@@ -98,16 +87,7 @@ export default function ProjectActions({
                 Share
             </button>
 
-            {status === 'archived' ? (
-                <button
-                    onClick={handleRestore}
-                    disabled={isArchiving}
-                    className="btn-secondary flex items-center gap-2 text-green-600 border-green-200 hover:bg-green-50"
-                >
-                    <ArrowPathIcon className="w-5 h-5" />
-                    Restore
-                </button>
-            ) : (
+            {status !== 'archived' && (
                 <button
                     onClick={handleArchive}
                     disabled={isArchiving}

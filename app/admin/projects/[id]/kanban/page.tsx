@@ -1,5 +1,4 @@
-import { createServerClient } from '@supabase/ssr';
-import { cookies } from 'next/headers';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { notFound } from 'next/navigation';
 import KanbanBoard from '@/components/kanban/KanbanBoard';
 import {
@@ -13,30 +12,16 @@ import Link from 'next/link';
 
 export default async function AdminProjectKanbanPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
-    const cookieStore = await cookies();
-    const supabase = createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        {
-            cookies: {
-                getAll() {
-                    return cookieStore.getAll();
-                },
-            },
-        }
-    );
+    const supabase = await createAdminClient();
 
     // Fetch project, its tasks, and columns
     const { data: project, error: projectError } = await supabase
         .from('projects')
         .select(`
             *,
-            tasks:tasks(
-                *, 
-                assigned_user:users(*),
-                dependencies:task_dependencies(blocked_by_id)
-            ),
-            columns:kanban_columns(*)
+            tasks:tasks(*, assigned_user:users!assigned_to(*)),
+            columns:kanban_columns(*),
+            user_projects:user_projects(*, user:users(*))
         `)
         .eq('id', id)
         .single();
@@ -73,6 +58,7 @@ export default async function AdminProjectKanbanPage({ params }: { params: Promi
                     initialTasks={tasks}
                     initialColumns={columns}
                     projectId={id}
+                    members={project.user_projects || []}
                     role="admin"
                 />
             </div>

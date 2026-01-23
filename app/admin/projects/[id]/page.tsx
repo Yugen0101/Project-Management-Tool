@@ -20,6 +20,7 @@ import SprintPerformance from '@/components/analytics/SprintPerformance';
 import ActivityFeed from '@/components/activity/ActivityFeed';
 import ProjectActions from '@/components/admin/ProjectActions';
 import ProjectMeetings from '@/components/meetings/ProjectMeetings';
+import TeamManager from '@/components/admin/TeamManager';
 import { getCurrentUser } from '@/lib/auth/session';
 
 export default async function ProjectDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -150,29 +151,11 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                         <ActivityFeed projectId={id} />
                     </div>
 
-                    {/* Team Members */}
-                    <div className="card p-6">
-                        <h3 className="font-bold text-slate-900 mb-4 flex justify-between items-center">
-                            Team Members
-                            <button className="text-xs text-primary-600 hover:text-primary-700">Edit</button>
-                        </h3>
-                        <div className="space-y-4">
-                            {project.user_projects?.map((up: any) => (
-                                <div key={up.id} className="flex items-center justify-between">
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500">
-                                            {up.user.full_name.charAt(0)}
-                                        </div>
-                                        <span className="text-sm font-medium text-slate-700">{up.user.full_name}</span>
-                                    </div>
-                                    <span className="text-[10px] font-bold text-slate-400 uppercase">{up.role}</span>
-                                </div>
-                            ))}
-                            {(!project.user_projects || project.user_projects.length === 0) && (
-                                <p className="text-xs text-slate-400 italic">No members assigned yet.</p>
-                            )}
-                        </div>
-                    </div>
+                    {/* Team Management */}
+                    <TeamManager
+                        projectId={id}
+                        initialMembers={project.user_projects || []}
+                    />
                 </div>
             </div>
         </div>

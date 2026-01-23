@@ -93,7 +93,13 @@ export async function scheduleMeeting(data: {
     return successResponse(meeting);
   } catch (error: any) {
     console.error('Schedule Meeting Error:', error);
-    return handleActionError({ message: error.message || 'Failed to schedule meeting' });
+
+    let message = error.message || 'Failed to schedule meeting';
+    if (message.includes('Zoom API credentials are not configured')) {
+      message = 'Meeting system is currently offline. Please contact an Administrator to configure Zoom credentials.';
+    }
+
+    return handleActionError({ message });
   }
 }
 

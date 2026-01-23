@@ -32,8 +32,7 @@ export default async function MemberTasksPage({
             *,
             project:projects(name, status)
         `)
-        .eq('assigned_to', user.id)
-        .is('deleted_at', null);
+        .eq('assigned_to', user.id);
 
     if (filterStatus !== 'all') {
         const dbStatus = filterStatus === 'in_progress' ? 'in_progress' :
