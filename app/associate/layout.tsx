@@ -27,7 +27,7 @@ export default async function AssociateLayout({
             <aside className="w-72 bg-white border-r border-[#e5dec9] hidden lg:flex flex-col fixed inset-y-0 z-50">
                 <div className="p-8">
                     <div className="flex items-center gap-6">
-                        <div className="relative w-16 h-16">
+                        <div className="relative w-32 h-32 -ml-4">
                             <Image src="/logo.png" alt="Logo" fill className="object-contain" />
                         </div>
                         <h1 className="text-3xl font-black tracking-tighter text-[#1c1917]">
@@ -77,11 +77,11 @@ export default async function AssociateLayout({
             <main className="flex-1 lg:ml-72 min-h-screen">
                 {/* Header */}
                 <header className="h-20 bg-white/80 backdrop-blur-xl border-b border-[#e5dec9] sticky top-0 z-40 px-10 flex items-center justify-between">
-                    <div className="lg:hidden flex items-center gap-6">
-                        <div className="relative w-14 h-14">
+                    <div className="lg:hidden flex items-center gap-8">
+                        <div className="relative w-24 h-24">
                             <Image src="/logo.png" alt="Logo" fill className="object-contain" />
                         </div>
-                        <h1 className="text-2xl font-black text-[#1c1917]">TaskForge</h1>
+                        <h1 className="text-3xl font-black text-[#1c1917]">TaskForge</h1>
                     </div>
                     <div className="hidden lg:block relative w-96">
                         <input type="text" placeholder="Global search..." className="input bg-white/50" />

@@ -57,7 +57,7 @@ function LoginForm() {
             <div className="w-full max-w-md relative z-10">
                 <div className="card shadow-2xl shadow-[#d9cfb0]/30 border-[#e5dec9]">
                     <div className="text-center mb-10">
-                        <div className="relative w-24 h-24 mx-auto mb-10">
+                        <div className="relative w-64 h-64 mx-auto mb-12">
                             <Image src="/logo.png" alt="Logo" fill className="object-contain" />
                         </div>
                         <h1 className="text-3xl font-black text-[#1c1917] mb-2 tracking-tighter">

@@ -11,11 +11,11 @@ export default function HomePage() {
 
             {/* Navigation / Header */}
             <header className="relative z-50 px-8 py-6 flex items-center justify-between max-w-7xl mx-auto w-full">
-                <div className="flex items-center gap-6">
-                    <div className="relative w-20 h-20">
+                <div className="flex items-center gap-8">
+                    <div className="relative w-40 h-40">
                         <Image src="/logo.png" alt="TaskForge Logo" fill className="object-contain" />
                     </div>
-                    <span className="text-4xl font-black tracking-tighter text-[#1c1917]">Task<span className="text-[#d97757]">Forge</span></span>
+                    <span className="text-5xl font-black tracking-tighter text-[#1c1917]">Task<span className="text-[#d97757]">Forge</span></span>
                 </div>
                 <nav className="hidden md:flex items-center gap-8 text-[11px] font-black uppercase tracking-[0.2em] text-[#1c1917]/60">
                     <a href="#" className="hover:text-[#d97757] transition-colors">Platform</a>
