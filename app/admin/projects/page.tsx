@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import {
     PlusIcon,
     FolderIcon,
@@ -22,7 +23,12 @@ export default async function AdminProjectsPage({
     const pageSize = 9; // Grid 3x3
     const from = (currentPage - 1) * pageSize;
     const to = from + pageSize - 1;
-    const supabase = await createClient();
+
+    // Check user and role
+    const { getCurrentUser } = await import('@/lib/auth/session');
+    const user = await getCurrentUser();
+
+    const supabase = user?.role === 'admin' ? await createAdminClient() : await createClient();
 
     // Fetch projects with counts
     let query = supabase
@@ -31,8 +37,7 @@ export default async function AdminProjectsPage({
             *,
             tasks:tasks(count),
             user_projects:user_projects(id)
-        `, { count: 'exact' })
-        .is('deleted_at', null); // Hide soft deleted by default
+        `, { count: 'exact' });
 
     if (filterStatus !== 'all') {
         query = query.eq('status', filterStatus);
@@ -41,6 +46,10 @@ export default async function AdminProjectsPage({
     const { data: projects, count, error } = await query
         .order('created_at', { ascending: false })
         .range(from, to);
+
+    if (error) {
+        console.error('AdminProjectsPage fetch error:', error);
+    }
 
     const totalPages = Math.ceil((count || 0) / pageSize);
 

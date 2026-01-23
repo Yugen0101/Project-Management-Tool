@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { notFound } from 'next/navigation';
 import {
     CalendarIcon,
@@ -29,11 +30,14 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
     if (!user) return notFound();
 
     // Fetch project with tasks, sprints, and assigned users
-    const { data: project, error: projectError } = await supabase
+    // If admin, use admin client to ensure visibility regardless of RLS
+    const fetchClient = user.role === 'admin' ? await createAdminClient() : supabase;
+
+    const { data: project, error: projectError } = await fetchClient
         .from('projects')
         .select(`
             *,
-            tasks:tasks(*, assigned_user:users(*)),
+            tasks:tasks(*, assigned_user:users!assigned_to(*)),
             sprints:sprints(*),
             user_projects:user_projects(*, user:users(*))
         `)
@@ -41,6 +45,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         .single();
 
     if (projectError || !project) {
+        console.error('Project fetch error:', projectError);
         return notFound();
     }
 
@@ -70,6 +75,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                         status={project.status}
                         isPublic={project.is_public}
                         shareToken={project.share_token}
+                        userRole={user.role}
                     />
                     <Link href={`/admin/projects/${id}/kanban`} className="btn-primary flex items-center gap-2">
                         <ArrowPathIcon className="w-5 h-5" />

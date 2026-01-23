@@ -206,6 +206,33 @@ export async function deleteProjectSoft(projectId: string) {
     return successResponse();
 }
 
+export async function deleteProject(projectId: string) {
+    const currentUser = await getCurrentUser();
+
+    if (!currentUser || currentUser.role !== 'admin') {
+        return handleActionError({ message: 'Unauthorized', status: 401 });
+    }
+
+    const supabase = await createClient();
+
+    // Perform hard delete
+    const { error } = await supabase
+        .from('projects')
+        .delete()
+        .eq('id', projectId);
+
+    if (error) return handleActionError(error);
+
+    await logAudit({
+        action_type: 'PROJECT_DELETED_HARD',
+        resource_type: 'project',
+        resource_id: projectId
+    });
+
+    revalidatePath('/admin/projects');
+    return successResponse();
+}
+
 export async function exportProjectData(projectId: string) {
     const currentUser = await getCurrentUser();
     if (!currentUser || currentUser.role !== 'admin') {

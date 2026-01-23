@@ -57,7 +57,7 @@ export default async function AdminLayout({
                                         <p className="text-[10px] font-black uppercase tracking-widest text-[#d97757]">{user.role}</p>
                                     </div>
                                     <form action="/api/auth/signout" method="POST">
-                                        <button type="submit" className="btn-secondary py-2 px-4 text-[10px]">
+                                        <button type="submit" className="px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] text-red-600 bg-red-50 border border-red-100 hover:bg-red-600 hover:text-white hover:shadow-lg hover:shadow-red-500/20 transition-all duration-300">
                                             Sign Out
                                         </button>
                                     </form>
@@ -125,11 +125,11 @@ export default async function AdminLayout({
 
                         <a
                             href="/admin/meetings"
-                            className="block px-4 py-2 rounded-lg text-slate-700 hover:bg-primary-50 hover:text-primary-700 transition-colors"
+                            className="block px-5 py-3 rounded-lg text-[#1c1917]/60 hover:bg-[#f7f3ed] hover:text-[#d97757] transition-all duration-300 group"
                         >
                             <div className="flex items-center gap-3">
-                                <VideoCameraIcon className="w-5 h-5 text-indigo-500" />
-                                <span className="font-medium">Meetings</span>
+                                <VideoCameraIcon className="w-5 h-5 group-hover:scale-110 transition-transform text-[#d97757]" />
+                                <span className="text-[11px] font-black uppercase tracking-widest">Meetings</span>
                             </div>
                         </a>
 
