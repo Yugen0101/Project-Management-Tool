@@ -19,6 +19,8 @@ import TeamWorkload from '@/components/analytics/TeamWorkload';
 import SprintPerformance from '@/components/analytics/SprintPerformance';
 import ActivityFeed from '@/components/activity/ActivityFeed';
 import ProjectActions from '@/components/admin/ProjectActions';
+import ProjectMeetings from '@/components/meetings/ProjectMeetings';
+import { getCurrentUser } from '@/lib/auth/session';
 
 export default async function ProjectDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
@@ -34,6 +36,9 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             },
         }
     );
+
+    const user = await getCurrentUser();
+    if (!user) return notFound();
 
     // Fetch project with tasks, sprints, and assigned users
     const { data: project, error: projectError } = await supabase
@@ -96,6 +101,15 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                         sprints={sprints}
                         tasks={tasks}
                     />
+
+                    {/* Zoom Meetings Integration */}
+                    <div className="card p-6">
+                        <ProjectMeetings 
+                            projectId={id}
+                            members={project.user_projects || []}
+                            currentUser={user}
+                        />
+                    </div>
                 </div>
 
                 {/* Sidebar: Project Details */}

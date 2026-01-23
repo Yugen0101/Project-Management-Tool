@@ -7,11 +7,14 @@ import {
     FireIcon,
     ChatBubbleLeftIcon,
     ChevronRightIcon,
-    ArrowPathIcon
+    ArrowPathIcon,
+    VideoCameraIcon
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import MemberPerformance from '@/components/analytics/MemberPerformance';
+import MeetingList from '@/components/meetings/MeetingList';
+import { getProjectMeetings } from '@/app/actions/meetings';
 
 export default async function MemberDashboard() {
     const user = await getCurrentUser();
@@ -42,6 +45,29 @@ export default async function MemberDashboard() {
     const activeTasks = tasks?.filter((t: any) => t.status !== 'completed') || [];
     const urgentTasks = activeTasks.filter((t: any) => t.priority === 'high').length;
     const completedThisWeek = tasks?.filter((t: any) => t.status === 'completed').length || 0;
+
+    // Fetch meetings for all assigned projects
+    const { data: userProjects } = await supabase
+        .from('user_projects')
+        .select('project_id')
+        .eq('user_id', user?.id);
+    
+    const projectIds = userProjects?.map((up: any) => up.project_id) || [];
+    let allMeetings: any[] = [];
+
+    if (projectIds.length > 0) {
+        const { data: meetings } = await supabase
+            .from('meetings')
+            .select(`
+                *,
+                creator:users!meetings_created_by_fkey(full_name)
+            `)
+            .in('project_id', projectIds)
+            .neq('status', 'cancelled')
+            .order('scheduled_at', { ascending: true });
+        
+        allMeetings = meetings || [];
+    }
 
     return (
         <div className="space-y-10">
@@ -83,6 +109,21 @@ export default async function MemberDashboard() {
                     <CheckBadgeIcon className="w-8 h-8 text-emerald-500" />
                     <h3 className="text-3xl font-black text-slate-900">{completedThisWeek}</h3>
                     <p className="text-xs font-bold text-slate-500 uppercase">Tasks Completed</p>
+                </div>
+            </div>
+
+            {/* Upcoming Meetings */}
+            <div className="space-y-6">
+                <div className="flex items-center gap-2">
+                    <VideoCameraIcon className="w-6 h-6 text-purple-600" />
+                    <h3 className="text-2xl font-bold text-slate-900">Upcoming Meetings</h3>
+                </div>
+                <div className="card p-6">
+                    <MeetingList 
+                        meetings={allMeetings} 
+                        projectId="" // Not used for member view join logic
+                        currentUser={user}
+                    />
                 </div>
             </div>
 
