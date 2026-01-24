@@ -3,8 +3,17 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import NotificationCenter from '@/components/notifications/NotificationCenter';
 import { Toaster } from 'sonner';
-import { VideoCameraIcon } from '@heroicons/react/24/outline';
-import Image from 'next/image';
+import { 
+    HomeIcon, 
+    BriefcaseIcon, 
+    UserGroupIcon, 
+    ClipboardDocumentListIcon, 
+    VideoCameraIcon,
+    ShieldCheckIcon,
+    RectangleGroupIcon
+} from '@heroicons/react/24/outline';
+import Link from 'next/link';
+import AdminProfileSection from '@/components/admin/AdminProfileSection';
 
 export default async function AdminLayout({
     children,
@@ -33,123 +42,86 @@ export default async function AdminLayout({
         .select('*', { count: 'exact', head: true });
 
     return (
-        <div className="min-h-screen bg-[#fdfcf9] text-[#1c1917]">
+        <div className="min-h-screen bg-background text-foreground flex">
             <Toaster position="top-right" richColors />
-            {/* Header */}
-            <header className="bg-white/80 border-b border-[#e5dec9] sticky top-0 z-50 backdrop-blur-xl">
-                <div className="px-8 py-4">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4 py-2">
-                            <div className="relative w-32 h-32 -my-6">
-                                <Image src="/logo.png" alt="Logo" fill className="object-contain" />
-                            </div>
-                            <div>
-                                <h1 className="text-4xl font-black text-[#1c1917] tracking-tight">TaskForge</h1>
-                                <p className="text-[14px] font-black text-[#d97757] uppercase tracking-[0.2em]">Operations HUB</p>
-                            </div>
-                        </div>
-                        <div className="flex items-center gap-6">
-                            <NotificationCenter />
-                            {user && (
-                                <div className="flex items-center gap-4 border-l border-[#e5dec9] pl-6">
-                                    <div className="text-right">
-                                        <p className="text-sm font-black text-[#1c1917]">{user.full_name}</p>
-                                        <p className="text-[10px] font-black uppercase tracking-widest text-[#d97757]">{user.role}</p>
-                                    </div>
-                                    <form action="/api/auth/signout" method="POST">
-                                        <button type="submit" className="btn-secondary py-2 px-4 text-[10px]">
-                                            Sign Out
-                                        </button>
-                                    </form>
-                                </div>
-                            )}
-                        </div>
+
+            {/* Sidebar */}
+            <aside className="w-64 bg-white border-r border-border h-screen sticky top-0 flex flex-col">
+                <div className="h-20 px-6 border-b border-border flex items-center gap-3">
+                    <div className="w-10 h-10 bg-primary-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary-500/20">
+                        <RectangleGroupIcon className="w-6 h-6" />
+                    </div>
+                    <div>
+                        <h1 className="text-xl font-bold tracking-tight text-secondary-900 leading-tight">TaskForge</h1>
+                        <p className="text-[10px] font-bold text-primary-500 uppercase tracking-widest">Admin Node</p>
                     </div>
                 </div>
-            </header>
 
-            <div className="flex">
-                {/* Sidebar */}
-                <aside className="w-72 bg-white/50 border-r border-[#e5dec9] min-h-[calc(100vh-73px)] sticky top-[73px]">
-                    <nav className="p-6 space-y-3">
-                        <a
-                            href="/admin/dashboard"
-                            className="block px-5 py-3 rounded-lg text-[#1c1917]/60 hover:bg-[#f7f3ed] hover:text-[#d97757] transition-all duration-300 group"
-                        >
-                            <div className="flex items-center gap-3">
-                                <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                                </svg>
-                                <span className="text-[11px] font-black uppercase tracking-widest">Dashboard</span>
-                            </div>
-                        </a>
+                <nav className="flex-1 p-4 space-y-1 overflow-y-auto mt-4">
+                    <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-[0.2em] px-4 mb-4">Core Management</div>
+                    
+                    <Link href="/admin/dashboard" className="nav-link">
+                        <HomeIcon className="w-5 h-5" />
+                        <span>Dashboard</span>
+                    </Link>
 
-                        <a
-                            href="/admin/projects"
-                            className="block px-5 py-3 rounded-lg text-[#1c1917]/60 hover:bg-[#f7f3ed] hover:text-[#d97757] transition-all duration-300 group"
-                        >
-                            <div className="flex items-center gap-3">
-                                <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                                </svg>
-                                <span className="text-[11px] font-black uppercase tracking-widest">Projects</span>
-                                <span className="ml-auto badge badge-info">{projectCount || 0}</span>
-                            </div>
-                        </a>
+                    <Link href="/admin/projects" className="nav-link">
+                        <BriefcaseIcon className="w-5 h-5" />
+                        <span>Projects</span>
+                        <span className="ml-auto px-2 py-0.5 bg-secondary-100 text-secondary-600 rounded-md text-[10px] font-bold">
+                            {projectCount || 0}
+                        </span>
+                    </Link>
 
-                        <a
-                            href="/admin/users"
-                            className="block px-5 py-3 rounded-lg text-[#1c1917]/60 hover:bg-[#f7f3ed] hover:text-[#d97757] transition-all duration-300 group"
-                        >
-                            <div className="flex items-center gap-3">
-                                <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                                </svg>
-                                <span className="text-[11px] font-black uppercase tracking-widest">Users</span>
-                                <span className="ml-auto badge badge-info">{userCount || 0}</span>
-                            </div>
-                        </a>
+                    <Link href="/admin/users" className="nav-link">
+                        <UserGroupIcon className="w-5 h-5" />
+                        <span>Personnel</span>
+                        <span className="ml-auto px-2 py-0.5 bg-secondary-100 text-secondary-600 rounded-md text-[10px] font-bold">
+                            {userCount || 0}
+                        </span>
+                    </Link>
 
-                        <a
-                            href="/admin/tasks"
-                            className="block px-5 py-3 rounded-lg text-[#1c1917]/60 hover:bg-[#f7f3ed] hover:text-[#d97757] transition-all duration-300 group"
-                        >
-                            <div className="flex items-center gap-3">
-                                <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                                </svg>
-                                <span className="text-[11px] font-black uppercase tracking-widest">All Tasks</span>
-                                <span className="ml-auto badge badge-info">{taskCount || 0}</span>
-                            </div>
-                        </a>
+                    <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-[0.2em] px-4 pt-6 mb-4">Operations</div>
 
-                        <a
-                            href="/admin/meetings"
-                            className="block px-4 py-2 rounded-lg text-slate-700 hover:bg-primary-50 hover:text-primary-700 transition-colors"
-                        >
-                            <div className="flex items-center gap-3">
-                                <VideoCameraIcon className="w-5 h-5 text-indigo-500" />
-                                <span className="font-medium">Meetings</span>
-                            </div>
-                        </a>
+                    <Link href="/admin/tasks" className="nav-link">
+                        <ClipboardDocumentListIcon className="w-5 h-5" />
+                        <span>All Tasks</span>
+                        <span className="ml-auto px-2 py-0.5 bg-secondary-100 text-secondary-600 rounded-md text-[10px] font-bold">
+                            {taskCount || 0}
+                        </span>
+                    </Link>
 
-                        <a
-                            href="/admin/audit-logs"
-                            className="block px-5 py-3 rounded-lg text-[#1c1917]/60 hover:bg-[#f7f3ed] hover:text-[#d97757] transition-all duration-300 group"
-                        >
-                            <div className="flex items-center gap-3">
-                                <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 21a11.955 11.955 0 01-9.618-7.016m18.236 0a11.958 11.958 0 00-18.236 0m18.236 0a11.956 11.956 0 01-18.236 0" />
-                                </svg>
-                                <span className="text-[11px] font-black uppercase tracking-widest">Audit Logs</span>
-                            </div>
-                        </a>
-                    </nav>
-                </aside>
+                    <Link href="/admin/meetings" className="nav-link">
+                        <VideoCameraIcon className="w-5 h-5" />
+                        <span>Meetings</span>
+                    </Link>
 
-                {/* Main Content */}
-                <main className="flex-1 p-12 bg-white/30 backdrop-blur-sm min-h-[calc(100vh-73px)]">
-                    {children}
+                    <Link href="/admin/audit-logs" className="nav-link">
+                        <ShieldCheckIcon className="w-5 h-5" />
+                        <span>Audit Registry</span>
+                    </Link>
+                </nav>
+
+                {/* Sidebar Footer */}
+                <div className="p-4 border-t border-border mt-auto">
+                    <AdminProfileSection user={user} />
+                </div>
+            </aside>
+
+            {/* Main Content Area */}
+            <div className="flex-1 flex flex-col min-w-0">
+                {/* Header */}
+                <header className="h-20 bg-white/70 backdrop-blur-xl border-b border-border sticky top-0 z-50 flex items-center justify-end px-10">
+                    <div className="flex items-center gap-4">
+                        <NotificationCenter />
+                    </div>
+                </header>
+
+                {/* Content */}
+                <main className="flex-1 p-10 overflow-y-auto animate-in fade-in duration-500">
+                    <div className="max-w-[1600px] mx-auto">
+                        {children}
+                    </div>
                 </main>
             </div>
         </div>

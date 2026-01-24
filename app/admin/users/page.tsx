@@ -5,6 +5,8 @@ import {
     ShieldCheckIcon,
     UserGroupIcon,
     EnvelopeIcon,
+    SparklesIcon,
+    IdentificationIcon
 } from '@heroicons/react/24/outline';
 import UserManagementClient from '@/components/admin/UserManagementClient';
 import UserActionMenu from '../../../components/admin/UserActionMenu';
@@ -36,92 +38,98 @@ export default async function AdminUsersPage({
     const totalPages = Math.ceil((totalCount || 0) / pageSize);
 
     return (
-        <div className="space-y-12 animate-in fade-in duration-700">
+        <div className="space-y-10 animate-in fade-in duration-500">
             {/* Header section */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
-                <div>
-                    <h1 className="text-4xl font-black text-[#1c1917] tracking-tighter uppercase flex items-center gap-4">
-                        <div className="w-12 h-12 bg-[#f7f3ed] rounded-2xl flex items-center justify-center text-[#d97757] border border-[#e5dec9]">
-                            <UserGroupIcon className="w-7 h-7" />
-                        </div>
-                        PERSONNEL
-                    </h1>
-                    <p className="text-[#1c1917]/40 mt-3 font-black uppercase tracking-[0.2em] text-[11px]">
-                        Global Asset Registry: {totalCount || 0} Registered Personnel
-                    </p>
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div className="flex items-center gap-5">
+                    <div className="w-14 h-14 bg-primary-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-primary-500/20">
+                        <UserGroupIcon className="w-8 h-8" />
+                    </div>
+                    <div>
+                        <h1 className="text-3xl font-bold text-secondary-900 tracking-tight">Personnel Roster</h1>
+                        <p className="text-secondary-400 text-sm font-medium mt-1">
+                            Managing {totalCount || 0} active team members across the organization.
+                        </p>
+                    </div>
                 </div>
                 <UserManagementClient initialUsers={users || []} />
             </div>
 
             {/* Quick stats grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div className="card bg-white border-[#e5dec9] p-6 flex items-center gap-6 group hover:border-[#d97757] transition-all duration-500 shadow-xl shadow-[#d9cfb0]/10">
-                    <div className="w-12 h-12 bg-[#f7f3ed] rounded-xl flex items-center justify-center text-[#d97757] border border-[#e5dec9] group-hover:bg-[#d97757] group-hover:text-white transition-all">
-                        <UserGroupIcon className="w-6 h-6" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="card flex items-center gap-6 group hover:border-primary-200 transition-all">
+                    <div className="w-12 h-12 bg-primary-50 rounded-xl flex items-center justify-center text-primary-600 border border-primary-100 group-hover:scale-110 transition-transform">
+                        <IdentificationIcon className="w-6 h-6" />
                     </div>
                     <div>
-                        <p className="text-[10px] font-black text-[#1c1917]/30 uppercase tracking-[0.2em]">Aggregate</p>
-                        <p className="text-2xl font-black text-[#1c1917] tracking-tight">{totalCount || 0}</p>
+                        <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-widest">Total Personnel</p>
+                        <p className="text-2xl font-bold text-secondary-900 tracking-tight">{totalCount || 0}</p>
                     </div>
                 </div>
-                <div className="card bg-white border-[#e5dec9] p-6 flex items-center gap-6 group hover:border-[#d97757] transition-all duration-500 shadow-xl shadow-[#d9cfb0]/10">
-                    <div className="w-12 h-12 bg-[#f7f3ed] rounded-xl flex items-center justify-center text-[#d97757] border border-[#e5dec9] group-hover:bg-[#d97757] group-hover:text-white transition-all">
+                <div className="card flex items-center gap-6 group hover:border-indigo-200 transition-all">
+                    <div className="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-600 border border-indigo-100 group-hover:scale-110 transition-transform">
                         <ShieldCheckIcon className="w-6 h-6" />
                     </div>
                     <div>
-                        <p className="text-[10px] font-black text-[#1c1917]/30 uppercase tracking-[0.2em]">Executives</p>
-                        <p className="text-2xl font-black text-[#1c1917] tracking-tight">{adminCount || 0}</p>
+                        <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-widest">Administrators</p>
+                        <p className="text-2xl font-bold text-secondary-900 tracking-tight">{adminCount || 0}</p>
                     </div>
                 </div>
-                <div className="card bg-white border-[#e5dec9] p-6 flex items-center gap-6 group hover:border-[#d97757] transition-all duration-500 shadow-xl shadow-[#d9cfb0]/10">
-                    <div className="w-12 h-12 bg-[#f7f3ed] rounded-xl flex items-center justify-center text-[#d97757] border border-[#e5dec9] group-hover:bg-[#d97757] group-hover:text-white transition-all">
+                <div className="card flex items-center gap-6 group hover:border-emerald-200 transition-all">
+                    <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600 border border-emerald-100 group-hover:scale-110 transition-transform">
                         <UserIcon className="w-6 h-6" />
                     </div>
                     <div>
-                        <p className="text-[10px] font-black text-[#1c1917]/30 uppercase tracking-[0.2em]">Associates</p>
-                        <p className="text-2xl font-black text-[#1c1917] tracking-tight">{associateCount || 0}</p>
+                        <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-widest">Associates</p>
+                        <p className="text-2xl font-bold text-secondary-900 tracking-tight">{associateCount || 0}</p>
                     </div>
                 </div>
-                <div className="card bg-white border-[#e5dec9] p-6 flex items-center gap-6 group hover:border-[#d97757] transition-all duration-500 shadow-xl shadow-[#d9cfb0]/10">
-                    <div className="w-12 h-12 bg-[#f7f3ed] rounded-xl flex items-center justify-center text-[#d97757] border border-[#e5dec9] group-hover:bg-[#d97757] group-hover:text-white transition-all">
-                        <UserGroupIcon className="w-6 h-6" />
+                <div className="card flex items-center gap-6 group hover:border-amber-200 transition-all">
+                    <div className="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center text-amber-600 border border-amber-100 group-hover:scale-110 transition-transform">
+                        <SparklesIcon className="w-6 h-6" />
                     </div>
                     <div>
-                        <p className="text-[10px] font-black text-[#1c1917]/30 uppercase tracking-[0.2em]">Tactical</p>
-                        <p className="text-2xl font-black text-[#1c1917] tracking-tight">{memberCount || 0}</p>
+                        <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-widest">Team Members</p>
+                        <p className="text-2xl font-bold text-secondary-900 tracking-tight">{memberCount || 0}</p>
                     </div>
                 </div>
             </div>
 
             {/* Users Table */}
-            <div className="card bg-white border-[#e5dec9] overflow-hidden shadow-2xl shadow-[#d9cfb0]/20 rounded-[2.5rem]">
-                <div className="p-8 border-b border-[#f7f3ed] bg-[#f7f3ed]/30 flex items-center justify-between">
-                    <h3 className="text-[11px] font-black text-[#1c1917] uppercase tracking-[0.3em] font-serif italic">Global Personnel Registry</h3>
-                    <div className="w-2 h-2 bg-[#d97757] rounded-full animate-pulse"></div>
+            <div className="card p-0 overflow-hidden">
+                <div className="p-8 border-b border-border bg-secondary-50/50 flex items-center justify-between">
+                    <h3 className="text-sm font-bold text-secondary-900 uppercase tracking-widest flex items-center gap-2">
+                        <IdentificationIcon className="w-5 h-5 text-primary-600" />
+                        Management Registry
+                    </h3>
+                    <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
+                        <span className="text-[10px] font-bold text-secondary-400 uppercase tracking-widest">System Synchronized</span>
+                    </div>
                 </div>
                 <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                         <thead>
-                            <tr className="bg-[#f7f3ed]/50 border-b border-[#e5dec9]">
-                                <th className="px-8 py-6 text-[10px] font-black uppercase text-[#1c1917]/30 tracking-[0.2em] italic font-serif">Asset Entity</th>
-                                <th className="px-8 py-6 text-[10px] font-black uppercase text-[#1c1917]/30 tracking-[0.2em] italic font-serif">Clearance</th>
-                                <th className="px-8 py-6 text-[10px] font-black uppercase text-[#1c1917]/30 tracking-[0.2em] italic font-serif">Operational Matrix</th>
-                                <th className="px-8 py-6 text-[10px] font-black uppercase text-[#1c1917]/30 tracking-[0.2em] italic font-serif">Deployment Date</th>
-                                <th className="px-8 py-6 text-[10px] font-black uppercase text-[#1c1917]/30 tracking-[0.2em] italic font-serif text-right"></th>
+                            <tr className="bg-white border-b border-border">
+                                <th className="px-8 py-5 text-[10px] font-bold uppercase text-secondary-400 tracking-widest">Member Entity</th>
+                                <th className="px-8 py-5 text-[10px] font-bold uppercase text-secondary-400 tracking-widest">Access Role</th>
+                                <th className="px-8 py-5 text-[10px] font-bold uppercase text-secondary-400 tracking-widest">Account Status</th>
+                                <th className="px-8 py-5 text-[10px] font-bold uppercase text-secondary-400 tracking-widest">Joined On</th>
+                                <th className="px-8 py-5 text-[10px] font-bold uppercase text-secondary-400 tracking-widest text-right">Actions</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-[#f7f3ed]">
+                        <tbody className="divide-y divide-border">
                             {users?.map((user) => (
-                                <tr key={user.id} className="hover:bg-[#fdfcf9] transition-colors group">
+                                <tr key={user.id} className="hover:bg-secondary-50 transition-colors group">
                                     <td className="px-8 py-6">
                                         <div className="flex items-center gap-4">
-                                            <div className="w-10 h-10 rounded-xl bg-[#f7f3ed] flex items-center justify-center font-black text-[#d97757] border border-[#e5dec9] shadow-inner group-hover:bg-[#d97757] group-hover:text-white transition-all">
+                                            <div className="w-11 h-11 rounded-xl bg-secondary-100 border border-border flex items-center justify-center font-bold text-secondary-600 group-hover:bg-primary-600 group-hover:text-white group-hover:border-primary-600 transition-all shadow-sm">
                                                 {user.full_name?.charAt(0) || 'U'}
                                             </div>
                                             <div>
-                                                <p className="text-[13px] font-black text-[#1c1917] tracking-tight uppercase group-hover:text-[#d97757] transition-all">{user.full_name}</p>
-                                                <div className="flex items-center gap-2 text-[9px] font-black text-[#1c1917]/30 uppercase tracking-tighter italic mt-1">
-                                                    <EnvelopeIcon className="w-3 h-3 text-[#d97757]" />
+                                                <p className="text-sm font-bold text-secondary-900 group-hover:text-primary-600 transition-colors">{user.full_name}</p>
+                                                <div className="flex items-center gap-1.5 text-[11px] font-medium text-secondary-400 mt-0.5">
+                                                    <EnvelopeIcon className="w-3.5 h-3.5" />
                                                     {user.email}
                                                 </div>
                                             </div>
@@ -135,11 +143,14 @@ export default async function AdminUsersPage({
                                         </span>
                                     </td>
                                     <td className="px-8 py-6">
-                                        <span className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border ${user.is_active ? 'text-[#d97757] bg-[#f7f3ed] border-[#e5dec9] shadow-inner' : 'text-[#1c1917]/20 bg-white border-[#e5dec9] italic'}`}>
-                                            {user.is_active ? 'ACTIVE' : 'DORMANT'}
-                                        </span>
+                                        <div className="flex items-center gap-2">
+                                            <span className={`w-2 h-2 rounded-full ${user.is_active ? 'bg-emerald-500' : 'bg-secondary-300'}`}></span>
+                                            <span className={`text-[11px] font-bold uppercase tracking-widest ${user.is_active ? 'text-emerald-600' : 'text-secondary-400'}`}>
+                                                {user.is_active ? 'Active' : 'Deactivated'}
+                                            </span>
+                                        </div>
                                     </td>
-                                    <td className="px-8 py-6 text-[10px] font-black uppercase tracking-widest text-[#1c1917]/40 italic font-serif">
+                                    <td className="px-8 py-6 text-xs font-bold text-secondary-400">
                                         {new Date(user.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
                                     </td>
                                     <td className="px-8 py-6 text-right">
@@ -151,7 +162,7 @@ export default async function AdminUsersPage({
                     </table>
                 </div>
                 {/* Pagination Footer */}
-                <div className="p-8 bg-[#f7f3ed]/30 border-t border-[#e5dec9] flex justify-center">
+                <div className="p-8 bg-secondary-50/30 border-t border-border flex justify-center">
                     <Pagination currentPage={currentPage} totalPages={totalPages} />
                 </div>
             </div>

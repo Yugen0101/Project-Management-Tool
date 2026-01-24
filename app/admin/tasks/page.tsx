@@ -6,7 +6,9 @@ import {
     TagIcon,
     ArrowPathIcon,
     MagnifyingGlassIcon,
-    ChevronRightIcon
+    ChevronRightIcon,
+    Squares2X2Icon,
+    MapIcon
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import Pagination from '@/components/ui/Pagination';
@@ -45,98 +47,106 @@ export default async function AdminTasksPage({
     const totalPages = Math.ceil((count || 0) / pageSize);
 
     return (
-        <div className="space-y-12 animate-in fade-in duration-700">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
-                <div>
-                    <h1 className="text-4xl font-black text-[#1c1917] tracking-tighter uppercase flex items-center gap-4">
-                        <div className="w-12 h-12 bg-[#f7f3ed] rounded-2xl flex items-center justify-center text-[#d97757] border border-[#e5dec9]">
-                            <ClipboardDocumentListIcon className="w-7 h-7" />
-                        </div>
-                        TASK REGISTRY
-                    </h1>
-                    <p className="text-[#1c1917]/40 mt-3 font-black uppercase tracking-[0.2em] text-[11px]">
-                        Global Operational Node: {count || 0} Registered Vectors
-                    </p>
+        <div className="space-y-10 animate-in fade-in duration-500">
+            {/* Header section */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div className="flex items-center gap-5">
+                    <div className="w-14 h-14 bg-primary-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-primary-500/20">
+                        <ClipboardDocumentListIcon className="w-8 h-8" />
+                    </div>
+                    <div>
+                        <h1 className="text-3xl font-bold text-secondary-900 tracking-tight">Task Registry</h1>
+                        <p className="text-secondary-400 text-sm font-medium mt-1">
+                            Overseeing {count || 0} tasks across all organizational projects.
+                        </p>
+                    </div>
                 </div>
                 <div className="flex gap-3">
-                    <button className="text-[10px] font-black uppercase tracking-[0.2em] text-[#1c1917]/40 border border-[#e5dec9] px-6 py-3 rounded-xl bg-white hover:bg-[#f7f3ed] transition-all flex items-center gap-2">
+                    <button className="btn-secondary h-11 px-5 flex items-center gap-2">
                         <ArrowPathIcon className="w-4 h-4" />
-                        Reflow Registry
+                        <span>Force Refresh</span>
                     </button>
                 </div>
             </div>
 
-            <div className="flex flex-col lg:flex-row gap-6">
-                <div className="relative flex-1 group">
-                    <MagnifyingGlassIcon className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-[#1c1917]/30 transition-colors group-focus-within:text-[#d97757]" />
+            {/* Filter & Search Bar */}
+            <div className="flex flex-col lg:flex-row gap-6 items-center justify-between">
+                <div className="relative flex-1 w-full lg:max-w-md group">
+                    <MagnifyingGlassIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-secondary-400 group-focus-within:text-primary-600 transition-colors" />
                     <input
                         type="text"
-                        placeholder="Scan registry by name or project node..."
-                        className="input pl-14 py-4 bg-white"
+                        placeholder="Search tasks, projects, or personnel..."
+                        className="input pl-11 w-full"
                     />
                 </div>
-                <div className="flex gap-3">
-                    <Link
-                        href="/admin/tasks?status=all"
-                        className={`px-8 py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all border ${filterStatus === 'all' ? 'bg-[#d97757] border-[#d97757] text-white shadow-xl shadow-[#d97757]/20' : 'bg-white border-[#e5dec9] text-[#1c1917]/40 hover:text-[#d97757] hover:border-[#d97757]/30'}`}
-                    >
-                        Aggregate
-                    </Link>
-                    <Link
-                        href="/admin/tasks?status=in_progress"
-                        className={`px-8 py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all border ${filterStatus === 'in_progress' ? 'bg-[#d97757] border-[#d97757] text-white shadow-xl shadow-[#d97757]/20' : 'bg-white border-[#e5dec9] text-[#1c1917]/40 hover:text-[#d97757] hover:border-[#d97757]/30'}`}
-                    >
-                        Active
-                    </Link>
-                    <Link
-                        href="/admin/tasks?status=completed"
-                        className={`px-8 py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all border ${filterStatus === 'completed' ? 'bg-[#d97757] border-[#d97757] text-white shadow-xl shadow-[#d97757]/20' : 'bg-white border-[#e5dec9] text-[#1c1917]/40 hover:text-[#d97757] hover:border-[#d97757]/30'}`}
-                    >
-                        Resolved
-                    </Link>
+                <div className="flex items-center p-1 bg-secondary-100 rounded-xl">
+                    {[
+                        { label: 'All Tasks', value: 'all' },
+                        { label: 'In Progress', value: 'in_progress' },
+                        { label: 'Completed', value: 'completed' }
+                    ].map((tab) => (
+                        <Link
+                            key={tab.value}
+                            href={`/admin/tasks?status=${tab.value}`}
+                            className={`px-6 py-2 rounded-lg text-xs font-bold transition-all ${filterStatus === tab.value ? 'bg-white text-secondary-900 shadow-sm' : 'text-secondary-500 hover:text-secondary-900'}`}
+                        >
+                            {tab.label}
+                        </Link>
+                    ))}
                 </div>
             </div>
 
-            <div className="card bg-white border-[#e5dec9] overflow-hidden shadow-2xl shadow-[#d9cfb0]/20 rounded-[2rem]">
+            {/* Tasks Table Card */}
+            <div className="card p-0 overflow-hidden">
+                <div className="p-8 border-b border-border bg-secondary-50/50 flex items-center justify-between">
+                    <h3 className="text-sm font-bold text-secondary-900 uppercase tracking-widest flex items-center gap-2">
+                        <MapIcon className="w-5 h-5 text-primary-600" />
+                        Operational Task Flow
+                    </h3>
+                    <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 bg-primary-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(79,70,229,0.5)]"></span>
+                        <span className="text-[10px] font-bold text-secondary-400 uppercase tracking-widest">Real-time Mapping</span>
+                    </div>
+                </div>
                 <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                         <thead>
-                            <tr className="bg-[#f7f3ed]/50 border-b border-[#e5dec9]">
-                                <th className="px-8 py-6 text-[10px] font-black uppercase text-[#1c1917]/30 tracking-[0.2em] italic font-serif">Registry Entry</th>
-                                <th className="px-8 py-6 text-[10px] font-black uppercase text-[#1c1917]/30 tracking-[0.2em] italic font-serif">Project Node</th>
-                                <th className="px-8 py-6 text-[10px] font-black uppercase text-[#1c1917]/30 tracking-[0.2em] italic font-serif">Asset Allocation</th>
-                                <th className="px-8 py-6 text-[10px] font-black uppercase text-[#1c1917]/30 tracking-[0.2em] italic font-serif">State</th>
-                                <th className="px-8 py-6 text-[10px] font-black uppercase text-[#1c1917]/30 tracking-[0.2em] italic font-serif">Target Chronos</th>
-                                <th className="px-8 py-6 text-[10px] font-black uppercase text-[#1c1917]/30 tracking-[0.2em] italic font-serif"></th>
+                            <tr className="bg-white border-b border-border text-[10px] font-bold uppercase text-secondary-400 tracking-widest">
+                                <th className="px-8 py-5">Task Identity</th>
+                                <th className="px-8 py-5">Project Link</th>
+                                <th className="px-8 py-5">Assignee</th>
+                                <th className="px-8 py-5">State</th>
+                                <th className="px-8 py-5">Deadline</th>
+                                <th className="px-8 py-5 text-right">Actions</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-[#f7f3ed]">
+                        <tbody className="divide-y divide-border">
                             {tasks?.map((task) => (
-                                <tr key={task.id} className="hover:bg-[#fdfcf9] transition-colors group">
+                                <tr key={task.id} className="hover:bg-secondary-50 transition-colors group">
                                     <td className="px-8 py-6">
-                                        <div>
-                                            <p className="text-sm font-black text-[#1c1917] group-hover:text-[#d97757] transition-all uppercase tracking-tight">{task.title}</p>
-                                            <p className="text-[10px] font-semibold text-[#1c1917]/40 italic truncate max-w-[200px] mt-1">{task.description || 'Parameters pending.'}</p>
+                                        <div className="max-w-[300px]">
+                                            <p className="text-sm font-bold text-secondary-900 group-hover:text-primary-600 transition-colors truncate">{task.title}</p>
+                                            <p className="text-[11px] font-medium text-secondary-400 mt-1 line-clamp-1">{task.description || 'No additional details provided.'}</p>
                                         </div>
                                     </td>
                                     <td className="px-8 py-6">
-                                        <span className="text-[10px] font-black uppercase text-[#1c1917]/60 tracking-widest bg-[#f7f3ed] px-3 py-1 rounded-full border border-[#e5dec9]">
-                                            {task.project?.name || 'ROOT'}
+                                        <span className="text-[10px] font-bold text-secondary-900 bg-secondary-100 px-3 py-1 rounded-lg border border-border">
+                                            {task.project?.name || 'Global'}
                                         </span>
                                     </td>
                                     <td className="px-8 py-6">
                                         {task.assigned_user ? (
                                             <div className="flex items-center gap-3">
-                                                <div className="w-8 h-8 bg-[#f7f3ed] rounded-xl flex items-center justify-center text-[10px] font-black text-[#d97757] border border-[#e5dec9] shadow-inner group-hover:bg-[#d97757] group-hover:text-white transition-all">
+                                                <div className="w-9 h-9 rounded-lg bg-primary-50 text-primary-600 border border-primary-100 flex items-center justify-center font-bold text-xs group-hover:bg-primary-600 group-hover:text-white transition-all">
                                                     {task.assigned_user.full_name?.charAt(0)}
                                                 </div>
                                                 <div>
-                                                    <p className="text-[11px] font-black text-[#1c1917] tracking-tight uppercase">{task.assigned_user.full_name}</p>
-                                                    <p className="text-[9px] text-[#1c1917]/30 font-black uppercase tracking-tighter italic">{task.assigned_user.email}</p>
+                                                    <p className="text-xs font-bold text-secondary-900">{task.assigned_user.full_name}</p>
+                                                    <p className="text-[10px] font-medium text-secondary-400">{task.assigned_user.email}</p>
                                                 </div>
                                             </div>
                                         ) : (
-                                            <span className="text-[10px] font-black text-[#1c1917]/20 uppercase tracking-widest italic leading-none">Unallocated</span>
+                                            <span className="text-[11px] font-bold text-secondary-300 italic">Unassigned</span>
                                         )}
                                     </td>
                                     <td className="px-8 py-6">
@@ -144,19 +154,19 @@ export default async function AdminTasksPage({
                                             task.status === 'in_progress' ? 'badge-info' :
                                                 'badge-warning'
                                             }`}>
-                                            {task.status}
+                                            {task.status.replace('_', ' ')}
                                         </span>
                                     </td>
                                     <td className="px-8 py-6">
-                                        <div className="flex items-center gap-3 text-[10px] font-black text-[#1c1917]/40 uppercase tracking-widest italic">
-                                            <CalendarIcon className="w-3.5 h-3.5 text-[#d97757]" />
-                                            {task.due_date ? format(new Date(task.due_date), 'MMM dd, yyyy') : 'Floating'}
+                                        <div className="flex items-center gap-2 text-xs font-bold text-secondary-500">
+                                            <CalendarIcon className="w-4 h-4 text-primary-500" />
+                                            {task.due_date ? format(new Date(task.due_date), 'MMM dd, yyyy') : 'No Date'}
                                         </div>
                                     </td>
                                     <td className="px-8 py-6 text-right">
                                         <Link
                                             href={`/admin/tasks/${task.id}`}
-                                            className="w-10 h-10 bg-[#f7f3ed] rounded-xl flex items-center justify-center text-[#1c1917]/10 hover:text-[#d97757] hover:border-[#d97757]/40 transition-all border border-transparent"
+                                            className="w-10 h-10 rounded-xl hover:bg-white flex items-center justify-center text-secondary-300 hover:text-primary-600 hover:shadow-soft transition-all border border-transparent hover:border-border"
                                         >
                                             <ChevronRightIcon className="w-5 h-5" />
                                         </Link>
@@ -166,13 +176,14 @@ export default async function AdminTasksPage({
                         </tbody>
                     </table>
                 </div>
+
                 {(!tasks || tasks.length === 0) && (
-                    <div className="py-32 flex flex-col items-center justify-center bg-[#fdfcf9]">
-                        <div className="w-20 h-20 bg-[#f7f3ed] rounded-full flex items-center justify-center text-[#1c1917]/20 mb-6">
-                            <ClipboardDocumentListIcon className="w-10 h-10" />
+                    <div className="py-24 flex flex-col items-center justify-center">
+                        <div className="w-16 h-16 bg-secondary-50 rounded-full flex items-center justify-center text-secondary-200 mb-6">
+                            <ClipboardDocumentListIcon className="w-8 h-8" />
                         </div>
-                        <h3 className="text-xl font-black text-[#1c1917] tracking-tight uppercase">Registry Void</h3>
-                        <p className="text-[11px] font-black text-[#1c1917]/40 uppercase tracking-[0.2em] mt-2 italic">Zero entries detected in the operational quadrant.</p>
+                        <h3 className="text-lg font-bold text-secondary-900">No tasks found</h3>
+                        <p className="text-xs font-bold text-secondary-400 uppercase tracking-widest mt-2">The registry is currently empty in this sector.</p>
                     </div>
                 )}
             </div>

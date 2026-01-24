@@ -81,30 +81,30 @@ export default function NotificationCenter() {
         <div className="relative" ref={dropdownRef}>
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="relative w-11 h-11 flex items-center justify-center bg-[#f7f3ed] hover:bg-[#d97757] hover:text-white rounded-xl text-[#1c1917]/20 border border-[#e5dec9] transition-all duration-300 shadow-sm"
+                className="relative w-11 h-11 flex items-center justify-center bg-secondary-50 hover:bg-primary-50 hover:text-primary-600 rounded-xl text-secondary-400 border border-border transition-all duration-300 shadow-sm"
             >
-                <BellIcon className="w-6 h-6" />
+                <BellIcon className="w-5 h-5" />
                 {unreadCount > 0 && (
-                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-[#d97757] text-white text-[9px] font-black flex items-center justify-center rounded-full ring-4 ring-white shadow-lg transition-transform hover:scale-110">
+                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary-600 text-white text-[9px] font-bold flex items-center justify-center rounded-full ring-4 ring-white shadow-lg transition-transform hover:scale-110">
                         {unreadCount}
                     </span>
                 )}
             </button>
 
             {isOpen && (
-                <div className="absolute right-0 mt-4 w-96 bg-white rounded-[2.5rem] shadow-2xl shadow-[#d9cfb0]/30 border border-[#e5dec9] z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-500">
-                    <div className="px-8 py-6 border-b border-[#f7f3ed] flex items-center justify-between bg-[#f7f3ed]/30">
+                <div className="absolute right-0 mt-4 w-96 bg-white rounded-[2rem] shadow-premium border border-border z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-500">
+                    <div className="px-8 py-6 border-b border-border flex items-center justify-between bg-secondary-50/50">
                         <div>
-                            <h3 className="text-[11px] font-black uppercase tracking-[0.4em] text-[#1c1917] flex items-center gap-3">
-                                <span className="w-2 h-2 rounded-full bg-[#d97757]"></span>
+                            <h3 className="text-sm font-bold text-secondary-900 flex items-center gap-2">
+                                <span className="w-2 h-2 rounded-full bg-primary-500"></span>
                                 Notifications
                             </h3>
-                            <p className="text-[9px] font-black text-[#1c1917]/20 uppercase tracking-[0.2em] mt-1 italic font-serif">Live Transmission Feed</p>
+                            <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-widest mt-1">Real-time Activity</p>
                         </div>
                         {unreadCount > 0 && (
                             <button
                                 onClick={handleClearAll}
-                                className="text-[9px] font-black uppercase tracking-widest text-[#d97757] hover:opacity-70 transition-opacity flex items-center gap-2"
+                                className="text-[10px] font-bold uppercase tracking-widest text-primary-600 hover:text-primary-700 transition-colors flex items-center gap-2"
                             >
                                 <TrashIcon className="w-3.5 h-3.5" />
                                 Clear All
@@ -115,31 +115,31 @@ export default function NotificationCenter() {
                     <div className="max-h-[450px] overflow-y-auto custom-scrollbar bg-white">
                         {notifications.length === 0 && !loading && (
                             <div className="py-20 text-center px-10">
-                                <div className="w-16 h-16 bg-[#f7f3ed] rounded-2xl flex items-center justify-center text-[#e5dec9] mx-auto mb-6">
+                                <div className="w-16 h-16 bg-secondary-50 rounded-2xl flex items-center justify-center text-secondary-200 mx-auto mb-6">
                                     <InboxIcon className="w-8 h-8" />
                                 </div>
-                                <h3 className="text-sm font-black text-[#1c1917] uppercase tracking-tighter">No Active Signals</h3>
-                                <p className="text-[9px] font-black text-[#1c1917]/20 uppercase tracking-[0.2em] mt-2 italic font-serif">Registry is currently synchronized.</p>
+                                <h3 className="text-sm font-bold text-secondary-900">No Notifications</h3>
+                                <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-widest mt-2">Your inbox is currently empty.</p>
                             </div>
                         )}
 
                         {notifications.map((n) => (
                             <div
                                 key={n.id}
-                                className={`p-6 border-b border-[#f7f3ed] hover:bg-[#fdfcf9] transition-all group relative ${!n.is_read ? 'bg-[#f7f3ed]/20' : ''}`}
+                                className={`p-6 border-b border-border hover:bg-secondary-50/30 transition-all group relative ${!n.is_read ? 'bg-primary-50/20' : ''}`}
                             >
                                 <div className="flex gap-5">
-                                    <div className={`shrink-0 w-10 h-10 rounded-xl flex items-center justify-center border shadow-sm ${!n.is_read ? 'bg-white border-[#d97757]/30 text-[#d97757]' : 'bg-[#f7f3ed] border-[#e5dec9] text-[#1c1917]/20'}`}>
+                                    <div className={`shrink-0 w-10 h-10 rounded-xl flex items-center justify-center border shadow-sm ${!n.is_read ? 'bg-white border-primary-100 text-primary-600' : 'bg-secondary-50 border-border text-secondary-400'}`}>
                                         <BellIcon className="w-5 h-5" />
                                     </div>
-                                    <div className="flex-1 space-y-2">
+                                    <div className="flex-1 space-y-1.5">
                                         <div className="flex items-center justify-between">
-                                            <p className="text-[13px] font-black text-[#1c1917] leading-none uppercase tracking-tight">{n.title}</p>
+                                            <p className="text-sm font-bold text-secondary-900 leading-none">{n.title}</p>
                                             {!n.is_read && (
-                                                <span className="w-1.5 h-1.5 rounded-full bg-[#d97757]"></span>
+                                                <span className="w-2 h-2 rounded-full bg-primary-500 animate-pulse"></span>
                                             )}
                                         </div>
-                                        <p className="text-xs font-black text-[#1c1917]/40 leading-snug italic font-serif">{n.content}</p>
+                                        <p className="text-xs font-medium text-secondary-500 leading-snug">{n.content}</p>
                                         {n.link && (
                                             <Link
                                                 href={n.link}
@@ -147,9 +147,9 @@ export default function NotificationCenter() {
                                                     setIsOpen(false);
                                                     handleMarkAsRead(n.id);
                                                 }}
-                                                className="inline-block text-[9px] font-black text-[#d97757] uppercase tracking-widest hover:opacity-70 transition-opacity border-b border-[#d97757]/30 pb-0.5 mt-2"
+                                                className="inline-block text-[10px] font-bold text-primary-600 uppercase tracking-widest hover:text-primary-700 transition-colors mt-2"
                                             >
-                                                View Transmission Details →
+                                                View Details →
                                             </Link>
                                         )}
                                     </div>
@@ -157,8 +157,8 @@ export default function NotificationCenter() {
                                 {!n.is_read && (
                                     <button
                                         onClick={() => handleMarkAsRead(n.id)}
-                                        className="opacity-0 group-hover:opacity-100 absolute top-6 right-6 p-2 text-[#d97757] hover:bg-[#d97757] hover:text-white rounded-lg transition-all shadow-sm"
-                                        title="Archive Signal"
+                                        className="opacity-0 group-hover:opacity-100 absolute top-6 right-6 p-2 text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
+                                        title="Mark as Read"
                                     >
                                         <CheckCircleIcon className="w-4 h-4" />
                                     </button>
@@ -167,9 +167,9 @@ export default function NotificationCenter() {
                         ))}
                     </div>
 
-                    <div className="p-6 bg-[#f7f3ed]/30 text-center border-t border-[#f7f3ed]">
-                        <button className="text-[10px] font-black uppercase tracking-[0.3em] text-[#1c1917]/30 hover:text-[#d97757] transition-all italic font-serif">
-                            Access Control Interface
+                    <div className="p-6 bg-secondary-50/50 text-center border-t border-border">
+                        <button className="text-[10px] font-bold uppercase tracking-widest text-secondary-400 hover:text-primary-600 transition-colors">
+                            Manage All Activity
                         </button>
                     </div>
                 </div>

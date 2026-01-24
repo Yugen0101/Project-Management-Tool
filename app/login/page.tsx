@@ -4,6 +4,7 @@ import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import Image from 'next/image';
+import { RectangleGroupIcon, ShieldCheckIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 
 function LoginForm() {
     const [email, setEmail] = useState('');
@@ -31,6 +32,8 @@ function LoginForm() {
             const { data, error: signInError } = await supabase.auth.signInWithPassword({
                 email,
                 password,
+                // Ensure we handle redirects based on role if needed, 
+                // but usually middleware handles this after cookie is set.
             });
 
             if (signInError) {
@@ -39,7 +42,7 @@ function LoginForm() {
                 return;
             }
 
-            // Force page reload to trigger middleware
+            // Force page reload to trigger middleware and session sync
             window.location.href = '/admin/dashboard';
         } catch (err) {
             console.error('Login error:', err);
@@ -49,35 +52,38 @@ function LoginForm() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-[#fdfcf9] relative overflow-hidden px-6 selection:bg-[#d97757] selection:text-white">
-            {/* Geometric Background Element */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#f7f3ed] rounded-full -z-10 opacity-50"></div>
-            <div className="absolute top-[-5%] right-[-5%] w-64 h-64 bg-[#d97757]/5 rounded-3xl rotate-12 -z-10"></div>
+        <div className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden px-6 selection:bg-primary-500 selection:text-white">
+            {/* Ambient Animated Glows */}
+            <div className="absolute top-[-20%] right-[-10%] w-[60vw] h-[60vw] bg-primary-100/20 rounded-full blur-[120px] animate-float" style={{ animationDuration: '12s' }}></div>
+            <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-indigo-100/10 rounded-full blur-[100px] animate-float" style={{ animationDuration: '18s', animationDelay: '3s' }}></div>
 
-            <div className="w-full max-w-md relative z-10">
-                <div className="card shadow-2xl shadow-[#d9cfb0]/30 border-[#e5dec9]">
-                    <div className="text-center mb-10">
-                        <div className="relative w-64 h-64 mx-auto mb-4">
-                            <Image src="/logo.png" alt="Logo" fill className="object-contain" />
+            <div className="w-full max-w-[480px] relative z-10 animate-in fade-in zoom-in-95 duration-1000">
+                <div className="card-glass p-10 md:p-14 shadow-premium backdrop-blur-2xl relative overflow-hidden">
+                    {/* Interior Glow Overlay */}
+                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary-600/0 via-primary-600/50 to-primary-600/0"></div>
+                    
+                    <div className="text-center mb-12">
+                        <div className="w-20 h-20 bg-primary-600 rounded-[2rem] flex items-center justify-center text-white mx-auto mb-8 shadow-2xl shadow-primary-500/30 animate-in slide-in-from-bottom-4 duration-700">
+                            <RectangleGroupIcon className="w-10 h-10" />
                         </div>
-                        <h1 className="text-3xl font-black text-[#1c1917] mb-2 tracking-tighter">
-                            Task<span className="text-[#d97757]">Forge</span>
+                        <h1 className="text-4xl font-bold text-secondary-900 mb-3 tracking-tighter">
+                            TaskForge
                         </h1>
-                        <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[#1c1917]/40">
-                            Secure Workspace Access
+                        <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-[0.3em]">
+                            Authenticated Node Authorization
                         </p>
                     </div>
 
-                    <form onSubmit={handleLogin} className="space-y-6">
+                    <form onSubmit={handleLogin} className="space-y-8">
                         {error && (
-                            <div className="bg-red-50 border border-red-100 text-red-900 px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-wider">
+                            <div className="bg-rose-50 border border-rose-100 text-rose-600 px-5 py-4 rounded-2xl text-[11px] font-bold text-center italic animate-in fade-in slide-in-from-top-2">
                                 {error}
                             </div>
                         )}
 
-                        <div className="space-y-2">
-                            <label htmlFor="email" className="block text-[10px] font-black uppercase tracking-widest text-[#1c1917]/50 ml-1">
-                                Email Address
+                        <div className="space-y-3">
+                            <label htmlFor="email" className="block text-[10px] font-bold text-secondary-400 uppercase tracking-widest ml-1">
+                                Identity Identifier
                             </label>
                             <input
                                 id="email"
@@ -86,17 +92,18 @@ function LoginForm() {
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
                                 className="input"
-                                placeholder="name@nexus.com"
+                                placeholder="name@company.protocol"
                                 disabled={loading}
+                                suppressHydrationWarning
                             />
                         </div>
 
-                        <div className="space-y-2">
+                        <div className="space-y-3">
                             <div className="flex justify-between items-center ml-1">
-                                <label htmlFor="password" className="block text-[10px] font-black uppercase tracking-widest text-[#1c1917]/50">
-                                    Auth Key
+                                <label htmlFor="password" className="block text-[10px] font-bold text-secondary-400 uppercase tracking-widest">
+                                    Access Sequence
                                 </label>
-                                <a href="#" className="text-[9px] font-black uppercase tracking-widest text-[#d97757] hover:text-[#c26242]">Request Reset</a>
+                                <a href="#" className="text-[10px] font-bold text-primary-600 hover:text-primary-700 uppercase tracking-widest">Recovery</a>
                             </div>
                             <input
                                 id="password"
@@ -107,30 +114,39 @@ function LoginForm() {
                                 className="input"
                                 placeholder="••••••••"
                                 disabled={loading}
+                                suppressHydrationWarning
                             />
                         </div>
 
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full btn-primary py-4 disabled:opacity-50 disabled:cursor-not-allowed text-[11px] font-black uppercase tracking-[0.2em]"
+                            className="w-full btn-primary h-16 text-sm font-bold flex items-center justify-center gap-3 group"
+                            suppressHydrationWarning
                         >
-                            {loading ? 'Validating...' : 'Authorize Login'}
+                            {loading ? (
+                                <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                            ) : (
+                                <>
+                                    <span>Authorize Access</span>
+                                    <ArrowRightIcon className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                </>
+                            )}
                         </button>
                     </form>
 
-                    <div className="mt-8 text-center">
-                        <p className="text-[9px] font-black text-[#1c1917]/30 uppercase tracking-[0.3em]">Restricted Node Protocol v.2.6</p>
+                    <div className="mt-12 pt-10 border-t border-border/40 flex items-center justify-center gap-3 text-secondary-300">
+                        <ShieldCheckIcon className="w-4 h-4 text-primary-500 animate-pulse" />
+                        <span className="text-[9px] font-bold uppercase tracking-[0.4em]">End-to-End Encrypted Node</span>
                     </div>
                 </div>
 
-                <div className="mt-8 text-center text-[10px] font-black uppercase tracking-[0.2em] text-[#1c1917]/40">
-                    <p>© 2026 TaskForge. All Rights Reserved.</p>
+                <div className="mt-10 text-center animate-in fade-in duration-1000 delay-500 fill-mode-both">
+                    <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-widest">
+                        TaskForge Core Service Platform © 2026. <span className="text-secondary-300">v2.8.4-stable</span>
+                    </p>
                 </div>
             </div>
-
-            {/* Subtle Texture Overlay */}
-            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-5 pointer-events-none"></div>
         </div>
     );
 }
@@ -138,8 +154,8 @@ function LoginForm() {
 export default function LoginPage() {
     return (
         <Suspense fallback={
-            <div className="min-h-screen flex items-center justify-center bg-[#fdfcf9]">
-                <div className="w-8 h-8 border-4 border-[#d97757] border-t-transparent rounded-full animate-spin"></div>
+            <div className="min-h-screen flex items-center justify-center bg-background">
+                <div className="w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
             </div>
         }>
             <LoginForm />

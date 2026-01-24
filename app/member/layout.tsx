@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { createClient } from '@/lib/supabase/server';
 import { getCurrentUser } from '@/lib/auth/session';
 import {
@@ -8,7 +7,9 @@ import {
     ClockIcon,
     ChatBubbleLeftRightIcon,
     ArrowRightOnRectangleIcon,
-    BellIcon
+    BellIcon,
+    RectangleGroupIcon,
+    VideoCameraIcon
 } from '@heroicons/react/24/outline';
 import SignOutButton from '@/components/auth/SignOutButton';
 import NotificationCenter from '@/components/notifications/NotificationCenter';
@@ -22,47 +23,45 @@ export default async function MemberLayout({
     const user = await getCurrentUser();
 
     return (
-        <div className="min-h-screen bg-[#fdfcf9] text-[#1c1917] flex flex-col">
+        <div className="min-h-screen bg-background text-foreground flex flex-col">
             <Toaster position="top-right" richColors />
-            {/* Simple Top Navigation */}
-            <header className="h-20 bg-white/80 border-b border-[#e5dec9] px-6 sm:px-12 flex items-center justify-between sticky top-0 z-50 backdrop-blur-xl">
-                <div className="flex items-center gap-8">
-                    <div className="flex items-center gap-4">
-                        <div className="relative w-24 h-24">
-                            <Image src="/logo.png" alt="Logo" fill className="object-contain" />
+            
+            {/* Professional Top Navigation */}
+            <header className="h-20 bg-white/70 backdrop-blur-xl border-b border-border sticky top-0 z-50 flex items-center justify-between px-10">
+                <div className="flex items-center gap-10">
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-primary-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary-500/20">
+                            <RectangleGroupIcon className="w-6 h-6" />
                         </div>
-                        <h1 className="text-4xl font-black tracking-tighter text-[#1c1917]">
-                            TaskForge
-                        </h1>
+                        <h1 className="text-xl font-bold tracking-tight text-secondary-900 leading-tight">TaskForge</h1>
                     </div>
 
-                    <nav className="hidden md:flex items-center gap-2">
-                        <Link href="/member/tasks" className="px-5 py-2 text-[10px] font-black uppercase tracking-widest text-[#1c1917] hover:text-[#d97757] transition-all bg-[#f7f3ed] rounded-lg border border-[#e5dec9]">
-                            Workspace
+                    <nav className="hidden md:flex items-center gap-1">
+                        <Link href="/member/tasks" className="px-4 py-2 text-sm font-bold text-secondary-900 hover:text-primary-600 transition-all rounded-lg hover:bg-secondary-50">
+                            Task Registry
                         </Link>
-                        <Link href="/member/activity" className="px-5 py-2 text-[10px] font-black uppercase tracking-widest text-[#1c1917]/50 hover:text-[#d97757] transition-all">
+                        <Link href="/member/activity" className="px-4 py-2 text-sm font-medium text-secondary-500 hover:text-primary-600 transition-all rounded-lg hover:bg-secondary-50">
                             Activity
                         </Link>
-                        <Link href="/member/meetings" className="px-4 py-2 text-sm font-bold text-slate-600 hover:text-purple-600 transition-colors">
+                        <Link href="/member/meetings" className="px-4 py-2 text-sm font-medium text-secondary-500 hover:text-primary-600 transition-all rounded-lg hover:bg-secondary-50">
                             Meetings
                         </Link>
                     </nav>
                 </div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-6">
                     <NotificationCenter />
-                    <div className="h-8 w-px bg-[#e5dec9] mx-1"></div>
+                    <div className="h-8 w-px bg-border mx-1"></div>
                     <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-lg bg-[#f7f3ed] flex items-center justify-center text-xs font-black text-[#d97757] border border-[#e5dec9]">
-                            {user?.full_name?.charAt(0) || 'M'}
-                        </div>
-                        <div className="hidden sm:block">
-                            <p className="text-xs font-black text-[#1c1917] leading-none">{user?.full_name}</p>
-                            <p className="text-[9px] font-black text-[#d97757] uppercase tracking-widest mt-1">
+                        <div className="text-right hidden sm:block">
+                            <p className="text-sm font-bold text-secondary-900">{user?.full_name}</p>
+                            <p className="text-[10px] font-bold text-primary-500 uppercase tracking-widest">
                                 {user?.role === 'admin' ? 'Administrator' :
-                                    user?.role === 'associate' ? 'Project Lead' :
-                                        user?.role === 'guest' ? 'Guest View' : 'Contributor'}
+                                    user?.role === 'associate' ? 'Project Lead' : 'Contributor'}
                             </p>
+                        </div>
+                        <div className="w-10 h-10 rounded-full bg-primary-50 flex items-center justify-center text-sm font-bold text-primary-600 border border-primary-100">
+                            {user?.full_name?.charAt(0) || 'M'}
                         </div>
                     </div>
                     <SignOutButton />
@@ -70,8 +69,10 @@ export default async function MemberLayout({
             </header>
 
             {/* Content Area */}
-            <main className="flex-1 max-w-7xl mx-auto w-full p-8 sm:p-12">
-                {children}
+            <main className="flex-1 p-10 overflow-y-auto">
+                <div className="max-w-7xl mx-auto">
+                    {children}
+                </div>
             </main>
         </div>
     );
