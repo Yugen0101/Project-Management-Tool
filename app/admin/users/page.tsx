@@ -26,9 +26,9 @@ export default async function AdminUsersPage({
 
     const supabase = await createAdminClient();
 
-    // Fetch users with pagination and total count
+    // Fetch users with counts of assigned projects and tasks
     const [{ data: users }, { count: totalCount }, { count: adminCount }, { count: associateCount }, { count: memberCount }] = await Promise.all([
-        supabase.from('users').select('*').order('created_at', { ascending: false }).range(from, to),
+        supabase.from('users').select('*, projects_count:user_projects(count), tasks_count:tasks!assigned_to(count)').order('created_at', { ascending: false }).range(from, to),
         supabase.from('users').select('*', { count: 'exact', head: true }),
         supabase.from('users').select('*', { count: 'exact', head: true }).eq('role', 'admin'),
         supabase.from('users').select('*', { count: 'exact', head: true }).eq('role', 'associate'),
@@ -52,7 +52,9 @@ export default async function AdminUsersPage({
                         </p>
                     </div>
                 </div>
-                <UserManagementClient initialUsers={users || []} />
+                <div className="pb-2">
+                    <UserManagementClient initialUsers={(users as any) || []} />
+                </div>
             </div>
 
             {/* Quick stats grid */}
@@ -62,7 +64,7 @@ export default async function AdminUsersPage({
                         <IdentificationIcon className="w-6 h-6" />
                     </div>
                     <div>
-                        <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-widest">Total Personnel</p>
+                        <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-widest">Aggregate</p>
                         <p className="text-2xl font-bold text-secondary-900 tracking-tight">{totalCount || 0}</p>
                     </div>
                 </div>
@@ -71,7 +73,7 @@ export default async function AdminUsersPage({
                         <ShieldCheckIcon className="w-6 h-6" />
                     </div>
                     <div>
-                        <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-widest">Administrators</p>
+                        <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-widest">Executives</p>
                         <p className="text-2xl font-bold text-secondary-900 tracking-tight">{adminCount || 0}</p>
                     </div>
                 </div>
@@ -89,7 +91,7 @@ export default async function AdminUsersPage({
                         <SparklesIcon className="w-6 h-6" />
                     </div>
                     <div>
-                        <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-widest">Team Members</p>
+                        <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-widest">Tactical</p>
                         <p className="text-2xl font-bold text-secondary-900 tracking-tight">{memberCount || 0}</p>
                     </div>
                 </div>
@@ -112,14 +114,15 @@ export default async function AdminUsersPage({
                         <thead>
                             <tr className="bg-white border-b border-border">
                                 <th className="px-8 py-5 text-[10px] font-bold uppercase text-secondary-400 tracking-widest">Member Entity</th>
-                                <th className="px-8 py-5 text-[10px] font-bold uppercase text-secondary-400 tracking-widest">Access Role</th>
-                                <th className="px-8 py-5 text-[10px] font-bold uppercase text-secondary-400 tracking-widest">Account Status</th>
-                                <th className="px-8 py-5 text-[10px] font-bold uppercase text-secondary-400 tracking-widest">Joined On</th>
+                                <th className="px-8 py-5 text-[10px] font-bold uppercase text-secondary-400 tracking-widest">Clearance Tier</th>
+                                <th className="px-8 py-5 text-[10px] font-bold uppercase text-secondary-400 tracking-widest text-center">Active Assignments</th>
+                                <th className="px-8 py-5 text-[10px] font-bold uppercase text-secondary-400 tracking-widest text-center">Task Queue</th>
+                                <th className="px-8 py-5 text-[10px] font-bold uppercase text-secondary-400 tracking-widest">Operational Status</th>
                                 <th className="px-8 py-5 text-[10px] font-bold uppercase text-secondary-400 tracking-widest text-right">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-border">
-                            {users?.map((user) => (
+                            {users?.map((user: any) => (
                                 <tr key={user.id} className="hover:bg-secondary-50 transition-colors group">
                                     <td className="px-8 py-6">
                                         <div className="flex items-center gap-4">
@@ -136,22 +139,41 @@ export default async function AdminUsersPage({
                                         </div>
                                     </td>
                                     <td className="px-8 py-6">
-                                        <span className={`badge ${user.role === 'admin' ? 'badge-danger' :
-                                            user.role === 'associate' ? 'badge-info' :
-                                                'badge-success'}`}>
-                                            {user.role}
-                                        </span>
+                                        <div className="flex flex-col gap-1">
+                                            <span className={`badge inline-flex w-fit ${user.role === 'admin' ? 'badge-danger' :
+                                                user.role === 'associate' ? 'badge-info' :
+                                                    'badge-success'}`}>
+                                                {user.role}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td className="px-8 py-6">
+                                        <div className="flex items-center justify-center gap-3">
+                                            <div className="flex -space-x-2">
+                                                {[...Array(Math.min(user.projects_count?.[0]?.count || 0, 3))].map((_, i) => (
+                                                    <div key={i} className="w-6 h-6 rounded-lg bg-secondary-50 border border-border flex items-center justify-center shadow-sm">
+                                                        <div className="w-2 h-2 rounded-full bg-primary-500/40"></div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                            <span className="text-[11px] font-bold text-secondary-600 tracking-tight">
+                                                {user.projects_count?.[0]?.count || 0} Project{user.projects_count?.[0]?.count === 1 ? '' : 's'}
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td className="px-8 py-6 text-center">
+                                        <div className="inline-flex flex-col items-center justify-center w-12 h-12 bg-secondary-50 rounded-2xl border border-border group-hover:border-primary-300 transition-all">
+                                            <span className="text-lg font-bold text-primary-600 leading-none">{user.tasks_count?.[0]?.count || 0}</span>
+                                            <span className="text-[7px] font-bold text-secondary-400 uppercase tracking-[0.1em] mt-1">Units</span>
+                                        </div>
                                     </td>
                                     <td className="px-8 py-6">
                                         <div className="flex items-center gap-2">
                                             <span className={`w-2 h-2 rounded-full ${user.is_active ? 'bg-emerald-500' : 'bg-secondary-300'}`}></span>
                                             <span className={`text-[11px] font-bold uppercase tracking-widest ${user.is_active ? 'text-emerald-600' : 'text-secondary-400'}`}>
-                                                {user.is_active ? 'Active' : 'Deactivated'}
+                                                {user.is_active ? 'ACTIVE' : 'DORMANT'}
                                             </span>
                                         </div>
-                                    </td>
-                                    <td className="px-8 py-6 text-xs font-bold text-secondary-400">
-                                        {new Date(user.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
                                     </td>
                                     <td className="px-8 py-6 text-right">
                                         <UserActionMenu user={user} />

@@ -33,10 +33,7 @@ export default async function AssociateDashboard() {
     const { data: userProjects } = await supabase
         .from('user_projects')
         .select(`
-            project:projects(
-                *,
-                tasks:tasks(count)
-            )
+            project:projects(*)
         `)
         .eq('user_id', user?.id);
 
@@ -139,7 +136,7 @@ export default async function AssociateDashboard() {
                                                 project.status === 'active' ? 'text-primary-600' : 'text-secondary-400'
                                             }`}>{project.status}</span>
                                         </div>
-                                    </div>
+                                        </div>
                                     <ChevronRightIcon className="w-5 h-5 text-secondary-300 group-hover:translate-x-1 transition-all" />
                                 </div>
                             </Link>

@@ -5,23 +5,30 @@ import {
     SortableContext,
     verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
+import { useState } from 'react';
 import KanbanTask from '@/components/kanban/KanbanTask';
+import TaskCreateModal from '@/components/tasks/TaskCreateModal';
 
 export default function KanbanColumn({
     id,
+    projectId,
     title,
     tasks,
     wipLimit,
+    members = [],
     role,
     isReadOnly = false
 }: {
     id: string,
+    projectId: string,
     title: string,
     tasks: any[],
     wipLimit?: number | null,
+    members?: any[],
     role?: string,
     isReadOnly?: boolean
 }) {
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const isWipExceeded = wipLimit ? tasks.length >= wipLimit : false;
     const isWipWarning = wipLimit ? tasks.length === wipLimit : false;
 
@@ -52,7 +59,10 @@ export default function KanbanColumn({
                     </div>
                 </div>
                 {!isReadOnly && (
-                    <button className="text-[#1c1917]/20 hover:text-[#d97757] transition-colors">
+                    <button
+                        onClick={() => setIsCreateModalOpen(true)}
+                        className="text-[#1c1917]/20 hover:text-[#d97757] transition-colors"
+                    >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
                         </svg>
@@ -76,6 +86,16 @@ export default function KanbanColumn({
                     </div>
                 )}
             </div>
+
+            {isCreateModalOpen && (
+                <TaskCreateModal
+                    projectId={projectId}
+                    columnId={id}
+                    members={members}
+                    onClose={() => setIsCreateModalOpen(false)}
+                    onSuccess={() => window.location.reload()}
+                />
+            )}
         </div>
     );
 }

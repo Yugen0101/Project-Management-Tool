@@ -81,6 +81,11 @@
   .nav-link-active {
     @apply flex items-center gap-3 px-5 py-3.5 font-bold text-[13px] bg-primary-600 text-white rounded-[1.25rem] shadow-xl shadow-primary-500/30;
   }
+
+  /* Glassmorphism utility */
+  .glass {
+    @apply bg-white/70 backdrop-blur-xl border border-white/20 shadow-2xl shadow-[#1c1917]/5;
+  }
 }
 
 @layer utilities {

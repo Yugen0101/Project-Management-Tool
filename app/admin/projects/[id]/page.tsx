@@ -1,5 +1,5 @@
-import { createServerClient } from '@supabase/ssr';
-import { cookies } from 'next/headers';
+import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { notFound } from 'next/navigation';
 import {
     CalendarIcon,
@@ -26,6 +26,7 @@ import SprintPerformance from '@/components/analytics/SprintPerformance';
 import ActivityFeed from '@/components/activity/ActivityFeed';
 import ProjectActions from '@/components/admin/ProjectActions';
 import ProjectMeetings from '@/components/meetings/ProjectMeetings';
+import TeamManager from '@/components/admin/TeamManager';
 import { getCurrentUser } from '@/lib/auth/session';
 
 export default async function ProjectDetailPage({ params, searchParams }: { 
@@ -34,34 +35,28 @@ export default async function ProjectDetailPage({ params, searchParams }: {
 }) {
     const { id } = await params;
     const { view = 'sprints' } = await searchParams;
-    const cookieStore = await cookies();
-    const supabase = createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        {
-            cookies: {
-                getAll() {
-                    return cookieStore.getAll();
-                },
-            },
-        }
-    );
+    const supabase = await createClient();
 
     const user = await getCurrentUser();
     if (!user) return notFound();
 
-    const { data: project, error: projectError } = await supabase
+    // Fetch project with tasks, sprints, and assigned users
+    // If admin, use admin client to ensure visibility regardless of RLS
+    const fetchClient = user.role === 'admin' ? await createAdminClient() : supabase;
+
+    const { data: project, error: projectError } = await fetchClient
         .from('projects')
         .select(`
             *,
-            tasks:tasks(*, assigned_user:users(*)),
+            tasks:tasks(*, users!assigned_to(*)),
             sprints:sprints(*),
-            user_projects:user_projects(*, user:users(*))
+            user_projects:user_projects(*, users(*))
         `)
         .eq('id', id)
         .single();
 
     if (projectError || !project) {
+        console.error('Project fetch error:', projectError);
         return notFound();
     }
 
@@ -85,6 +80,7 @@ export default async function ProjectDetailPage({ params, searchParams }: {
                         status={project.status}
                         isPublic={project.is_public}
                         shareToken={project.share_token}
+                        userRole={user.role}
                     />
                 </div>
             </div>
@@ -161,6 +157,7 @@ export default async function ProjectDetailPage({ params, searchParams }: {
                                 projectId={id}
                                 sprints={sprints}
                                 tasks={tasks}
+                                members={project.user_projects || []}
                             />
                             <div className="card">
                                 <ProjectMeetings 
@@ -176,6 +173,13 @@ export default async function ProjectDetailPage({ params, searchParams }: {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <TeamWorkload projectId={id} />
                                 <SprintPerformance projectId={id} />
+                            </div>
+                            <div className="card p-6 space-y-4">
+                                <h3 className="font-bold text-slate-900 flex items-center gap-2">
+                                    <ClockIcon className="w-5 h-5 text-purple-500" />
+                                    Recent Activity
+                                </h3>
+                                <ActivityFeed projectId={id} />
                             </div>
                         </div>
                     )}
@@ -227,23 +231,13 @@ export default async function ProjectDetailPage({ params, searchParams }: {
                     <div className="card">
                         <div className="flex items-center justify-between border-b border-border pb-4 mb-6">
                             <h3 className="text-sm font-bold text-secondary-900 uppercase tracking-wider">Operational Unit</h3>
-                            <Link href="#" className="text-[10px] font-bold text-primary-600">Reassign</Link>
+                            {user.role === 'admin' && <Link href="#" className="text-[10px] font-bold text-primary-600">Reassign</Link>}
                         </div>
                         <div className="space-y-4">
-                            {project.user_projects?.map((up: any) => (
-                                <div key={up.id} className="flex items-center justify-between group">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-9 h-9 rounded-xl bg-secondary-50 flex items-center justify-center text-xs font-bold text-secondary-500 group-hover:bg-primary-50 group-hover:text-primary-600 transition-colors">
-                                            {up.user.full_name.charAt(0)}
-                                        </div>
-                                        <div>
-                                            <p className="text-xs font-bold text-secondary-900 group-hover:text-primary-600 transition-colors">{up.user.full_name}</p>
-                                            <p className="text-[9px] font-bold text-secondary-400 uppercase tracking-widest">{up.role}</p>
-                                        </div>
-                                    </div>
-                                    <div className="w-2 h-2 rounded-full bg-emerald-400 ring-4 ring-emerald-50"></div>
-                                </div>
-                            ))}
+                            <TeamManager
+                                projectId={id}
+                                initialMembers={project.user_projects || []}
+                            />
                         </div>
                     </div>
 

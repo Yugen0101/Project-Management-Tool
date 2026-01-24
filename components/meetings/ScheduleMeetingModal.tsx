@@ -1,21 +1,22 @@
 'use client';
 
 import { useState } from 'react';
-import { 
-    XMarkIcon, 
+import {
+    XMarkIcon,
     VideoCameraIcon,
     CalendarIcon,
     ClockIcon,
     UserGroupIcon
 } from '@heroicons/react/24/outline';
 import { scheduleMeeting } from '@/app/actions/meetings';
+import { toast } from 'sonner';
 
-export default function ScheduleMeetingModal({ 
-    projectId, 
-    members, 
+export default function ScheduleMeetingModal({
+    projectId,
+    members,
     onClose,
     onSuccess
-}: { 
+}: {
     projectId: string;
     members: any[];
     onClose: () => void;
@@ -33,28 +34,35 @@ export default function ScheduleMeetingModal({
         e.preventDefault();
         setLoading(true);
 
-        const scheduledAt = new Date(`${date}T${time}`).toISOString();
+        try {
+            const scheduledAt = new Date(`${date}T${time}`).toISOString();
 
-        const result = await scheduleMeeting({
-            projectId,
-            title,
-            description,
-            scheduledAt,
-            duration: parseInt(duration),
-            participantIds: selectedParticipants,
-        }) as any;
+            const result = await scheduleMeeting({
+                projectId,
+                title,
+                description,
+                scheduledAt,
+                duration: parseInt(duration),
+                participantIds: selectedParticipants,
+            }) as any;
 
-        if (result.success) {
-            onSuccess();
-            onClose();
-        } else {
-            alert(result.error);
+            if (result.success) {
+                toast.success('Meeting scheduled and synced with Zoom');
+                onSuccess();
+                onClose();
+            } else {
+                toast.error(result.error || 'Tactical failure during meeting allocation');
+            }
+        } catch (err: any) {
+            console.error('Schedule meeting error:', err);
+            toast.error('Connection severed: Failed to reach command node');
+        } finally {
             setLoading(false);
         }
     };
 
     const toggleParticipant = (id: string) => {
-        setSelectedParticipants((prev: string[]) => 
+        setSelectedParticipants((prev: string[]) =>
             prev.includes(id) ? prev.filter((p: string) => p !== id) : [...prev, id]
         );
     };
@@ -78,7 +86,7 @@ export default function ScheduleMeetingModal({
                 <form onSubmit={handleSubmit} className="p-6 space-y-5">
                     <div>
                         <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Meeting Title</label>
-                        <input 
+                        <input
                             required
                             type="text"
                             value={title}
@@ -90,7 +98,7 @@ export default function ScheduleMeetingModal({
 
                     <div>
                         <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Description (Optional)</label>
-                        <textarea 
+                        <textarea
                             value={description}
                             onChange={(e: any) => setDescription(e.target.value)}
                             placeholder="Agenda or notes..."
@@ -106,7 +114,7 @@ export default function ScheduleMeetingModal({
                                     Date
                                 </span>
                             </label>
-                            <input 
+                            <input
                                 required
                                 type="date"
                                 value={date}
@@ -122,7 +130,7 @@ export default function ScheduleMeetingModal({
                                     Time
                                 </span>
                             </label>
-                            <input 
+                            <input
                                 required
                                 type="time"
                                 value={time}
@@ -134,7 +142,7 @@ export default function ScheduleMeetingModal({
 
                     <div>
                         <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Duration (minutes)</label>
-                        <select 
+                        <select
                             value={duration}
                             onChange={(e: any) => setDuration(e.target.value)}
                             className="input"
@@ -157,15 +165,15 @@ export default function ScheduleMeetingModal({
                         </label>
                         <div className="max-h-40 overflow-y-auto border border-slate-200 rounded-lg p-2 space-y-1 custom-scrollbar bg-slate-50/30">
                             {members.map((member: any) => (
-                                <label key={member.user.id} className="flex items-center gap-3 p-2 hover:bg-white rounded-md cursor-pointer transition-colors border border-transparent hover:border-slate-100">
-                                    <input 
+                                <label key={member.users.id} className="flex items-center gap-3 p-2 hover:bg-white rounded-md cursor-pointer transition-colors border border-transparent hover:border-slate-100">
+                                    <input
                                         type="checkbox"
-                                        checked={selectedParticipants.includes(member.user.id)}
-                                        onChange={() => toggleParticipant(member.user.id)}
+                                        checked={selectedParticipants.includes(member.users.id)}
+                                        onChange={() => toggleParticipant(member.users.id)}
                                         className="w-4 h-4 rounded text-primary-600 border-slate-300 focus:ring-primary-500"
                                     />
                                     <div className="flex flex-col">
-                                        <span className="text-sm font-medium text-slate-700">{member.user.full_name}</span>
+                                        <span className="text-sm font-medium text-slate-700">{member.users.full_name}</span>
                                         <span className="text-[10px] text-slate-400 font-bold uppercase">{member.role}</span>
                                     </div>
                                 </label>
@@ -174,15 +182,15 @@ export default function ScheduleMeetingModal({
                     </div>
 
                     <div className="pt-2 flex gap-3">
-                        <button 
-                            type="button" 
+                        <button
+                            type="button"
                             onClick={onClose}
                             className="flex-1 btn-secondary"
                         >
                             Cancel
                         </button>
-                        <button 
-                            type="submit" 
+                        <button
+                            type="submit"
                             disabled={loading || !title || !date || !time}
                             className="flex-1 btn-primary disabled:opacity-50"
                         >

@@ -128,38 +128,44 @@ export default async function AdminDashboard() {
                     </div>
 
                     <div className="space-y-4">
-                        {recentProjects?.map((project: any, i: number) => (
-                            <div key={project.id} className="card p-5 group hover:pl-8 transition-all duration-500 relative overflow-hidden">
-                                <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-primary-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                                <div className="flex items-center justify-between">
-                                    <div className="flex items-center gap-5">
-                                        <div className="w-14 h-14 bg-secondary-50 group-hover:bg-primary-50 rounded-2xl flex items-center justify-center text-secondary-400 group-hover:text-primary-600 transition-colors">
-                                            <BriefcaseIcon className="w-7 h-7" />
-                                        </div>
-                                        <div>
-                                            <h4 className="font-bold text-secondary-900 text-lg tracking-tight group-hover:text-primary-600 transition-colors">{project.name}</h4>
-                                            <p className="text-xs text-secondary-400 font-bold uppercase tracking-widest mt-1">Managed by: {project.created_by?.full_name}</p>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center gap-6">
-                                        <div className="flex flex-col items-end gap-2">
-                                            <span className={`badge ${
-                                                project.status === 'active' ? 'badge-info' : 
-                                                project.status === 'completed' ? 'badge-success' : 'badge-warning'
-                                            }`}>
-                                                {project.status}
-                                            </span>
-                                            <span className="text-[9px] font-bold text-secondary-300 uppercase tracking-tighter">Sync: Operational</span>
-                                        </div>
-                                        <Link href={`/admin/projects/${project.id}`}>
-                                            <div className="w-11 h-11 rounded-xl hover:bg-primary-50 flex items-center justify-center text-secondary-300 hover:text-primary-600 transition-all border border-transparent hover:border-primary-100">
-                                                <ArrowRightIcon className="w-5 h-5" />
+                        {recentProjects && recentProjects.length > 0 ? (
+                            recentProjects.map((project: any) => (
+                                <div key={project.id} className="card p-5 group hover:pl-8 transition-all duration-500 relative overflow-hidden">
+                                    <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-primary-600 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-5">
+                                            <div className="w-14 h-14 bg-secondary-50 group-hover:bg-primary-50 rounded-2xl flex items-center justify-center text-secondary-400 group-hover:text-primary-600 transition-colors">
+                                                <BriefcaseIcon className="w-7 h-7" />
                                             </div>
-                                        </Link>
+                                            <div>
+                                                <h4 className="font-bold text-secondary-900 text-lg tracking-tight group-hover:text-primary-600 transition-colors">{project.name}</h4>
+                                                <p className="text-xs text-secondary-400 font-bold uppercase tracking-widest mt-1">Managed by: {project.created_by?.full_name}</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center gap-6">
+                                            <div className="flex flex-col items-end gap-2">
+                                                <span className={`badge ${
+                                                    project.status === 'active' ? 'badge-info' : 
+                                                    project.status === 'completed' ? 'badge-success' : 'badge-warning'
+                                                }`}>
+                                                    {project.status}
+                                                </span>
+                                                <span className="text-[9px] font-bold text-secondary-300 uppercase tracking-tighter">Sync: Operational</span>
+                                            </div>
+                                            <Link href={`/admin/projects/${project.id}`}>
+                                                <div className="w-11 h-11 rounded-xl hover:bg-primary-50 flex items-center justify-center text-secondary-300 hover:text-primary-600 transition-all border border-transparent hover:border-primary-100">
+                                                    <ArrowRightIcon className="w-5 h-5" />
+                                                </div>
+                                            </Link>
+                                        </div>
                                     </div>
                                 </div>
+                            ))
+                        ) : (
+                            <div className="py-12 border-2 border-dashed border-border/60 rounded-[2rem] text-center text-secondary-300 font-bold uppercase text-[10px] tracking-[0.3em] bg-secondary-50/30">
+                                No active projections found
                             </div>
-                        ))}
+                        )}
                     </div>
                 </div>
 

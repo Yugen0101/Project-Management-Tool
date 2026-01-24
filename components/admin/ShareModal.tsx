@@ -53,9 +53,9 @@ export default function ShareModal({
     }
 
     return (
-        <div className="fixed inset-0 bg-[#1c1917]/40 backdrop-blur-xl z-50 flex items-center justify-center p-4 animate-in fade-in duration-300">
-            <div className="bg-white rounded-[2.5rem] shadow-2xl shadow-[#d9cfb0]/20 w-full max-w-lg overflow-hidden border border-[#e5dec9] animate-in zoom-in-95 duration-500">
-                <div className="px-10 py-8 border-b border-[#f7f3ed] flex items-center justify-between bg-[#f7f3ed]/30">
+        <div className="fixed inset-0 bg-[#1c1917]/20 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-in fade-in duration-300">
+            <div className="glass rounded-[2.5rem] w-full max-w-lg overflow-hidden animate-in zoom-in-95 duration-500">
+                <div className="px-10 py-8 border-b border-[#f7f3ed]/50 flex items-center justify-between bg-[#f7f3ed]/20">
                     <div>
                         <h2 className="text-2xl font-black text-[#1c1917] tracking-tighter uppercase">Share Protocol</h2>
                         <p className="text-[10px] font-black text-[#1c1917]/30 uppercase tracking-[0.3em] mt-1">External Authorization Node</p>

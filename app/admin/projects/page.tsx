@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { getCurrentUser } from '@/lib/auth/session';
 import { redirect } from 'next/navigation';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { 
     PlusIcon,
     BriefcaseIcon,
@@ -15,7 +16,6 @@ import {
 import Link from 'next/link';
 import { format } from 'date-fns';
 import Pagination from '@/components/ui/Pagination';
-import { createAdminClient } from '@/lib/supabase/admin';
 
 export default async function AdminProjectsPage({
     searchParams,
@@ -27,7 +27,12 @@ export default async function AdminProjectsPage({
     const pageSize = 9; 
     const from = (currentPage - 1) * pageSize;
     const to = from + pageSize - 1;
-    const supabase = await createAdminClient();
+
+    // Check user and role
+    const { getCurrentUser } = await import('@/lib/auth/session');
+    const user = await getCurrentUser();
+
+    const supabase = user?.role === 'admin' ? await createAdminClient() : await createClient();
 
     // Fetch projects with counts
     let query = supabase
@@ -43,9 +48,13 @@ export default async function AdminProjectsPage({
         query = query.eq('status', filterStatus);
     }
 
-    const { data: projects, count } = await query
+    const { data: projects, count, error } = await query
         .order('created_at', { ascending: false })
         .range(from, to);
+
+    if (error) {
+        console.error('AdminProjectsPage fetch error:', error);
+    }
 
     const totalPages = Math.ceil((count || 0) / pageSize);
 

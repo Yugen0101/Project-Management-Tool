@@ -74,7 +74,7 @@ export default function UserActionMenu({ user }: { user: User }) {
                         className="w-full text-left px-4 py-2.5 text-[10px] font-bold uppercase tracking-widest text-secondary-600 hover:bg-secondary-50 hover:text-primary-600 flex items-center gap-3 transition-colors"
                     >
                         {user.is_active ? <NoSymbolIcon className="w-4 h-4" /> : <CheckIcon className="w-4 h-4" />}
-                        {user.is_active ? 'Deactivate User' : 'Activate User'}
+                        {user.is_active ? 'Deactivate Node' : 'Initialise Node'}
                     </button>
                     {user.role === 'associate' && (
                         <button

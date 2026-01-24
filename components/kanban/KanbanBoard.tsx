@@ -23,12 +23,14 @@ export default function KanbanBoard({
     initialTasks,
     initialColumns,
     projectId,
+    members = [],
     role = 'member',
     isReadOnly: initialIsReadOnly = false
 }: {
     initialTasks: any[],
     initialColumns: any[],
     projectId: string,
+    members?: any[],
     role?: 'admin' | 'member' | 'associate' | 'guest',
     isReadOnly?: boolean
 }) {
@@ -127,9 +129,11 @@ export default function KanbanBoard({
                         <KanbanColumn
                             key={column.id}
                             id={column.id}
+                            projectId={projectId}
                             title={column.name}
                             wipLimit={column.wip_limit}
                             tasks={tasks.filter((t) => t.kanban_column_id === column.id)}
+                            members={members}
                             role={role}
                             isReadOnly={isReadOnly}
                         />

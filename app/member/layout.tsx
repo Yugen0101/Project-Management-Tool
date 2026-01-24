@@ -13,6 +13,7 @@ import {
 } from '@heroicons/react/24/outline';
 import SignOutButton from '@/components/auth/SignOutButton';
 import NotificationCenter from '@/components/notifications/NotificationCenter';
+import MemberNav from '@/components/member/MemberNav';
 import { Toaster } from 'sonner';
 
 export default async function MemberLayout({
@@ -36,17 +37,7 @@ export default async function MemberLayout({
                         <h1 className="text-xl font-bold tracking-tight text-secondary-900 leading-tight">TaskForge</h1>
                     </div>
 
-                    <nav className="hidden md:flex items-center gap-1">
-                        <Link href="/member/tasks" className="px-4 py-2 text-sm font-bold text-secondary-900 hover:text-primary-600 transition-all rounded-lg hover:bg-secondary-50">
-                            Task Registry
-                        </Link>
-                        <Link href="/member/activity" className="px-4 py-2 text-sm font-medium text-secondary-500 hover:text-primary-600 transition-all rounded-lg hover:bg-secondary-50">
-                            Activity
-                        </Link>
-                        <Link href="/member/meetings" className="px-4 py-2 text-sm font-medium text-secondary-500 hover:text-primary-600 transition-all rounded-lg hover:bg-secondary-50">
-                            Meetings
-                        </Link>
-                    </nav>
+                    <MemberNav />
                 </div>
 
                 <div className="flex items-center gap-6">

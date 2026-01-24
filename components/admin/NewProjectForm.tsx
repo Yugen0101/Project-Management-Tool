@@ -64,7 +64,7 @@ export default function NewProjectForm() {
                         </div>
                         <div>
                             <h1 className="text-3xl font-black text-[#1c1917] tracking-tighter uppercase leading-none">
-                                Initialize Project Node
+                                Initialise Project Node
                             </h1>
                             <p className="text-[#1c1917]/40 text-[10px] font-black uppercase tracking-[0.3em] mt-2">
                                 New Operational Workspace / Node Deployment

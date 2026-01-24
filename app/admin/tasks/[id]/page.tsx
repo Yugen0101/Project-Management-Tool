@@ -14,6 +14,7 @@ import {
 } from '@heroicons/react/24/outline';
 import TaskComments from '@/components/collaboration/TaskComments';
 import ActivityFeed from '@/components/activity/ActivityFeed';
+import TaskAssignmentClient from '@/components/tasks/TaskAssignmentClient';
 
 export default async function AdminTaskDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
@@ -34,7 +35,11 @@ export default async function AdminTaskDetailPage({ params }: { params: Promise<
         .from('tasks')
         .select(`
             *,
-            project:projects(id, name),
+            project:projects(
+                id, 
+                name,
+                user_projects:user_projects(*, user:users(*))
+            ),
             assignee:users!tasks_assigned_to_fkey(*)
         `)
         .eq('id', id)
@@ -162,9 +167,12 @@ export default async function AdminTaskDetailPage({ params }: { params: Promise<
                                 </div>
                             </div>
                         </div>
-                        <button className="w-full py-4 bg-white text-primary-600 font-black rounded-2xl hover:bg-slate-50 transition-colors shadow-lg shadow-black/10">
-                            Reassign User
-                        </button>
+                        <TaskAssignmentClient
+                            taskId={id}
+                            currentAssigneeId={task.assigned_to}
+                            projectId={task.project.id}
+                            members={(task.project as any).user_projects || []}
+                        />
                     </div>
                 </div>
             </div>
