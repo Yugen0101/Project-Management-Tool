@@ -1,6 +1,17 @@
 import { createClient } from '@/lib/supabase/server';
 import { getCurrentUser } from '@/lib/auth/session';
 import { redirect } from 'next/navigation';
+import {
+    BriefcaseIcon,
+    UserGroupIcon,
+    ClipboardDocumentCheckIcon,
+    ExclamationTriangleIcon,
+    PlusIcon,
+    ArrowRightIcon,
+    ChartBarIcon,
+    ShieldCheckIcon,
+    SparklesIcon
+} from '@heroicons/react/24/outline';
 import Link from 'next/link';
 
 export default async function AdminDashboard() {
@@ -13,27 +24,19 @@ export default async function AdminDashboard() {
     const supabase = await createClient();
 
     // Get statistics
-    const { count: totalProjects } = await supabase
-        .from('projects')
-        .select('*', { count: 'exact', head: true });
+    const stats = await Promise.all([
+        supabase.from('projects').select('*', { count: 'exact', head: true }),
+        supabase.from('projects').select('*', { count: 'exact', head: true }).eq('status', 'active'),
+        supabase.from('users').select('*', { count: 'exact', head: true }),
+        supabase.from('tasks').select('*', { count: 'exact', head: true }),
+        supabase.from('tasks').select('*', { count: 'exact', head: true }).eq('status', 'completed'),
+    ]);
 
-    const { count: activeProjects } = await supabase
-        .from('projects')
-        .select('*', { count: 'exact', head: true })
-        .eq('status', 'active');
-
-    const { count: totalUsers } = await supabase
-        .from('users')
-        .select('*', { count: 'exact', head: true });
-
-    const { count: totalTasks } = await supabase
-        .from('tasks')
-        .select('*', { count: 'exact', head: true });
-
-    const { count: completedTasks } = await supabase
-        .from('tasks')
-        .select('*', { count: 'exact', head: true })
-        .eq('status', 'completed');
+    const totalProjects = stats[0].count || 0;
+    const activeProjects = stats[1].count || 0;
+    const totalUsers = stats[2].count || 0;
+    const totalTasks = stats[3].count || 0;
+    const completedTasks = stats[4].count || 0;
 
     const { count: overdueTasks } = await supabase
         .from('tasks')
@@ -187,61 +190,120 @@ export default async function AdminDashboard() {
                                             </p>
                                         </div>
                                         <span className={`badge ${project.status === 'active' ? 'badge-success' :
-                                                project.status === 'completed' ? 'badge-info' :
-                                                    'badge-warning'
+                                            project.status === 'completed' ? 'badge-info' :
+                                                'badge-warning'
                                             }`}>
                                             {project.status}
                                         </span>
                                     </div>
-                                </Link>
+                                </Link >
                             ))
                         ) : (
                             <div className="py-12 border-2 border-dashed border-beige-200 rounded-[2rem] text-center text-[#1c1917]/30 font-bold uppercase text-sm tracking-widest">
                                 No projects yet
                             </div>
+                        )
+                        }
+                    </div>
                         )}
-                    </div>
-                </div>
-
-                {/* Team Roster */}
-                <div className="space-y-6">
-                    <div className="flex items-center justify-between px-2">
-                        <h3 className="text-2xl font-bold text-[#1c1917] tracking-tight">Team Roster</h3>
-                        <Link href="/admin/users" className="text-xs font-bold text-accent-600 uppercase tracking-tight hover:opacity-70 transition-opacity flex items-center gap-2">
-                            VIEW ALL →
-                        </Link>
-                    </div>
-                    <div className="card p-0 divide-y divide-beige-200 shadow-sm overflow-hidden">
-                        {recentUsers && recentUsers.length > 0 ? (
-                            recentUsers.map((u: any) => (
-                                <div key={u.id} className="p-5 hover:bg-beige-50 transition-colors flex items-center justify-between group">
-                                    <div className="flex items-center gap-4">
-                                        <div className="w-10 h-10 rounded-lg bg-beige-100 flex items-center justify-center text-sm font-bold text-accent-600 border border-beige-200">
-                                            {u.full_name?.charAt(0) || 'U'}
-                                        </div>
-                                        <div>
-                                            <h5 className="text-sm font-bold text-[#1c1917] group-hover:text-accent-600 transition-colors uppercase tracking-tight">
-                                                {u.full_name}
-                                            </h5>
-                                            <p className="text-xs text-[#1c1917]/50 uppercase tracking-tight font-bold">
-                                                {u.role}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <span className={`badge ${u.status === 'active' ? 'badge-success' : 'badge-warning'
-                                        }`}>
-                                        {u.status}
-                                    </span>
-                                </div>
-                            ))
-                        ) : (
-                            <div className="py-12 text-center text-[#1c1917]/30 font-bold uppercase text-sm tracking-widest">
-                                No users yet
-                            </div>
-                        )}
-                    </div>
                 </div>
             </div>
+
+            {/* Team Roster */}
+            <div className="space-y-6">
+                <div className="flex items-center justify-between px-2">
+                    <h3 className="text-2xl font-bold text-[#1c1917] tracking-tight">Team Roster</h3>
+                    <Link href="/admin/users" className="text-xs font-bold text-accent-600 uppercase tracking-tight hover:opacity-70 transition-opacity flex items-center gap-2">
+                        VIEW ALL →
+                    </Link>
+                </div>
+                <div className="card p-0 divide-y divide-beige-200 shadow-sm overflow-hidden">
+                    {recentUsers && recentUsers.length > 0 ? (
+                        recentUsers.map((u: any) => (
+                            <div key={u.id} className="p-5 hover:bg-beige-50 transition-colors flex items-center justify-between group">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-10 h-10 rounded-lg bg-beige-100 flex items-center justify-center text-sm font-bold text-accent-600 border border-beige-200">
+                                        {u.full_name?.charAt(0) || 'U'}
+                                    </div>
+                                    <div>
+                                        <h5 className="text-sm font-bold text-[#1c1917] group-hover:text-accent-600 transition-colors uppercase tracking-tight">
+                                            {u.full_name}
+                                        </h5>
+                                        <p className="text-xs text-[#1c1917]/50 uppercase tracking-tight font-bold">
+                                            {u.role}
+                                        </p>
+                                    </div>
+                                </div>
+                                <span className={`badge ${u.status === 'active' ? 'badge-success' : 'badge-warning'
+                                    }`}>
+                                    {u.status}
+                                </span>
+                            </div>
+                        ))
+                    ) : (
+                        <div className="py-12 text-center text-[#1c1917]/30 font-bold uppercase text-sm tracking-widest">
+                            No users yet
+=======
+                {/* Right Side: Roster & Intelligence */}
+                            <div className="space-y-10 animate-in fade-in slide-in-from-right-6 duration-1000 delay-[600ms] fill-mode-both">
+                                <div className="space-y-6">
+                                    <div className="flex items-center justify-between px-2">
+                                        <h3 className="text-lg font-bold text-secondary-900 tracking-tight">Recent Personnel</h3>
+                                        <Link href="/admin/users" className="text-[10px] font-bold text-primary-600 uppercase tracking-widest hover:opacity-70">Manifest</Link>
+                                    </div>
+                                    <div className="bg-white border border-border/60 rounded-[2rem] overflow-hidden shadow-soft">
+                                        <div className="divide-y divide-border/40">
+                                            {recentUsers?.map((u: any) => (
+                                                <div key={u.id} className="p-5 hover:bg-secondary-50/50 transition-colors group">
+                                                    <div className="flex items-center gap-4">
+                                                        <div className="w-12 h-12 rounded-2xl bg-secondary-50 group-hover:bg-white border border-transparent group-hover:border-border flex items-center justify-center text-primary-600 font-black text-sm shadow-sm transition-all group-hover:scale-110">
+                                                            {u.full_name.charAt(0)}
+                                                        </div>
+                                                        <div className="flex-1 min-w-0">
+                                                            <p className="text-sm font-bold text-secondary-900 truncate group-hover:text-primary-600 transition-colors">{u.full_name}</p>
+                                                            <p className="text-[10px] font-bold text-secondary-400 truncate uppercase tracking-tight mt-0.5">{u.email}</p>
+                                                        </div>
+                                                        <span className={`badge shrink-0 ${u.role === 'admin' ? 'badge-danger' :
+                                                            u.role === 'associate' ? 'badge-info' : 'badge-success'
+                                                            }`}>
+                                                            {u.role === 'team_member' ? 'TM' : u.role.charAt(0).toUpperCase()}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            ))}
+>>>>>>> f8a9eddf51e5dc62867bfd05e707e9748c4cf529
+                                        </div>
+                                        <Link href="/admin/users" className="block py-4 text-center text-[10px] font-bold text-secondary-400 uppercase tracking-[0.2em] bg-secondary-50/30 hover:bg-secondary-50 transition-colors border-t border-border/40">
+                                            Access Full Directory
+                                        </Link>
+                                    </div>
+                                </div>
+
+                                {/* Operational Intelligence Card */}
+                                <div className="bg-secondary-900 rounded-[2.5rem] p-8 text-white shadow-premium relative overflow-hidden group">
+                                    <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+                                        <ShieldCheckIcon className="w-24 h-24 rotate-12" />
+                                    </div>
+                                    <div className="relative z-10 space-y-4">
+                                        <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center backdrop-blur-md">
+                                            <ShieldCheckIcon className="w-7 h-7" />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <h4 className="font-bold text-xl tracking-tight">Security & Intelligence</h4>
+                                            <p className="text-sm text-secondary-300 leading-relaxed font-medium">
+                                                Automated node monitoring is active. No unauthorized access attempts detected in the last 24 cycles.
+                                            </p>
+                                        </div>
+                                        <div className="pt-2">
+                                            <button className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary-400 hover:text-white transition-colors">
+                                                View Audit Registry →
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
         </div>
-    );
+                );
 }

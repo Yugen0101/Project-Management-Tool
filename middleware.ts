@@ -38,12 +38,16 @@ export async function middleware(request: NextRequest) {
     const pathname = request.nextUrl.pathname;
 
     // Public routes
-    if (pathname === '/' || pathname === '/login' || pathname === '/auth/callback') {
+    if (pathname === '/' || pathname === '/login' || pathname === '/team/login' || pathname === '/auth/callback') {
         return response;
     }
 
     // Redirect to login if not authenticated
     if (error || !user) {
+        // If they were trying to access /team/*, redirect to /team/login
+        if (pathname.startsWith('/team')) {
+            return NextResponse.redirect(new URL('/team/login', request.url));
+        }
         return NextResponse.redirect(new URL('/login', request.url));
     }
 
@@ -94,8 +98,19 @@ export async function middleware(request: NextRequest) {
             return NextResponse.redirect(new URL('/admin/dashboard', request.url));
         } else if (userData.role === 'associate') {
             return NextResponse.redirect(new URL('/associate/dashboard', request.url));
+        } else if (userData.role === 'team_member' || userData.role === 'member') {
+            return NextResponse.redirect(new URL('/team/dashboard', request.url));
         } else {
-            return NextResponse.redirect(new URL('/member/dashboard', request.url));
+            return NextResponse.redirect(new URL('/login', request.url));
+        }
+    }
+
+    // Special case for unauthorized routes like /analytics or /projects/create for non-admins
+    if ((pathname === '/projects/create' || pathname === '/analytics') && userData.role !== 'admin') {
+        if (userData.role === 'team_member' || userData.role === 'member') {
+            return NextResponse.redirect(new URL('/team/dashboard', request.url));
+        } else if (userData.role === 'associate') {
+            return NextResponse.redirect(new URL('/associate/dashboard', request.url));
         }
     }
 

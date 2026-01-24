@@ -152,15 +152,24 @@ export default function UserManagementClient({ initialUsers }: { initialUsers: U
                             </div>
 
                             <div className="space-y-2">
-                                <label className="block text-[10px] font-black text-[#1c1917]/40 uppercase tracking-[0.2em] ml-1">Initial Sequence</label>
-                                <input
-                                    type="password"
-                                    required
-                                    className="input py-4 bg-[#fdfcf9]"
-                                    placeholder="Set temporary password"
-                                    value={formData.password}
-                                    onChange={e => setFormData({ ...formData, password: e.target.value })}
-                                />
+                                <label className="block text-[10px] font-black text-[#1c1917]/40 uppercase tracking-[0.2em] ml-1">Temporary Access Key</label>
+                                <div className="flex gap-2">
+                                    <input
+                                        type="text"
+                                        required
+                                        className="input py-4 bg-[#fdfcf9] flex-1"
+                                        placeholder="Set temporary password"
+                                        value={formData.password}
+                                        onChange={e => setFormData({ ...formData, password: e.target.value })}
+                                    />
+                                    <button 
+                                        type="button"
+                                        onClick={() => setFormData({ ...formData, password: Math.random().toString(36).slice(-10) })}
+                                        className="px-4 bg-[#f7f3ed] border border-[#e5dec9] rounded-xl text-[9px] font-black uppercase tracking-tighter hover:bg-[#d97757] hover:text-white transition-all"
+                                    >
+                                        GENERATE
+                                    </button>
+                                </div>
                             </div>
 
                             <div className="pt-8 flex gap-4">

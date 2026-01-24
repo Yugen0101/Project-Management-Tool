@@ -9,7 +9,13 @@ import {
     CheckBadgeIcon,
     ClockIcon,
     ExclamationCircleIcon,
-    PlusIcon
+    PlusIcon,
+    TagIcon,
+    UserIcon,
+    SignalIcon,
+    Squares2X2Icon,
+    TableCellsIcon,
+    CalendarDaysIcon
 } from '@heroicons/react/24/outline';
 import { format } from 'date-fns';
 import Link from 'next/link';
@@ -23,8 +29,12 @@ import ProjectMeetings from '@/components/meetings/ProjectMeetings';
 import TeamManager from '@/components/admin/TeamManager';
 import { getCurrentUser } from '@/lib/auth/session';
 
-export default async function ProjectDetailPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function ProjectDetailPage({ params, searchParams }: { 
+    params: Promise<{ id: string }>,
+    searchParams: Promise<{ view?: string }>
+}) {
     const { id } = await params;
+    const { view = 'sprints' } = await searchParams;
     const supabase = await createClient();
 
     const user = await getCurrentUser();
@@ -53,24 +63,18 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
     const tasks = project.tasks || [];
     const sprints = project.sprints || [];
     const completedTasks = tasks.filter((t: any) => t.status === 'completed').length;
-    const inProgressTasks = tasks.filter((t: any) => t.status === 'in_progress').length;
-    const overdueTasks = tasks.filter((t: any) => t.due_date && new Date(t.due_date) < new Date() && t.status !== 'completed').length;
     const progressPercentage = tasks.length > 0 ? Math.round((completedTasks / tasks.length) * 100) : 0;
 
     return (
-        <div className="space-y-8">
-            {/* Project Header */}
-            <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
-                <div className="space-y-2">
-                    <div className="flex items-center gap-3">
-                        <Link href="/admin/projects" className="text-sm font-bold text-primary-600 hover:text-primary-700">Projects</Link>
-                        <span className="text-slate-300">/</span>
-                        <span className="text-sm text-slate-500 font-medium">{project.name}</span>
-                    </div>
-                    <h1 className="text-3xl font-bold text-slate-900">{project.name}</h1>
-                    <p className="text-slate-600 max-w-2xl">{project.description}</p>
+        <div className="space-y-10">
+            {/* Breadcrumbs & Actions */}
+            <div className="flex justify-between items-center">
+                <div className="flex items-center gap-2 text-xs font-bold text-secondary-400">
+                    <Link href="/admin/projects" className="hover:text-primary-600 transition-colors uppercase tracking-widest">Projects</Link>
+                    <span className="opacity-30">/</span>
+                    <span className="text-secondary-900 uppercase tracking-widest">{project.name}</span>
                 </div>
-                <div className="flex gap-3 shrink-0">
+                <div className="flex gap-2">
                     <ProjectActions
                         projectId={id}
                         status={project.status}
@@ -78,85 +82,173 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                         shareToken={project.share_token}
                         userRole={user.role}
                     />
-                    <Link href={`/admin/projects/${id}/kanban`} className="btn-primary flex items-center gap-2">
-                        <ArrowPathIcon className="w-5 h-5" />
-                        Execution Board
-                    </Link>
                 </div>
             </div>
 
-            {/* Dynamic Project Insights */}
-            <ProjectInsights projectId={id} />
-
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Main Content: Sprint & Backlog Management */}
-                <div className="lg:col-span-2 space-y-6">
-                    <SprintManager
-                        projectId={id}
-                        sprints={sprints}
-                        tasks={tasks}
-                        members={project.user_projects || []}
-                    />
-
-                    {/* Zoom Meetings Integration */}
-                    <div className="card p-6">
-                        <ProjectMeetings
-                            projectId={id}
-                            members={project.user_projects || []}
-                            currentUser={user}
-                        />
-                    </div>
-                </div>
-
-                {/* Sidebar: Project Details */}
-                <div className="space-y-6">
-                    {/* Progress Card */}
-                    <div className="card p-6 bg-primary-600 text-white border-0 shadow-lg shadow-primary-900/10">
-                        <h3 className="font-bold mb-4 flex items-center gap-2">
-                            <ArrowPathIcon className="w-5 h-5 text-primary-200" />
-                            Project Health
-                        </h3>
-                        <div className="space-y-4">
-                            <div className="flex justify-between items-end">
-                                <span className="text-4xl font-black">{progressPercentage}%</span>
-                                <span className="text-primary-100 text-sm font-medium">Progress</span>
+            {/* TaskFlow Inspired Hero Card */}
+            <div className="hero-card">
+                <div className="relative z-10 h-full flex flex-col justify-between">
+                    <div className="flex justify-between items-start">
+                        <div className="space-y-2">
+                            <div className="flex items-center gap-2">
+                                <div className="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-pulse shadow-[0_0_10px_rgba(52,211,153,0.5)]"></div>
+                                <h1 className="text-4xl font-bold tracking-tight">{project.name}</h1>
                             </div>
-                            <div className="w-full h-3 bg-white/20 rounded-full overflow-hidden">
-                                <div className="h-full bg-white rounded-full shadow-sm" style={{ width: `${progressPercentage}%` }}></div>
-                            </div>
-                            <p className="text-xs text-primary-100 leading-relaxed font-medium">
-                                {tasks.length} total tasks. {completedTasks} are complete.
-                                {overdueTasks > 0 ? ` Note: ${overdueTasks} tasks are overdue.` : ' All tasks are on schedule.'}
+                            <p className="text-white/80 font-medium max-w-xl line-clamp-2 italic">
+                                {project.description || 'Defining the roadmap for next generation operational standards.'}
                             </p>
+                        </div>
+                        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
+                            <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest mb-1 text-right">Completion</div>
+                            <div className="text-3xl font-black text-white text-right">{progressPercentage}%</div>
                         </div>
                     </div>
 
-                    {/* Meta Data */}
-                    <div className="card p-6 space-y-6">
-                        <h3 className="font-bold text-slate-900 border-b border-slate-100 pb-4">Overview</h3>
-                        {/* ... Overview items ... */}
+                    <div className="mt-12 flex gap-12 border-t border-white/10 pt-8 overflow-x-auto no-scrollbar">
+                        <div>
+                            <div className="text-[10px] font-bold text-white/50 uppercase tracking-widest mb-2">Developed</div>
+                            <div className="text-sm font-bold">{format(new Date(project.created_at), 'MMM dd, yyyy')}</div>
+                        </div>
+                        <div>
+                            <div className="text-[10px] font-bold text-white/50 uppercase tracking-widest mb-2">Target Date</div>
+                            <div className="text-sm font-bold text-white">{format(new Date(project.end_date), 'MMM dd, yyyy')}</div>
+                        </div>
+                        <div>
+                            <div className="text-[10px] font-bold text-white/50 uppercase tracking-widest mb-2">Assigned Group</div>
+                            <div className="text-sm font-bold">CORE_UNIT_{project.id.slice(0,4).toUpperCase()}</div>
+                        </div>
+                        <div className="ml-auto flex -space-x-3">
+                            {project.user_projects?.slice(0, 4).map((up: any) => (
+                                <div key={up.id} className="w-10 h-10 rounded-full border-2 border-white/20 bg-secondary-900 flex items-center justify-center text-xs font-bold text-white" title={up.user.full_name}>
+                                    {up.user.full_name.charAt(0)}
+                                </div>
+                            ))}
+                            {(project.user_projects?.length || 0) > 4 && (
+                                <div className="w-10 h-10 rounded-full border-2 border-white/20 bg-primary-500 flex items-center justify-center text-[10px] font-bold text-white">
+                                    +{project.user_projects!.length - 4}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* View Selection Tabs */}
+            <div className="flex border-b border-border gap-8 overflow-x-auto no-scrollbar">
+                <Link href={`?view=sprints`} className={`pb-4 text-xs font-bold uppercase tracking-widest transition-all relative ${view === 'sprints' ? 'text-primary-600' : 'text-secondary-400 hover:text-secondary-600'}`}>
+                    Sprints & Tasks
+                    {view === 'sprints' && <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-600 rounded-full"></span>}
+                </Link>
+                <Link href={`/admin/projects/${id}/kanban`} className={`pb-4 text-xs font-bold uppercase tracking-widest transition-all relative text-secondary-400 hover:text-secondary-600`}>
+                    Execution Board
+                </Link>
+                <Link href={`?view=insights`} className={`pb-4 text-xs font-bold uppercase tracking-widest transition-all relative ${view === 'insights' ? 'text-primary-600' : 'text-secondary-400 hover:text-secondary-600'}`}>
+                    Advanced Analytics
+                    {view === 'insights' && <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-600 rounded-full"></span>}
+                </Link>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                {/* Main Content Pane */}
+                <div className="lg:col-span-2 space-y-8">
+                    {view === 'sprints' ? (
+                        <>
+                            <SprintManager
+                                projectId={id}
+                                sprints={sprints}
+                                tasks={tasks}
+                                members={project.user_projects || []}
+                            />
+                            <div className="card">
+                                <ProjectMeetings 
+                                    projectId={id}
+                                    members={project.user_projects || []}
+                                    currentUser={user}
+                                />
+                            </div>
+                        </>
+                    ) : (
+                        <div className="space-y-8">
+                            <ProjectInsights projectId={id} />
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <TeamWorkload projectId={id} />
+                                <SprintPerformance projectId={id} />
+                            </div>
+                            <div className="card p-6 space-y-4">
+                                <h3 className="font-bold text-slate-900 flex items-center gap-2">
+                                    <ClockIcon className="w-5 h-5 text-purple-500" />
+                                    Recent Activity
+                                </h3>
+                                <ActivityFeed projectId={id} />
+                            </div>
+                        </div>
+                    )}
+                </div>
+
+                {/* Refined Info Sidebar */}
+                <div className="space-y-8">
+                    {/* Repository Details */}
+                    <div className="card space-y-6">
+                        <div className="flex items-center justify-between border-b border-border pb-4">
+                            <h3 className="text-sm font-bold text-secondary-900 uppercase tracking-wider">Repository Details</h3>
+                            <Link href={`/admin/projects/${id}/edit`} className="text-[10px] font-bold text-primary-600 hover:underline">Edit Hub</Link>
+                        </div>
+                        <div className="grid grid-cols-1 gap-5">
+                            <div className="flex items-center gap-4 group">
+                                <div className="w-9 h-9 bg-primary-50 text-primary-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <ClockIcon className="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-widest">Last Sync</div>
+                                    <div className="text-xs font-bold text-secondary-900">12 Minutes Ago</div>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-4 group">
+                                <div className="w-9 h-9 bg-indigo-50 text-indigo-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <TagIcon className="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-widest">Metadata Tags</div>
+                                    <div className="flex gap-1 mt-1">
+                                        <span className="badge badge-info">OPERATIONAL</span>
+                                        <span className="badge badge-success">V8-CORE</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-4 group">
+                                <div className="w-9 h-9 bg-emerald-50 text-emerald-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <SignalIcon className="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-widest">Operational Status</div>
+                                    <div className="text-xs font-bold text-secondary-900 uppercase">Resonant - Active</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    {/* Team Workload */}
-                    <TeamWorkload projectId={id} />
+                    {/* Team Distribution */}
+                    <div className="card">
+                        <div className="flex items-center justify-between border-b border-border pb-4 mb-6">
+                            <h3 className="text-sm font-bold text-secondary-900 uppercase tracking-wider">Operational Unit</h3>
+                            {user.role === 'admin' && <Link href="#" className="text-[10px] font-bold text-primary-600">Reassign</Link>}
+                        </div>
+                        <div className="space-y-4">
+                            <TeamManager
+                                projectId={id}
+                                initialMembers={project.user_projects || []}
+                            />
+                        </div>
+                    </div>
 
-                    {/* Sprint Performance */}
-                    <SprintPerformance projectId={id} />
-
-                    {/* Recent Activity */}
-                    <div className="card p-6 space-y-4">
-                        <h3 className="font-bold text-slate-900 flex items-center gap-2">
-                            <ClockIcon className="w-5 h-5 text-purple-500" />
-                            Recent Activity
-                        </h3>
+                    {/* Timeline Feed */}
+                    <div className="card">
+                        <div className="flex items-center gap-2 border-b border-border pb-4 mb-6">
+                            <ArrowPathIcon className="w-4 h-4 text-primary-500" />
+                            <h3 className="text-sm font-bold text-secondary-900 uppercase tracking-wider">Sync Log</h3>
+                        </div>
                         <ActivityFeed projectId={id} />
                     </div>
-
-                    {/* Team Management */}
-                    <TeamManager
-                        projectId={id}
-                        initialMembers={project.user_projects || []}
-                    />
                 </div>
             </div>
         </div>

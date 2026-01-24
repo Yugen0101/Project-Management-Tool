@@ -4,6 +4,7 @@
 
 @layer base {
   :root {
+<<<<<<< HEAD
     --background: 45 33% 98%;
     /* Beige 50 equivalent */
     --foreground: 30 25% 11%;
@@ -13,22 +14,54 @@
     @apply bg-beige-50 text-[#1c1917] font-sans antialiased;
     background-image: radial-gradient(at 0% 0%, hsla(45, 33%, 98%, 1) 0, transparent 50%),
       radial-gradient(at 50% 0%, hsla(40, 40%, 96%, 1) 0, transparent 50%);
+=======
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
+    --primary: 243 75% 59%;
+    --primary-foreground: 0 0% 100%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 243 75% 59%;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased selection:bg-primary-500/30 selection:text-primary-900;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+>>>>>>> f8a9eddf51e5dc62867bfd05e707e9748c4cf529
   }
 
   html {
     scroll-behavior: smooth;
   }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-secondary-200 rounded-full hover:bg-secondary-300 transition-colors;
+  }
 }
 
 @layer components {
 
+<<<<<<< HEAD
   /* Primary Button (Terracotta with white text) */
   .btn-primary {
     @apply bg-accent-500 hover:bg-accent-600 text-white px-8 py-4 rounded-2xl font-bold transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center gap-2;
+=======
+  /* Modern Refined Button Styles */
+  .btn-primary {
+    @apply bg-primary-600 hover:bg-primary-700 text-white px-7 py-3.5 rounded-2xl font-bold tracking-tight transition-all duration-300 shadow-lg shadow-primary-500/20 hover:shadow-primary-500/40 hover:-translate-y-1 active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed text-sm flex items-center justify-center gap-2;
+>>>>>>> f8a9eddf51e5dc62867bfd05e707e9748c4cf529
   }
 
   /* Soft Secondary Button (Light beige) */
   .btn-secondary {
+<<<<<<< HEAD
     @apply bg-white hover:bg-beige-50 text-[#1c1917]/70 px-8 py-4 rounded-2xl font-bold transition-all duration-300 border border-beige-200 shadow-sm flex items-center justify-center gap-2;
   }
 
@@ -70,6 +103,46 @@
 
   .badge-info {
     @apply bg-status-info/10 text-status-info border border-status-info/20;
+=======
+    @apply bg-white hover:bg-secondary-50 text-secondary-700 px-7 py-3.5 rounded-2xl font-bold tracking-tight transition-all duration-300 border border-border shadow-sm hover:shadow-premium hover:-translate-y-0.5 text-sm flex items-center justify-center gap-2;
+  }
+
+  .btn-ghost {
+    @apply bg-transparent hover:bg-secondary-100/50 text-secondary-600 px-5 py-2.5 rounded-xl font-bold transition-all duration-200 text-sm;
+  }
+
+  /* Soft UI Card Styles with Premium Hover */
+  .card {
+    @apply bg-white border border-border/60 rounded-[2.5rem] p-8 transition-all duration-500 shadow-soft hover:shadow-premium hover:-translate-y-2;
+  }
+
+  .card-glass {
+    @apply bg-white/60 backdrop-blur-xl border border-white/40 rounded-[2.5rem] p-8 transition-all duration-500 shadow-premium;
+  }
+
+  /* Input Styles (Premium Focus) */
+  .input {
+    @apply w-full px-6 py-4 bg-white/50 border border-border/80 rounded-2xl focus:outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500/40 focus:bg-white transition-all text-secondary-900 placeholder-secondary-400 text-sm font-medium shadow-sm;
+  }
+
+  /* Badge Styles (Classy Pastel) */
+  .badge {
+    @apply inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-bold tracking-widest uppercase border;
+  }
+
+  .badge-success { @apply bg-emerald-50 text-emerald-600 border-emerald-100; }
+  .badge-warning { @apply bg-amber-50 text-amber-600 border-amber-100; }
+  .badge-danger { @apply bg-rose-50 text-rose-600 border-rose-100; }
+  .badge-info { @apply bg-indigo-50 text-indigo-600 border-indigo-100; }
+
+  /* Sidebar Navigation */
+  .nav-link {
+    @apply flex items-center gap-3 px-5 py-3.5 font-bold text-[13px] text-secondary-500 hover:text-primary-600 hover:bg-primary-50/70 rounded-[1.25rem] transition-all duration-300;
+  }
+
+  .nav-link-active {
+    @apply flex items-center gap-3 px-5 py-3.5 font-bold text-[13px] bg-primary-600 text-white rounded-[1.25rem] shadow-xl shadow-primary-500/30;
+>>>>>>> f8a9eddf51e5dc62867bfd05e707e9748c4cf529
   }
 
   /* Glassmorphism */
@@ -79,7 +152,33 @@
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  .shadow-soft {
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.04);
+  }
+  
+  .shadow-premium {
+    box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.08);
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-pulse-subtle {
+    animation: pulse-subtle 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+
+  @keyframes pulse-subtle {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(0.98); }
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-indigo-500;
   }
 }

@@ -2,7 +2,8 @@
 export const ROLES = {
     ADMIN: 'admin',
     ASSOCIATE: 'associate',
-    MEMBER: 'member',
+    TEAM_MEMBER: 'team_member',
+    MEMBER: 'member', // Legacy support
 } as const;
 
 export type UserRole = typeof ROLES[keyof typeof ROLES];
@@ -11,12 +12,13 @@ export type UserRole = typeof ROLES[keyof typeof ROLES];
 export const ROLE_HIERARCHY: Record<UserRole, number> = {
     [ROLES.ADMIN]: 3,
     [ROLES.ASSOCIATE]: 2,
+    [ROLES.TEAM_MEMBER]: 1,
     [ROLES.MEMBER]: 1,
 };
 
 // Check if user has required role or higher
 export function hasRole(userRole: UserRole, requiredRole: UserRole): boolean {
-    return ROLE_HIERARCHY[userRole] >= ROLE_HIERARCHY[requiredRole];
+    return (ROLE_HIERARCHY[userRole] || 0) >= (ROLE_HIERARCHY[requiredRole] || 0);
 }
 
 // Check if user is admin
@@ -33,6 +35,7 @@ export function isAssociateOrHigher(userRole: UserRole): boolean {
 export const ROUTE_PERMISSIONS: Record<string, UserRole> = {
     '/admin': ROLES.ADMIN,
     '/associate': ROLES.ASSOCIATE,
+    '/team': ROLES.TEAM_MEMBER,
     '/member': ROLES.MEMBER,
 };
 
