@@ -110,11 +110,28 @@ export async function deleteUser(userId: string) {
 
     const supabaseAdmin = await createAdminClient();
 
-    // HARD DELETE: Deleting the auth user triggers cascading delete of public.users 
-    // and all associated data (projects, tasks, activities) due to DB constraints.
+    // 1. Manually delete related data that might block deletion
+    // A. Clear user assignments
+    await supabaseAdmin.from('user_projects').delete().eq('user_id', userId);
+
+    // B. Clear task-related data (assignments & ownership)
+    await supabaseAdmin.from('tasks').delete().or(`assigned_to.eq.${userId},created_by.eq.${userId}`);
+
+    // C. Clear interaction data (comments & notifications)
+    await supabaseAdmin.from('comments').delete().eq('user_id', userId);
+    await supabaseAdmin.from('notifications').delete().eq('user_id', userId);
+
+    // D. Clear operational nodes (meetings & owned projects)
+    await supabaseAdmin.from('meetings').delete().eq('created_by', userId);
+    await supabaseAdmin.from('projects').delete().eq('created_by', userId);
+
+    // 2. HARD DELETE: Deleting the auth user should now proceed without FK blocks
     const { error } = await supabaseAdmin.auth.admin.deleteUser(userId);
 
-    if (error) return handleActionError(error);
+    if (error) {
+        console.error('Hard delete error:', error);
+        return handleActionError({ message: 'Database error deleting user' });
+    }
 
     await logAudit({
         action_type: 'USER_DELETED_TOTAL',
