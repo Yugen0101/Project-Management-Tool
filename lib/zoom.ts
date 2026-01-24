@@ -30,18 +30,22 @@ export async function getZoomAccessToken(): Promise<string | null> {
 
     const auth = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
 
-    const response = await fetch(`https://zoom.us/oauth/token?grant_type=account_credentials&account_id=${accountId}`, {
+    const response = await fetch('https://zoom.us/oauth/token', {
         method: 'POST',
         headers: {
             'Authorization': `Basic ${auth}`,
             'Content-Type': 'application/x-www-form-urlencoded',
         },
+        body: new URLSearchParams({
+            grant_type: 'account_credentials',
+            account_id: accountId,
+        }).toString(),
     });
 
     if (!response.ok) {
         const error = await response.json();
         console.error('Zoom Auth Error:', error);
-        throw new Error('Failed to authenticate with Zoom.');
+        throw new Error(`Zoom Authentication Failed: ${error.reason || error.message || JSON.stringify(error)}`);
     }
 
     const data: ZoomTokenResponse = await response.json();

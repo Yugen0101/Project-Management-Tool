@@ -31,10 +31,7 @@ export default async function AssociateDashboard() {
     const { data: userProjects } = await supabase
         .from('user_projects')
         .select(`
-            project:projects(
-                *,
-                tasks:tasks(count)
-            )
+            project:projects(*)
         `)
         .eq('user_id', user?.id);
 
@@ -131,7 +128,7 @@ export default async function AssociateDashboard() {
                                     <div className="flex-1 min-w-0">
                                         <h4 className="font-black text-[#1c1917] tracking-tight uppercase text-lg group-hover:text-[#d97757] transition-colors">{project.name}</h4>
                                         <div className="flex items-center gap-4 text-[9px] font-black text-[#1c1917]/30 uppercase tracking-[0.2em] mt-1">
-                                            <span>{project.tasks?.[0]?.count || 0} Critical Vectors</span>
+                                            <span>Operational Vector</span>
                                             <span className="w-1 h-1 bg-[#d97757] rounded-full"></span>
                                             <span className="text-[#d97757]">{project.status}</span>
                                         </div>
