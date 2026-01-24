@@ -18,13 +18,14 @@ interface ZoomMeetingOptions {
     timezone?: string;
 }
 
-export async function getZoomAccessToken(): Promise<string> {
+export async function getZoomAccessToken(): Promise<string | null> {
     const accountId = process.env.ZOOM_ACCOUNT_ID;
     const clientId = process.env.ZOOM_CLIENT_ID;
     const clientSecret = process.env.ZOOM_CLIENT_SECRET;
 
     if (!accountId || !clientId || !clientSecret) {
-        throw new Error('Zoom API credentials are not configured.');
+        console.warn('Zoom API credentials not found. Using Sandbox fallbacks.');
+        return null;
     }
 
     const auth = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
@@ -49,6 +50,21 @@ export async function getZoomAccessToken(): Promise<string> {
 
 export async function createZoomMeeting(options: ZoomMeetingOptions) {
     const token = await getZoomAccessToken();
+
+    if (!token) {
+        // Fallback to Sandbox Mode
+        const sandboxId = Math.floor(Math.random() * 10000000000);
+        return {
+            id: sandboxId,
+            topic: options.topic,
+            agenda: options.agenda,
+            start_time: options.start_time,
+            duration: options.duration,
+            join_url: `https://taskforge.io/meeting/sandbox?id=${sandboxId}`,
+            start_url: `https://taskforge.io/meeting/sandbox-host?id=${sandboxId}`,
+            is_sandbox: true
+        };
+    }
 
     const response = await fetch('https://api.zoom.us/v2/users/me/meetings', {
         method: 'POST',
@@ -84,6 +100,8 @@ export async function createZoomMeeting(options: ZoomMeetingOptions) {
 
 export async function cancelZoomMeeting(meetingId: string) {
     const token = await getZoomAccessToken();
+
+    if (!token) return true; // No-op in sandbox
 
     const response = await fetch(`https://api.zoom.us/v2/meetings/${meetingId}`, {
         method: 'DELETE',
