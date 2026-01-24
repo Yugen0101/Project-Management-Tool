@@ -23,21 +23,23 @@ export default async function AdminLayout({
 
     const supabase = await createClient();
 
-    // Optimized: Parallel Operational Synchronization
-    const [projectRes, userRes, taskRes] = await Promise.all([
-        supabase.from('projects').select('*', { count: 'exact', head: true }),
-        supabase.from('users').select('*', { count: 'exact', head: true }),
-        supabase.from('tasks').select('*', { count: 'exact', head: true })
-    ]);
+    // Get stats for sidebar
+    const { count: projectCount } = await supabase
+        .from('projects')
+        .select('*', { count: 'exact', head: true });
 
-    const projectCount = projectRes.count || 0;
-    const userCount = userRes.count || 0;
-    const taskCount = taskRes.count || 0;
+    const { count: userCount } = await supabase
+        .from('users')
+        .select('*', { count: 'exact', head: true });
+
+    const { count: taskCount } = await supabase
+        .from('tasks')
+        .select('*', { count: 'exact', head: true });
 
     const counts = {
-        projectCount,
-        userCount,
-        taskCount
+        projectCount: projectCount || 0,
+        userCount: userCount || 0,
+        taskCount: taskCount || 0
     };
 
     return (

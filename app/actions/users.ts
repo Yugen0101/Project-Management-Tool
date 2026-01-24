@@ -23,16 +23,12 @@ export async function createUser(userData: any) {
     // Use Admin Client for auth management
     const supabaseAdmin = await createAdminClient();
 
-    // Create auth user with role and status in metadata for performance
+    // Create auth user
     const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
         email,
         password,
         email_confirm: true,
-        user_metadata: {
-            full_name,
-            role,
-            is_active: true
-        }
+        user_metadata: { full_name }
     });
 
     if (authError) return handleActionError(authError);
@@ -67,18 +63,12 @@ export async function toggleUserStatus(userId: string, isActive: boolean) {
 
     const supabaseAdmin = await createAdminClient();
 
-    // 1. Update public profile
     const { error } = await supabaseAdmin
         .from('users')
         .update({ is_active: isActive })
         .eq('id', userId);
 
     if (error) return handleActionError(error);
-
-    // 2. Sync with Auth Metadata for performance (Middleware speed)
-    await supabaseAdmin.auth.admin.updateUserById(userId, {
-        user_metadata: { is_active: isActive }
-    });
 
     await logAudit({
         action_type: isActive ? 'USER_ACTIVATED' : 'USER_DEACTIVATED',
@@ -171,11 +161,6 @@ export async function restoreUser(userId: string) {
 
     if (error) return handleActionError(error);
 
-    // Sync with Auth Metadata
-    await supabaseAdmin.auth.admin.updateUserById(userId, {
-        user_metadata: { is_active: true }
-    });
-
     await logAudit({
         action_type: 'USER_RESTORED',
         resource_type: 'user',
@@ -244,14 +229,10 @@ export async function updateUser(userId: string, data: { full_name?: string; rol
 
     if (profileError) return handleActionError(profileError);
 
-    // 2. Synchronize with auth metadata if provided
-    if (data.full_name || data.role) {
-        const metadata: any = {};
-        if (data.full_name) metadata.full_name = data.full_name;
-        if (data.role) metadata.role = data.role;
-
+    // 2. Synchronize full_name with auth metadata if provided
+    if (data.full_name) {
         await supabaseAdmin.auth.admin.updateUserById(userId, {
-            user_metadata: metadata
+            user_metadata: { full_name: data.full_name }
         });
     }
 
