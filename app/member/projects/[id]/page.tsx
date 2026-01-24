@@ -54,14 +54,19 @@ export default async function MemberProjectDetailPage({ params }: { params: Prom
         <div className="space-y-8 animate-in fade-in duration-700">
             {/* Project Header */}
             <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
-                <div className="space-y-2">
+                <div className="space-y-4 flex-1">
                     <div className="flex items-center gap-3">
-                        <Link href="/member/projects" className="text-[10px] font-black uppercase tracking-[0.2em] text-[#d97757] hover:underline">Projects</Link>
-                        <span className="text-[#e5dec9]">/</span>
-                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#1c1917]/40 italic">{project.name}</span>
+                        <span className="w-8 h-1 bg-accent-500 rounded-full shadow-[0_0_10px_rgba(217,119,87,0.4)]"></span>
+                        <h2 className="text-[10px] font-black text-accent-500 uppercase tracking-[0.4em]">MISSION LOG</h2>
                     </div>
-                    <h1 className="text-4xl font-black text-[#1c1917] tracking-tighter uppercase">{project.name}</h1>
-                    <p className="text-[#1c1917]/60 max-w-2xl font-medium leading-relaxed">{project.description || 'Mission parameters pending.'}</p>
+                    <h1 className="text-6xl font-black text-[#1c1917] tracking-tighter uppercase leading-none">
+                        Focus <span className="text-accent-500">Protocol</span> Active
+                    </h1>
+                    <div className="flex items-center gap-4 text-[#1c1917]/40">
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em]">{project.name}</span>
+                        <span className="w-1.5 h-1.5 bg-[#e5dec9] rounded-full"></span>
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em]">Deployment Stream Active</span>
+                    </div>
                 </div>
                 <div className="flex gap-3 shrink-0">
                     <Link href={`/member/projects/${id}/kanban`} className="btn-primary flex items-center gap-2 py-4 px-8 rounded-2xl shadow-xl shadow-[#d97757]/20">

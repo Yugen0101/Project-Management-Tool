@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { 
-    VideoCameraIcon, 
-    CalendarIcon, 
-    ClockIcon, 
+import {
+    VideoCameraIcon,
+    CalendarIcon,
+    ClockIcon,
     TrashIcon,
     ArrowTopRightOnSquareIcon,
     PlayIcon
@@ -24,12 +24,12 @@ interface Meeting {
     creator: { full_name: string };
 }
 
-export default function MeetingList({ 
-    meetings: initialMeetings, 
-    projectId, 
-    currentUser 
-}: { 
-    meetings: Meeting[], 
+export default function MeetingList({
+    meetings: initialMeetings,
+    projectId,
+    currentUser
+}: {
+    meetings: Meeting[],
     projectId: string,
     currentUser: any
 }) {
@@ -58,9 +58,10 @@ export default function MeetingList({
 
     if (meetings.length === 0) {
         return (
-            <div className="text-center py-10 bg-slate-50 rounded-xl border-2 border-dashed border-slate-200">
-                <VideoCameraIcon className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-                <p className="text-slate-500 font-medium">No meetings scheduled for this project.</p>
+            <div className="text-center py-16 bg-beige-50/50 rounded-[2rem] border-2 border-dashed border-beige-200">
+                <VideoCameraIcon className="w-12 h-12 text-beige-300 mx-auto mb-4" />
+                <h4 className="text-lg font-black text-[#1c1917]/30 uppercase tracking-widest">No syncs scheduled</h4>
+                <p className="text-[#1c1917]/20 text-[10px] font-black uppercase tracking-widest mt-2">Clear operation timeline</p>
             </div>
         );
     }
@@ -73,38 +74,39 @@ export default function MeetingList({
                 const isCancelled = meeting.status === 'cancelled';
 
                 return (
-                    <div 
-                        key={meeting.id} 
-                        className={`card p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 transition-all hover:shadow-md ${
-                            isCancelled ? 'opacity-60' : ''
-                        }`}
+                    <div
+                        key={meeting.id}
+                        className={`card !p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 transition-all hover:border-accent-100 shadow-sm ${isCancelled ? 'opacity-50 grayscale' : ''
+                            }`}
                     >
-                        <div className="flex items-start gap-4 flex-1">
-                            <div className={`p-3 rounded-xl shrink-0 ${
-                                isCancelled ? 'bg-slate-100 text-slate-400' : 
-                                isUpcoming ? 'bg-primary-50 text-primary-600' : 'bg-emerald-50 text-emerald-600'
-                            }`}>
-                                <VideoCameraIcon className="w-6 h-6" />
+                        <div className="flex items-start gap-5 flex-1 p-1">
+                            <div className={`w-14 h-14 rounded-2xl shrink-0 flex items-center justify-center border transition-all ${isCancelled ? 'bg-beige-100 text-beige-400 border-beige-200' :
+                                    isUpcoming ? 'bg-accent-50 text-accent-500 border-accent-100 shadow-sm shadow-accent-500/5' : 'bg-[#7c9473]/10 text-[#7c9473] border-[#7c9473]/20 shadow-sm shadow-[#7c9473]/5'
+                                }`}>
+                                <VideoCameraIcon className="w-8 h-8" />
                             </div>
-                            <div className="space-y-1">
-                                <h4 className="font-bold text-slate-900 flex items-center gap-2">
+                            <div className="space-y-2">
+                                <h4 className="font-black text-[#1c1917] uppercase tracking-tight text-lg leading-none">
                                     {meeting.title}
-                                    {isCancelled && <span className="badge badge-warning text-[10px] py-0.5">Cancelled</span>}
-                                    {!isCancelled && !isUpcoming && <span className="badge badge-success text-[10px] py-0.5">Completed</span>}
+                                    {isCancelled && <span className="ml-3 badge bg-[#d97757]/10 text-[#d97757] border-[#d97757]/20 text-[9px] py-1 px-3">CANCELLED</span>}
+                                    {!isCancelled && !isUpcoming && <span className="ml-3 badge bg-[#7c9473]/10 text-[#7c9473] border-[#7c9473]/20 text-[9px] py-1 px-3">ARCHIVED</span>}
                                 </h4>
-                                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500 font-medium">
-                                    <span className="flex items-center gap-1">
-                                        <CalendarIcon className="w-3.5 h-3.5" />
+                                <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[10px] font-black uppercase tracking-widest text-[#1c1917]/40">
+                                    <span className="flex items-center gap-2">
+                                        <CalendarIcon className="w-4 h-4 text-accent-500" />
                                         {format(new Date(meeting.scheduled_at), 'PPP')}
                                     </span>
-                                    <span className="flex items-center gap-1">
-                                        <ClockIcon className="w-3.5 h-3.5" />
-                                        {format(new Date(meeting.scheduled_at), 'p')} ({meeting.duration} min)
+                                    <span className="flex items-center gap-2">
+                                        <ClockIcon className="w-4 h-4 text-accent-500" />
+                                        {format(new Date(meeting.scheduled_at), 'p')} • {meeting.duration} MIN
                                     </span>
-                                    <span className="text-slate-400">by {meeting.creator?.full_name}</span>
+                                    <span className="text-[#1c1917]/20 italic">BY {meeting.creator?.full_name}</span>
                                 </div>
                                 {meeting.description && (
-                                    <p className="text-sm text-slate-600 mt-2 line-clamp-1">{meeting.description}</p>
+                                    <p className="text-[11px] text-[#1c1917]/50 mt-3 font-medium flex items-center gap-2">
+                                        <span className="w-1 h-1 bg-accent-500 rounded-full"></span>
+                                        {meeting.description}
+                                    </p>
                                 )}
                             </div>
                         </div>
@@ -113,7 +115,7 @@ export default function MeetingList({
                             {!isCancelled && (
                                 <>
                                     {isHost && isUpcoming ? (
-                                        <button 
+                                        <button
                                             onClick={() => handleStartMeeting(meeting.id)}
                                             className="btn-primary py-2 px-4 text-xs flex items-center gap-2 flex-1 md:flex-none justify-center"
                                         >
@@ -121,9 +123,9 @@ export default function MeetingList({
                                             Start Meeting
                                         </button>
                                     ) : (
-                                        <a 
-                                            href={meeting.join_url} 
-                                            target="_blank" 
+                                        <a
+                                            href={meeting.join_url}
+                                            target="_blank"
                                             rel="noopener noreferrer"
                                             className="btn-secondary py-2 px-4 text-xs flex items-center gap-2 flex-1 md:flex-none justify-center"
                                         >
@@ -133,9 +135,9 @@ export default function MeetingList({
                                     )}
 
                                     {isAdminOrAssociate && isUpcoming && (
-                                        <button 
+                                        <button
                                             onClick={() => handleCancel(meeting.id)}
-                                            className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors shrink-0"
+                                            className="w-10 h-10 flex items-center justify-center text-[#1c1917]/20 hover:text-[#c85a54] hover:bg-[#c85a54]/5 rounded-xl transition-all border border-transparent hover:border-[#c85a54]/10 shrink-0"
                                             title="Cancel Meeting"
                                         >
                                             <TrashIcon className="w-5 h-5" />

@@ -111,40 +111,46 @@ export default function SprintManager({
 
 
     return (
-        <div className="space-y-4">
-            <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-bold text-[#1c1917] flex items-center gap-2">
-                    <Bars2Icon className="w-5 h-5 text-accent-600" />
-                    Sprint Backlog
-                </h3>
+        <div className="space-y-6">
+            <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center gap-3">
+                    <Bars2Icon className="w-5 h-5 text-accent-500" />
+                    <h3 className="text-[10px] font-black text-[#1c1917]/30 uppercase tracking-[0.4em]">Strategic Roadmap</h3>
+                </div>
                 <button
                     onClick={() => setIsCreating(true)}
-                    className="btn-primary-sm flex items-center gap-2"
+                    className="btn-primary !py-2.5 !px-6 !text-[10px] !rounded-xl shadow-lg shadow-accent-500/10"
                 >
                     <PlusIcon className="w-4 h-4" />
-                    Create Sprint
+                    Initialize Sprint
                 </button>
             </div>
 
-            {/* Create Sprint Modal/Form Overlay (Simplified for now) */}
+            {/* Create Sprint Modal/Form Overlay */}
             {isCreating && (
-                <div className="card p-4 border-2 border-accent-100 bg-beige-50/50 mb-6 animate-in slide-in-from-top-4">
-                    <form onSubmit={handleCreateSprint} className="space-y-4">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <input name="name" placeholder="Sprint Name (e.g. Iteration 1)" required className="input" />
-                            <input name="goal" placeholder="Sprint Goal" className="input" />
-                            <div className="flex flex-col gap-1">
-                                <label className="text-[10px] font-black text-[#1c1917]/40 uppercase ml-2">Start Date</label>
+                <div className="card !p-8 border-[#e5dec9] bg-white mb-8 animate-in slide-in-from-top-4 shadow-xl shadow-[#d9cfb0]/20 rounded-[2rem]">
+                    <form onSubmit={handleCreateSprint} className="space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="space-y-1">
+                                <label className="text-[9px] font-black text-[#1c1917]/20 uppercase ml-2 tracking-widest">Designation</label>
+                                <input name="name" placeholder="Iteration ID (e.g. ALPHA-01)" required className="input" />
+                            </div>
+                            <div className="space-y-1">
+                                <label className="text-[9px] font-black text-[#1c1917]/20 uppercase ml-2 tracking-widest">Mission Objective</label>
+                                <input name="goal" placeholder="Primary objective..." className="input" />
+                            </div>
+                            <div className="space-y-1">
+                                <label className="text-[9px] font-black text-[#1c1917]/20 uppercase ml-2 tracking-widest">Commencement</label>
                                 <input name="start_date" type="date" required className="input" />
                             </div>
-                            <div className="flex flex-col gap-1">
-                                <label className="text-[10px] font-black text-[#1c1917]/40 uppercase ml-2">End Date</label>
+                            <div className="space-y-1">
+                                <label className="text-[9px] font-black text-[#1c1917]/20 uppercase ml-2 tracking-widest">Conclusion</label>
                                 <input name="end_date" type="date" required className="input" />
                             </div>
                         </div>
-                        <div className="flex justify-end gap-3">
-                            <button type="button" onClick={() => setIsCreating(false)} className="btn-secondary-sm">Cancel</button>
-                            <button type="submit" className="btn-primary-sm">Create</button>
+                        <div className="flex justify-end gap-3 pt-4">
+                            <button type="button" onClick={() => setIsCreating(false)} className="btn-secondary !px-6 !py-2.5 !text-[10px] !rounded-xl !border-[#e5dec9]">ABORT</button>
+                            <button type="submit" className="btn-primary !px-6 !py-2.5 !text-[10px] !rounded-xl">ESTABLISH NODE</button>
                         </div>
                     </form>
                 </div>
@@ -152,26 +158,28 @@ export default function SprintManager({
 
             {/* Active Sprint Section */}
             {activeSprint && (
-                <div className="card border-accent-200 overflow-hidden mb-6">
-                    <div className="p-4 bg-beige-50 flex items-center justify-between border-b border-beige-200">
-                        <div className="flex items-center gap-3">
-                            <button onClick={() => toggleExpand(activeSprint.id)}>
-                                {expandedSprints[activeSprint.id] ? <ChevronDownIcon className="w-4 h-4" /> : <ChevronRightIcon className="w-4 h-4" />}
+                <div className="card !p-0 border-accent-500/30 overflow-hidden mb-8 shadow-xl shadow-accent-500/5 rounded-[2rem]">
+                    <div className="p-6 bg-accent-500 flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                            <button onClick={() => toggleExpand(activeSprint.id)} className="text-white/40 hover:text-white transition-colors">
+                                {expandedSprints[activeSprint.id] ? <ChevronDownIcon className="w-5 h-5" /> : <ChevronRightIcon className="w-5 h-5" />}
                             </button>
-                            <span className="bg-status-success text-white text-[10px] font-black px-2 py-0.5 rounded animate-pulse uppercase">Active</span>
-                            <h4 className="font-bold text-[#1c1917]">{activeSprint.name}</h4>
-                            <span className="text-xs text-accent-600 font-medium">{format(new Date(activeSprint.start_date), 'MMM d')} - {format(new Date(activeSprint.end_date), 'MMM d')}</span>
+                            <div className="flex items-center gap-3">
+                                <span className="bg-white/20 text-white text-[9px] font-black px-2 py-1 rounded shadow-sm uppercase tracking-widest backdrop-blur-md">ACTIVE PROTOCOL</span>
+                                <h4 className="font-black text-white uppercase tracking-tight text-lg">{activeSprint.name}</h4>
+                            </div>
+                            <div className="h-4 w-px bg-white/20 hidden md:block"></div>
+                            <span className="text-[10px] text-white/60 font-black uppercase tracking-widest hidden md:block">{format(new Date(activeSprint.start_date), 'MM.dd')} — {format(new Date(activeSprint.end_date), 'MM.dd')}</span>
                         </div>
                         <button
                             onClick={() => handleUpdateStatus(activeSprint.id, 'completed')}
-                            className="btn-primary-sm bg-status-success hover:bg-emerald-600 border-none flex items-center gap-2"
+                            className="bg-white text-accent-500 px-5 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-[#fdfcf9] transition-all shadow-lg"
                         >
-                            <CheckBadgeIcon className="w-4 h-4" />
-                            Complete Sprint
+                            FINALIZE STREAM
                         </button>
                     </div>
                     {expandedSprints[activeSprint.id] && (
-                        <div className="p-2 divide-y divide-beige-100">
+                        <div className="p-4 space-y-1 bg-white">
                             {tasks.filter(t => t.sprint_id === activeSprint.id).map(task => (
                                 <TaskRow key={task.id} task={task} />
                             ))}
@@ -181,112 +189,113 @@ export default function SprintManager({
             )}
 
             {/* Planned Sprints */}
-            {plannedSprints.map(sprint => (
-                <div key={sprint.id} className="card overflow-hidden">
-                    <div className="p-4 bg-white flex items-center justify-between border-b border-beige-200">
-                        <div className="flex items-center gap-3">
-                            <button onClick={() => toggleExpand(sprint.id)}>
-                                {expandedSprints[sprint.id] ? <ChevronDownIcon className="w-4 h-4" /> : <ChevronRightIcon className="w-4 h-4" />}
+            <div className="space-y-4">
+                {plannedSprints.map(sprint => (
+                    <div key={sprint.id} className="card !p-0 border-[#e5dec9] overflow-hidden shadow-sm shadow-[#d9cfb0]/10 rounded-[2rem]">
+                        <div className="p-5 bg-[#fdfcf9] flex items-center justify-between border-b border-[#e5dec9]">
+                            <div className="flex items-center gap-4">
+                                <button onClick={() => toggleExpand(sprint.id)} className="text-[#1c1917]/20 hover:text-accent-500 transition-colors">
+                                    {expandedSprints[sprint.id] ? <ChevronDownIcon className="w-5 h-5" /> : <ChevronRightIcon className="w-5 h-5" />}
+                                </button>
+                                <h4 className="font-black text-[#1c1917] uppercase tracking-tight">{sprint.name}</h4>
+                                <div className="h-4 w-px bg-[#e5dec9]"></div>
+                                <span className="text-[10px] text-[#1c1917]/30 font-black uppercase tracking-widest">{format(new Date(sprint.start_date), 'MM.dd.yyyy')}</span>
+                            </div>
+                            <button
+                                onClick={() => handleUpdateStatus(sprint.id, 'active')}
+                                className="btn-secondary !px-5 !py-2.5 !text-[10px] !rounded-xl !border-[#e5dec9] !text-accent-500 hover:!bg-white"
+                            >
+                                COMMENCE
                             </button>
-                            <h4 className="font-bold text-[#1c1917]">{sprint.name}</h4>
-                            <span className="text-xs text-[#1c1917]/60 font-medium">{format(new Date(sprint.start_date), 'MMM d')} - {format(new Date(sprint.end_date), 'MMM d')}</span>
                         </div>
-                        <button
-                            onClick={() => handleUpdateStatus(sprint.id, 'active')}
-                            className="btn-secondary-sm flex items-center gap-2 border-beige-200 text-accent-600 hover:bg-beige-50"
-                        >
-                            <PlayIcon className="w-4 h-4" />
-                            Start Sprint
-                        </button>
+                        {expandedSprints[sprint.id] && (
+                            <div className="p-4 space-y-1 bg-white">
+                                {tasks.filter(t => t.sprint_id === sprint.id).map(task => (
+                                    <TaskRow key={task.id} task={task} />
+                                ))}
+                            </div>
+                        )}
                     </div>
-                    {expandedSprints[sprint.id] && (
-                        <div className="p-2 space-y-1">
-                            {tasks.filter(t => t.sprint_id === sprint.id).map(task => (
-                                <TaskRow key={task.id} task={task} />
-                            ))}
-                        </div>
-                    )}
-                </div>
-            ))}
+                ))}
+            </div>
 
             {/* Backlog Section */}
-            <div className="card overflow-hidden">
-                <div className="p-4 bg-beige-50 flex items-center justify-between border-b border-beige-200">
-                    <div className="flex items-center gap-3">
-                        <button onClick={() => toggleExpand('backlog')}>
-                            {expandedSprints['backlog'] ? <ChevronDownIcon className="w-4 h-4" /> : <ChevronRightIcon className="w-4 h-4" />}
+            <div className="card !p-0 border-[#e5dec9] overflow-hidden shadow-sm shadow-[#d9cfb0]/10 rounded-[2rem] mt-12">
+                <div className="p-6 bg-[#f7f3ed] flex items-center justify-between border-b border-[#e5dec9]">
+                    <div className="flex items-center gap-4">
+                        <button onClick={() => toggleExpand('backlog')} className="text-[#1c1917]/20 hover:text-accent-500 transition-colors">
+                            {expandedSprints['backlog'] ? <ChevronDownIcon className="w-5 h-5" /> : <ChevronRightIcon className="w-5 h-5" />}
                         </button>
-                        <h4 className="font-bold text-[#1c1917]">Project Backlog</h4>
-                        <span className="text-xs font-black px-2 py-0.5 bg-white border border-beige-200 text-[#1c1917]/50 rounded-full">
-                            {backlogTasks.length} tasks
+                        <h4 className="font-black text-[#1c1917] uppercase tracking-[0.2em] text-sm">Offline Backlog</h4>
+                        <span className="text-[9px] font-black px-3 py-1 bg-white border border-[#e5dec9] text-accent-500 rounded-xl shadow-sm uppercase tracking-widest">
+                            {backlogTasks.length} Vectors
                         </span>
                     </div>
                     <button
                         onClick={() => setIsAddingTask(true)}
-                        className="btn-primary-sm bg-accent-500 border-none text-[10px] flex items-center gap-2 hover:bg-accent-600 text-white"
+                        className="btn-primary !py-2.5 !px-5 !text-[10px] !rounded-xl shadow-lg shadow-accent-500/10"
                     >
-                        <PlusIcon className="w-3.5 h-3.5" />
-                        Quick Add
+                        <PlusIcon className="w-4 h-4" />
+                        INDEX NEW VECTOR
                     </button>
                 </div>
 
                 {isAddingTask && (
-                    <div className="p-4 bg-white border-b border-slate-100 animate-in slide-in-from-top-2">
-                        <form onSubmit={handleCreateTask} className="flex flex-wrap items-end gap-4">
-                            <div className="flex-1 min-w-[200px] space-y-1">
-                                <label className="text-[9px] font-black text-slate-400 uppercase ml-1">Title</label>
+                    <div className="p-8 bg-white border-b border-[#e5dec9] animate-in slide-in-from-top-2">
+                        <form onSubmit={handleCreateTask} className="flex flex-wrap items-end gap-6">
+                            <div className="flex-1 min-w-[240px] space-y-2">
+                                <label className="text-[9px] font-black text-[#1c1917]/20 uppercase ml-2 tracking-widest">Operational Directive</label>
                                 <input
                                     required
-                                    className="input py-2 text-sm"
+                                    className="input !py-3"
                                     placeholder="Task designation..."
                                     value={taskFormData.title}
                                     onChange={e => setTaskFormData({ ...taskFormData, title: e.target.value })}
                                 />
                             </div>
-                            <div className="w-32 space-y-1">
-                                <label className="text-[9px] font-black text-slate-400 uppercase ml-1">Priority</label>
+                            <div className="w-40 space-y-2">
+                                <label className="text-[9px] font-black text-[#1c1917]/20 uppercase ml-2 tracking-widest">Priority Class</label>
                                 <select
-                                    className="input py-2 text-sm appearance-none bg-white"
+                                    className="input !py-3 appearance-none bg-white font-black uppercase text-xs tracking-tight"
                                     value={taskFormData.priority}
                                     onChange={e => setTaskFormData({ ...taskFormData, priority: e.target.value })}
                                 >
-                                    <option value="low">Low</option>
-                                    <option value="medium">Medium</option>
-                                    <option value="high">High</option>
-                                    <option value="critical">Critical</option>
+                                    <option value="low">LOW</option>
+                                    <option value="medium">MEDIUM</option>
+                                    <option value="high">HIGH</option>
+                                    <option value="critical">CRITICAL</option>
                                 </select>
                             </div>
-                            <div className="w-48 space-y-1">
-                                <label className="text-[9px] font-black text-slate-400 uppercase ml-1">Asset Assignee</label>
+                            <div className="w-56 space-y-2">
+                                <label className="text-[9px] font-black text-[#1c1917]/20 uppercase ml-2 tracking-widest">Assigned Operator</label>
                                 <select
-                                    className="input py-2 text-sm appearance-none bg-white"
+                                    className="input !py-3 appearance-none bg-white font-black uppercase text-xs tracking-tight"
                                     value={taskFormData.assigned_to}
                                     onChange={e => setTaskFormData({ ...taskFormData, assigned_to: e.target.value })}
                                 >
-                                    <option value="">Unallocated</option>
+                                    <option value="">UNALLOCATED</option>
                                     {members?.map((m: any) => (
                                         <option key={m.user_id} value={m.user_id}>{m.users?.full_name || m.user?.full_name}</option>
                                     ))}
                                 </select>
                             </div>
-                            <div className="flex gap-2">
-                                <button type="button" onClick={() => setIsAddingTask(false)} className="w-9 h-9 border border-slate-200 rounded-lg flex items-center justify-center text-slate-400 hover:bg-slate-50 transition-all">
+                            <div className="flex gap-3">
+                                <button type="button" onClick={() => setIsAddingTask(false)} className="w-11 h-11 border border-[#e5dec9] rounded-xl flex items-center justify-center text-[#1c1917]/20 hover:text-accent-500 hover:bg-[#f7f3ed] transition-all">
                                     <XMarkIcon className="w-5 h-5" />
                                 </button>
-                                <button type="submit" className="h-9 btn-primary px-4 text-[10px]">Establish</button>
+                                <button type="submit" className="h-11 btn-primary !px-6 !text-[10px] !rounded-xl">ESTABLISH</button>
                             </div>
                         </form>
                     </div>
                 )}
 
                 {expandedSprints['backlog'] && (
-                    <div className="p-2">
+                    <div className="p-4 space-y-1 bg-white">
                         {backlogTasks.map(task => (
                             <TaskRow key={task.id} task={task} onDelete={() => handleDeleteTask(task.id)} />
                         ))}
                     </div>
                 )}
-
             </div>
         </div>
     );
@@ -294,36 +303,37 @@ export default function SprintManager({
 
 function TaskRow({ task, onDelete }: { task: any, onDelete?: () => void }) {
     return (
-        <div className="flex items-center justify-between p-3 hover:bg-slate-50 rounded-xl group transition-all duration-300 border border-transparent hover:border-slate-100">
-            <div className="flex items-center gap-4">
-                <div className={`w-1.5 h-10 rounded-full ${task.priority === 'critical' ? 'bg-red-600 shadow-sm shadow-red-200' :
-                    task.priority === 'high' ? 'bg-orange-600' :
-                        task.priority === 'medium' ? 'bg-[#d97757]' :
-                            'bg-slate-400'
+        <div className="flex items-center justify-between p-4 hover:bg-[#f7f3ed]/50 rounded-[1.25rem] group transition-all duration-300 border border-transparent hover:border-[#e5dec9]/50">
+            <div className="flex items-center gap-6">
+                <div className={`w-1 h-12 rounded-full ${task.priority === 'critical' ? 'bg-[#d97757] shadow-[0_0_10px_rgba(217,119,87,0.4)]' :
+                    task.priority === 'high' ? 'bg-[#d97757]/60' :
+                        task.priority === 'medium' ? 'bg-[#e5dec9]' :
+                            'bg-[#e5dec9]/40'
                     }`} />
                 <div>
-                    <p className="text-[13px] font-black text-slate-900 uppercase tracking-tight">{task.title}</p>
-                    <div className="flex items-center gap-3 mt-1 text-[9px] font-black text-slate-400 uppercase tracking-widest">
-                        <span className="font-serif italic opacity-60">Node: {task.id.slice(0, 8)}</span>
-                        <span className={`px-2 py-0.5 rounded-full border text-[8px] ${task.status === 'completed' ? 'bg-emerald-50 border-emerald-100 text-emerald-600' :
-                            task.status === 'in_progress' ? 'bg-[#f7f3ed] border-[#e5dec9] text-[#d97757]' :
-                                'bg-white border-slate-100 text-slate-400'
+                    <p className="text-[13px] font-black text-[#1c1917] uppercase tracking-tight group-hover:text-accent-500 transition-colors">{task.title}</p>
+                    <div className="flex items-center gap-3 mt-1 text-[9px] font-black text-[#1c1917]/20 uppercase tracking-[0.2em]">
+                        <span className="italic">VECTOR ID: {task.id.slice(0, 8)}</span>
+                        <div className="h-2 w-px bg-[#e5dec9]"></div>
+                        <span className={`px-2 py-0.5 rounded border ${task.status === 'completed' ? 'bg-[#7c9473]/10 border-[#7c9473]/20 text-[#7c9473]' :
+                            task.status === 'in_progress' ? 'bg-accent-500/10 border-accent-500/20 text-accent-500' :
+                                'bg-[#f7f3ed] border-[#e5dec9] text-[#1c1917]/40'
                             }`}>{task.status.replace('_', ' ')}</span>
                     </div>
                 </div>
             </div>
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-8">
                 {task.assigned_user && (
-                    <div className="w-8 h-8 rounded-xl bg-white flex items-center justify-center text-[10px] font-black text-[#d97757] border border-[#e5dec9] shadow-sm transform group-hover:scale-110 transition-transform">
+                    <div className="w-9 h-9 rounded-xl bg-[#f7f3ed] flex items-center justify-center text-[10px] font-black text-accent-500 border border-[#e5dec9] shadow-sm transform group-hover:scale-110 transition-transform">
                         {task.assigned_user.full_name?.charAt(0)}
                     </div>
                 )}
                 {onDelete && (
                     <button
                         onClick={onDelete}
-                        className="opacity-0 group-hover:opacity-100 w-8 h-8 flex items-center justify-center text-slate-300 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                        className="opacity-0 group-hover:opacity-100 w-9 h-9 flex items-center justify-center text-[#1c1917]/20 hover:text-accent-500 hover:bg-[#f7f3ed] rounded-xl transition-all"
                     >
-                        <TrashIcon className="w-4 h-4" />
+                        <TrashIcon className="w-5 h-5" />
                     </button>
                 )}
             </div>

@@ -1,20 +1,15 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { createClient } from '@/lib/supabase/server';
 import { getCurrentUser } from '@/lib/auth/session';
 import {
-    HomeIcon,
-    ListBulletIcon,
-    ClockIcon,
-    ChatBubbleLeftRightIcon,
-    ArrowRightOnRectangleIcon,
     BellIcon,
-    RectangleGroupIcon,
-    VideoCameraIcon
 } from '@heroicons/react/24/outline';
 import SignOutButton from '@/components/auth/SignOutButton';
 import NotificationCenter from '@/components/notifications/NotificationCenter';
 import MemberNav from '@/components/member/MemberNav';
 import MemberMobileMenu from '@/components/navigation/MemberMobileMenu';
+import TaskForgeLogo from '@/components/ui/TaskForgeLogo';
 import { Toaster } from 'sonner';
 
 export default async function MemberLayout({
@@ -25,80 +20,70 @@ export default async function MemberLayout({
     const user = await getCurrentUser();
 
     return (
-<<<<<<< HEAD
-        <div className="min-h-screen bg-beige-50 text-[#1c1917] flex flex-col relative overflow-hidden selection:bg-accent-500 selection:text-white">
-            {/* Subtle background glow */}
-            <div className="absolute top-0 right-0 w-[40%] h-[40%] bg-beige-100/50 blur-[100px] rounded-full -z-10"></div>
-
+        <div className="min-h-screen bg-[#fdfcf9] text-[#1c1917] flex">
             <Toaster position="top-right" richColors />
 
-            {/* Refined Top Navigation */}
-            <header className="h-20 bg-white/80 border-b border-beige-200 px-6 sm:px-12 flex items-center justify-between sticky top-0 z-50 backdrop-blur-xl">
-                <div className="flex items-center gap-4 sm:gap-10">
-                    <div className="flex items-center gap-3">
-                        <MemberMobileMenu />
-                        <div className="relative w-12 h-12 flex items-center justify-center">
-                            <Image src="/logo.png" alt="Logo" width={40} height={40} className="object-contain" />
-                        </div>
-                        <h1 className="text-2xl font-bold tracking-tight text-[#1c1917] hidden sm:block">
-                            Task<span className="text-accent-600">Forge</span>
-                        </h1>
-=======
-        <div className="min-h-screen bg-background text-foreground flex flex-col">
-            <Toaster position="top-right" richColors />
-            
-            {/* Professional Top Navigation */}
-            <header className="h-20 bg-white/70 backdrop-blur-xl border-b border-border sticky top-0 z-50 flex items-center justify-between px-10">
-                <div className="flex items-center gap-10">
-                    <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-primary-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary-500/20">
-                            <RectangleGroupIcon className="w-6 h-6" />
-                        </div>
-                        <h1 className="text-xl font-bold tracking-tight text-secondary-900 leading-tight">TaskForge</h1>
->>>>>>> f8a9eddf51e5dc62867bfd05e707e9748c4cf529
-                    </div>
-
-                    <MemberNav />
-                </div>
-
-<<<<<<< HEAD
-                <div className="flex items-center gap-5">
-                    <NotificationCenter />
-                    <div className="h-6 w-px bg-beige-200 mx-1"></div>
-                    <div className="flex items-center gap-3 bg-beige-50 p-1.5 pr-4 rounded-xl border border-beige-100">
-                        <div className="w-8 h-8 rounded-lg bg-accent-500 flex items-center justify-center text-xs font-bold text-white shadow-md shadow-accent-500/20">
-                            {user?.full_name?.charAt(0) || 'M'}
-                        </div>
-                        <div className="hidden sm:block">
-                            <p className="text-xs font-bold text-[#1c1917] leading-tight">{user?.full_name}</p>
-                            <p className="text-[10px] font-bold text-[#1c1917]/40 uppercase tracking-tight mt-0.5">
-=======
-                <div className="flex items-center gap-6">
-                    <NotificationCenter />
-                    <div className="h-8 w-px bg-border mx-1"></div>
-                    <div className="flex items-center gap-3">
-                        <div className="text-right hidden sm:block">
-                            <p className="text-sm font-bold text-secondary-900">{user?.full_name}</p>
-                            <p className="text-[10px] font-bold text-primary-500 uppercase tracking-widest">
->>>>>>> f8a9eddf51e5dc62867bfd05e707e9748c4cf529
-                                {user?.role === 'admin' ? 'Administrator' :
-                                    user?.role === 'associate' ? 'Project Lead' : 'Contributor'}
-                            </p>
-                        </div>
-                        <div className="w-10 h-10 rounded-full bg-primary-50 flex items-center justify-center text-sm font-bold text-primary-600 border border-primary-100">
-                            {user?.full_name?.charAt(0) || 'M'}
+            {/* Sidebar */}
+            <aside className="w-72 bg-white/50 backdrop-blur-md border-r border-[#e5dec9] hidden lg:flex flex-col fixed inset-y-0 z-50">
+                <div className="p-10 pb-6">
+                    <div className="flex flex-col items-center gap-4 text-center">
+                        <TaskForgeLogo size="lg" />
+                        <div>
+                            <h1 className="text-xl font-black tracking-tight uppercase">
+                                Task<span className="text-accent-500">Forge</span>
+                            </h1>
+                            <span className="block text-[10px] text-accent-500 uppercase tracking-[0.3em] font-black mt-1">Team Node</span>
                         </div>
                     </div>
-                    <SignOutButton />
                 </div>
-            </header>
 
-            {/* Content Area */}
-            <main className="flex-1 p-10 overflow-y-auto">
-                <div className="max-w-7xl mx-auto">
+                <MemberNav />
+
+                <div className="p-6 mt-auto border-t border-[#e5dec9]">
+                    <div className="flex items-center gap-3 px-4 py-4 bg-[#f7f3ed] rounded-[1.25rem] border border-[#e5dec9] shadow-sm mb-4 group hover:border-accent-200 transition-all">
+                        <div className="w-9 h-9 rounded-xl bg-accent-500 text-white flex items-center justify-center font-black text-xs shadow-lg shadow-accent-500/20 group-hover:scale-105 transition-transform">
+                            {user?.full_name?.charAt(0) || 'M'}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            <p className="text-[10px] font-black text-[#1c1917] truncate uppercase tracking-tight">{user?.full_name}</p>
+                            <p className="text-[8px] font-black text-accent-500 uppercase tracking-[0.2em] truncate">Active Unit</p>
+                        </div>
+                    </div>
+                    <div className="px-4">
+                        <SignOutButton />
+                    </div>
+                </div>
+            </aside>
+
+            {/* Design accents */}
+            <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
+                <div className="absolute top-0 right-0 w-[40%] h-[40%] bg-[#e5dec9]/30 blur-[120px] rounded-full"></div>
+                <div className="absolute bottom-0 left-0 w-[30%] h-[30%] bg-[#fbd3c4]/20 blur-[100px] rounded-full"></div>
+            </div>
+
+            {/* Main Content Area */}
+            <div className="flex-1 lg:ml-72 flex flex-col min-h-screen">
+                {/* Main Header - Synchronized 96px */}
+                <header className="h-24 bg-white border-b border-[#e5dec9] sticky top-0 z-40 flex items-center justify-between px-10 backdrop-blur-xl shadow-sm shadow-[#d9cfb0]/10">
+                    <div className="flex items-center gap-10">
+                        <div className="flex items-center gap-3">
+                            <div className="lg:hidden">
+                                <MemberMobileMenu />
+                            </div>
+                            <span className="w-8 h-1 bg-accent-500 rounded-full hidden lg:block"></span>
+                            <h2 className="text-[10px] font-black text-[#1c1917] uppercase tracking-[0.4em]">Operational Matrix</h2>
+                        </div>
+                    </div>
+
+                    <div className="flex items-center gap-6">
+                        <NotificationCenter />
+                    </div>
+                </header>
+
+                <main className="p-8 lg:p-12 relative z-10 max-w-[1400px] w-full mx-auto">
                     {children}
-                </div>
-            </main>
+                </main>
+            </div>
         </div>
     );
 }

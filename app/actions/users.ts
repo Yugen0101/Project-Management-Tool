@@ -110,19 +110,14 @@ export async function deleteUser(userId: string) {
 
     const supabaseAdmin = await createAdminClient();
 
-    // SOFT DELETE: Update DB only
-    const { error } = await supabaseAdmin
-        .from('users')
-        .update({
-            deleted_at: new Date().toISOString(),
-            is_active: false
-        })
-        .eq('id', userId);
+    // HARD DELETE: Deleting the auth user triggers cascading delete of public.users 
+    // and all associated data (projects, tasks, activities) due to DB constraints.
+    const { error } = await supabaseAdmin.auth.admin.deleteUser(userId);
 
     if (error) return handleActionError(error);
 
     await logAudit({
-        action_type: 'USER_DELETED_SOFT',
+        action_type: 'USER_DELETED_TOTAL',
         resource_type: 'user',
         resource_id: userId
     });
@@ -143,7 +138,6 @@ export async function restoreUser(userId: string) {
     const { error } = await supabaseAdmin
         .from('users')
         .update({
-            deleted_at: null,
             is_active: true
         })
         .eq('id', userId);
@@ -199,4 +193,39 @@ export async function getUsersForMentions() {
 
     if (error) return handleActionError(error);
     return successResponse(data);
+}
+
+export async function updateUser(userId: string, data: { full_name?: string; role?: string }) {
+    const currentUser = await getCurrentUser();
+
+    if (!currentUser || currentUser.role !== 'admin') {
+        return handleActionError({ message: 'Unauthorized', status: 401 });
+    }
+
+    const supabaseAdmin = await createAdminClient();
+
+    // 1. Update public profile
+    const { error: profileError } = await supabaseAdmin
+        .from('users')
+        .update(data)
+        .eq('id', userId);
+
+    if (profileError) return handleActionError(profileError);
+
+    // 2. Synchronize full_name with auth metadata if provided
+    if (data.full_name) {
+        await supabaseAdmin.auth.admin.updateUserById(userId, {
+            user_metadata: { full_name: data.full_name }
+        });
+    }
+
+    await logAudit({
+        action_type: 'USER_UPDATED',
+        resource_type: 'user',
+        resource_id: userId,
+        details: data
+    });
+
+    revalidatePath('/admin/users');
+    return successResponse();
 }

@@ -29,7 +29,7 @@ import ProjectMeetings from '@/components/meetings/ProjectMeetings';
 import TeamManager from '@/components/admin/TeamManager';
 import { getCurrentUser } from '@/lib/auth/session';
 
-export default async function ProjectDetailPage({ params, searchParams }: { 
+export default async function ProjectDetailPage({ params, searchParams }: {
     params: Promise<{ id: string }>,
     searchParams: Promise<{ view?: string }>
 }) {
@@ -115,16 +115,16 @@ export default async function ProjectDetailPage({ params, searchParams }: {
                         </div>
                         <div>
                             <div className="text-[10px] font-bold text-white/50 uppercase tracking-widest mb-2">Assigned Group</div>
-                            <div className="text-sm font-bold">CORE_UNIT_{project.id.slice(0,4).toUpperCase()}</div>
+                            <div className="text-sm font-bold">CORE_UNIT_{project.id.slice(0, 4).toUpperCase()}</div>
                         </div>
                         <div className="ml-auto flex -space-x-3">
                             {project.user_projects?.slice(0, 4).map((up: any) => (
-                                <div key={up.id} className="w-10 h-10 rounded-full border-2 border-white/20 bg-secondary-900 flex items-center justify-center text-xs font-bold text-white" title={up.user.full_name}>
-                                    {up.user.full_name.charAt(0)}
+                                <div key={up.id} className="w-10 h-10 rounded-full border-2 border-white/20 bg-[#1c1917] flex items-center justify-center text-[10px] font-black text-white shadow-lg" title={up.users?.full_name}>
+                                    {up.users?.full_name?.charAt(0) || '?'}
                                 </div>
                             ))}
                             {(project.user_projects?.length || 0) > 4 && (
-                                <div className="w-10 h-10 rounded-full border-2 border-white/20 bg-primary-500 flex items-center justify-center text-[10px] font-bold text-white">
+                                <div className="w-10 h-10 rounded-full border-2 border-white/20 bg-accent-500 flex items-center justify-center text-[10px] font-black text-white shadow-lg">
                                     +{project.user_projects!.length - 4}
                                 </div>
                             )}
@@ -160,7 +160,7 @@ export default async function ProjectDetailPage({ params, searchParams }: {
                                 members={project.user_projects || []}
                             />
                             <div className="card">
-                                <ProjectMeetings 
+                                <ProjectMeetings
                                     projectId={id}
                                     members={project.user_projects || []}
                                     currentUser={user}

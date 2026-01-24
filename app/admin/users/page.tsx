@@ -126,7 +126,7 @@ export default async function AdminUsersPage({
                                 <tr key={user.id} className="hover:bg-secondary-50 transition-colors group">
                                     <td className="px-8 py-6">
                                         <div className="flex items-center gap-4">
-                                            <div className="w-11 h-11 rounded-xl bg-secondary-100 border border-border flex items-center justify-center font-bold text-secondary-600 group-hover:bg-primary-600 group-hover:text-white group-hover:border-primary-600 transition-all shadow-sm">
+                                            <div className="w-11 h-11 rounded-xl bg-[#f7f3ed] border border-[#e5dec9] flex items-center justify-center font-black text-accent-500 group-hover:bg-accent-500 group-hover:text-white group-hover:border-accent-500 transition-all shadow-sm shadow-accent-500/5">
                                                 {user.full_name?.charAt(0) || 'U'}
                                             </div>
                                             <div>

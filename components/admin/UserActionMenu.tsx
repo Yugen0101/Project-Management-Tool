@@ -6,13 +6,17 @@ import {
     KeyIcon,
     NoSymbolIcon,
     CheckIcon,
-    TrashIcon
+    TrashIcon,
+    PencilSquareIcon,
+    VideoCameraIcon
 } from '@heroicons/react/24/outline';
 import { toggleUserStatus, resetUserPassword, deleteUser, toggleMeetingPermission } from '@/app/actions/users';
-import { VideoCameraIcon } from '@heroicons/react/24/outline';
+import UserEditModal from './UserEditModal';
 
 interface User {
     id: string;
+    full_name: string;
+    email: string;
     is_active: boolean;
     role: string;
     can_schedule_meetings: boolean;
@@ -20,6 +24,7 @@ interface User {
 
 export default function UserActionMenu({ user }: { user: User }) {
     const [isOpen, setIsOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -39,6 +44,7 @@ export default function UserActionMenu({ user }: { user: User }) {
     };
 
     const handleReset = async () => {
+        if (!confirm('Reset password for this user?')) return;
         const result = await resetUserPassword(user.id);
         if (!result.success) alert(result.error);
         else alert(`Temporary password: ${result.data?.tempPassword}`);
@@ -51,7 +57,7 @@ export default function UserActionMenu({ user }: { user: User }) {
     };
 
     const handleDelete = async () => {
-        if (confirm('Permanently delete this user?')) {
+        if (confirm('Permanently delete this user? This will purge all associated data.')) {
             const result = await deleteUser(user.id);
             if (!result.success) alert(result.error);
             else window.location.reload();
@@ -70,11 +76,21 @@ export default function UserActionMenu({ user }: { user: User }) {
             {isOpen && (
                 <div className="absolute right-0 mt-3 w-52 bg-white rounded-[1.25rem] shadow-premium border border-border py-2 z-50 animate-in fade-in zoom-in-95 duration-300">
                     <button
+                        onClick={() => {
+                            setIsEditModalOpen(true);
+                            setIsOpen(false);
+                        }}
+                        className="w-full text-left px-4 py-2.5 text-[10px] font-bold uppercase tracking-widest text-secondary-600 hover:bg-secondary-50 hover:text-primary-600 flex items-center gap-3 transition-colors"
+                    >
+                        <PencilSquareIcon className="w-4 h-4" />
+                        Edit Personnel
+                    </button>
+                    <button
                         onClick={handleToggle}
                         className="w-full text-left px-4 py-2.5 text-[10px] font-bold uppercase tracking-widest text-secondary-600 hover:bg-secondary-50 hover:text-primary-600 flex items-center gap-3 transition-colors"
                     >
                         {user.is_active ? <NoSymbolIcon className="w-4 h-4" /> : <CheckIcon className="w-4 h-4" />}
-                        {user.is_active ? 'Deactivate Node' : 'Initialise Node'}
+                        {user.is_active ? 'Deactivate Node' : 'Initialize Node'}
                     </button>
                     {user.role === 'associate' && (
                         <button
@@ -101,6 +117,14 @@ export default function UserActionMenu({ user }: { user: User }) {
                         Delete Account
                     </button>
                 </div>
+            )}
+
+            {isEditModalOpen && (
+                <UserEditModal
+                    user={user}
+                    onClose={() => setIsEditModalOpen(false)}
+                    onSuccess={() => window.location.reload()}
+                />
             )}
         </div>
     );

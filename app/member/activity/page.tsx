@@ -5,23 +5,22 @@ import { ClockIcon } from '@heroicons/react/24/outline';
 
 export default async function MemberActivityPage() {
     return (
-        <div className="max-w-4xl mx-auto space-y-8">
-            <div className="flex items-center justify-between">
-                <div>
-                    <h2 className="text-sm font-bold text-primary-500 uppercase tracking-widest">Global Updates</h2>
-                    <h1 className="text-4xl font-bold text-slate-900 tracking-tight">Recent Activity</h1>
-                </div>
-                <div className="p-3 bg-white rounded-2xl text-primary-500 shadow-lg shadow-primary-500/10 border border-slate-50">
-                    <ClockIcon className="w-8 h-8" />
+        <div className="max-w-[1400px] mx-auto space-y-12 animate-in fade-in duration-1000">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
+                <div className="space-y-3">
+                    <div className="flex items-center gap-2 text-accent-500 mb-2">
+                        <ClockIcon className="w-5 h-5 shadow-sm" />
+                        <span className="text-[10px] font-black uppercase tracking-[0.4em]">Historical Sync</span>
+                    </div>
+                    <h1 className="text-5xl font-black text-[#1c1917] tracking-tighter uppercase leading-none">
+                        Activity <span className="text-accent-500">Stream</span>
+                    </h1>
+                    <p className="text-[#1c1917]/50 font-medium text-lg italic font-serif">Monitoring real-time operational vectors across all deployed nodes.</p>
                 </div>
             </div>
 
-            <div className="card p-8 border-slate-100 shadow-xl shadow-slate-200/50">
-                <div className="space-y-8">
-                    <p className="text-slate-500 font-medium">
-                        Stay up to date with the latest changes across all your projects.
-                        Activity includes task status updates, assignments, and discussions.
-                    </p>
+            <div className="card bg-white border-[#e5dec9] p-10 shadow-lg shadow-[#d9cfb0]/20 rounded-[3rem]">
+                <div className="space-y-12">
                     <ActivityFeed />
                 </div>
             </div>

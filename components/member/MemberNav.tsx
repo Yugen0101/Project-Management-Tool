@@ -2,31 +2,39 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import {
+    ClipboardDocumentListIcon,
+    FolderIcon,
+    ClockIcon,
+    VideoCameraIcon
+} from '@heroicons/react/24/outline';
 
 export default function MemberNav() {
     const pathname = usePathname();
 
     const links = [
-        { name: 'Workspace', href: '/member/tasks' },
-        { name: 'Projects', href: '/member/projects' },
-        { name: 'Activity', href: '/member/activity' },
-        { name: 'Meetings', href: '/member/meetings' },
+        { name: 'Workspace', href: '/member/tasks', icon: ClipboardDocumentListIcon },
+        { name: 'Projects', href: '/member/projects', icon: FolderIcon },
+        { name: 'Activity', href: '/member/activity', icon: ClockIcon },
+        { name: 'Meetings', href: '/member/meetings', icon: VideoCameraIcon },
     ];
 
     return (
-        <nav className="hidden md:flex items-center gap-2">
+        <nav className="flex-1 px-6 py-6 space-y-3 overflow-y-auto">
             {links.map((link) => {
-                const isActive = pathname.startsWith(link.href);
+                const Icon = link.icon;
+                const isActive = pathname === link.href || pathname?.startsWith(link.href + '/');
                 return (
                     <Link
                         key={link.href}
                         href={link.href}
-                        className={`px-4 py-2 text-xs font-bold transition-all rounded-xl border ${isActive
-                            ? 'bg-accent-500 text-white shadow-md border-transparent'
-                            : 'text-[#1c1917]/60 hover:text-accent-600 hover:bg-beige-100 border-transparent'
+                        className={`flex items-center gap-3 px-5 py-3.5 rounded-xl transition-all ${isActive
+                            ? 'bg-accent-500 text-white shadow-xl shadow-accent-500/20'
+                            : 'text-[#1c1917]/30 hover:text-accent-500 hover:bg-[#f7f3ed]'
                             }`}
                     >
-                        {link.name}
+                        <Icon className={`w-5 h-5 transition-transform ${!isActive && 'hover:scale-110'}`} />
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em]">{link.name}</span>
                     </Link>
                 );
             })}

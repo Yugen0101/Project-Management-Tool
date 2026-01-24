@@ -6,9 +6,9 @@ import AdminNav from './AdminNav';
 import { usePathname } from 'next/navigation';
 
 export default function AdminMobileMenu({
-    counts
+    counts = { projectCount: 0, userCount: 0, taskCount: 0 }
 }: {
-    counts: { projectCount: number, userCount: number, taskCount: number }
+    counts?: { projectCount: number, userCount: number, taskCount: number }
 }) {
     const [isOpen, setIsOpen] = useState(false);
     const pathname = usePathname();

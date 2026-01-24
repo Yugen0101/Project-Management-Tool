@@ -21,43 +21,43 @@ export default function MemberPerformance() {
         loadData();
     }, []);
 
-    if (loading) return <div className="h-24 animate-pulse bg-slate-900/40 rounded-xl border border-slate-800/50" />;
+    if (loading) return <div className="h-24 animate-pulse bg-beige-100 rounded-2xl border border-beige-200" />;
     if (!metrics) return null;
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div className="card p-6 bg-white border-slate-50 group hover:border-emerald-100 transition-all shadow-sm">
+            <div className="card !p-6 bg-white border-beige-100 group hover:border-[#7c9473]/30 transition-all shadow-sm">
                 <div className="flex items-center gap-4">
-                    <div className="p-2.5 bg-emerald-50 rounded-xl text-emerald-500 border border-emerald-100 shadow-sm shadow-emerald-500/5">
+                    <div className="p-2.5 bg-[#7c9473]/10 rounded-xl text-[#7c9473] border border-[#7c9473]/20 shadow-sm">
                         <CheckBadgeIcon className="w-5 h-5" />
                     </div>
                     <div>
-                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-2">Resolved</p>
-                        <p className="text-2xl font-bold text-slate-900 tracking-tight">{metrics.completed_tasks}</p>
+                        <p className="text-[10px] font-black text-[#1c1917]/30 uppercase tracking-[0.2em] leading-none mb-2">Resolved</p>
+                        <p className="text-2xl font-black text-[#1c1917] tracking-tight">{metrics.completed_tasks}</p>
                     </div>
                 </div>
             </div>
 
-            <div className="card p-6 bg-white border-slate-50 group hover:border-rose-100 transition-all shadow-sm">
+            <div className="card !p-6 bg-white border-beige-100 group hover:border-[#c85a54]/30 transition-all shadow-sm">
                 <div className="flex items-center gap-4">
-                    <div className="p-2.5 bg-rose-50 rounded-xl text-rose-500 border border-rose-100 shadow-sm shadow-rose-500/5">
+                    <div className="p-2.5 bg-[#c85a54]/10 rounded-xl text-[#c85a54] border border-[#c85a54]/20 shadow-sm">
                         <ClockIcon className="w-5 h-5" />
                     </div>
                     <div>
-                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-2">Overdue</p>
-                        <p className="text-2xl font-bold text-rose-500 tracking-tight">{metrics.overdue_tasks}</p>
+                        <p className="text-[10px] font-black text-[#1c1917]/30 uppercase tracking-[0.2em] leading-none mb-2">Overdue</p>
+                        <p className="text-2xl font-black text-[#c85a54] tracking-tight">{metrics.overdue_tasks}</p>
                     </div>
                 </div>
             </div>
 
-            <div className="card p-6 bg-white border-slate-50 group hover:border-primary-100 transition-all shadow-sm">
+            <div className="card !p-6 bg-white border-beige-100 group hover:border-accent-200 transition-all shadow-sm">
                 <div className="flex items-center gap-4">
-                    <div className="p-2.5 bg-primary-50 rounded-xl text-primary-500 border border-primary-100 shadow-sm shadow-primary-500/5">
+                    <div className="p-2.5 bg-accent-50 rounded-xl text-accent-500 border border-accent-100 shadow-sm">
                         <BoltIcon className="w-5 h-5" />
                     </div>
                     <div>
-                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-2">Efficiency</p>
-                        <p className="text-2xl font-bold text-slate-900 tracking-tight">
+                        <p className="text-[10px] font-black text-[#1c1917]/30 uppercase tracking-[0.2em] leading-none mb-2">Efficiency</p>
+                        <p className="text-2xl font-black text-[#1c1917] tracking-tight">
                             {metrics.completed_tasks + metrics.active_tasks > 0
                                 ? Math.round((metrics.completed_tasks / (metrics.completed_tasks + metrics.active_tasks)) * 100)
                                 : 0}%

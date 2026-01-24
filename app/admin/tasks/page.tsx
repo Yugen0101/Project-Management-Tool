@@ -175,7 +175,7 @@ export default async function AdminTasksPage({
                         </tbody>
                     </table>
                 </div>
-<<<<<<< HEAD
+
                 {error && (
                     <div className="p-8 text-center bg-red-50 text-red-600 rounded-2xl mx-8 mb-8 border border-red-200">
                         <p className="font-bold">System Error: Unable to retrieve registry vectors.</p>
@@ -183,16 +183,9 @@ export default async function AdminTasksPage({
                     </div>
                 )}
                 {(!tasks || tasks.length === 0) && !error && (
-                    <div className="py-32 flex flex-col items-center justify-center bg-[#fdfcf9]">
-                        <div className="w-20 h-20 bg-[#f7f3ed] rounded-full flex items-center justify-center text-[#1c1917]/20 mb-6">
-                            <ClipboardDocumentListIcon className="w-10 h-10" />
-=======
-
-                {(!tasks || tasks.length === 0) && (
                     <div className="py-24 flex flex-col items-center justify-center">
                         <div className="w-16 h-16 bg-secondary-50 rounded-full flex items-center justify-center text-secondary-200 mb-6">
                             <ClipboardDocumentListIcon className="w-8 h-8" />
->>>>>>> f8a9eddf51e5dc62867bfd05e707e9748c4cf529
                         </div>
                         <h3 className="text-lg font-bold text-secondary-900">No tasks found</h3>
                         <p className="text-xs font-bold text-secondary-400 uppercase tracking-widest mt-2">The registry is currently empty in this sector.</p>

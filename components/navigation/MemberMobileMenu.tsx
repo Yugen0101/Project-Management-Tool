@@ -5,16 +5,16 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import {
-    HomeIcon,
+    ClipboardDocumentListIcon,
     FolderIcon,
-    ListBulletIcon,
+    ClockIcon,
     VideoCameraIcon
 } from '@heroicons/react/24/outline';
 
 const navItems = [
-    { name: 'Workspace', href: '/member/tasks', icon: ListBulletIcon },
+    { name: 'Workspace', href: '/member/tasks', icon: ClipboardDocumentListIcon },
     { name: 'Projects', href: '/member/projects', icon: FolderIcon },
-    { name: 'Activity', href: '/member/activity', icon: HomeIcon },
+    { name: 'Activity', href: '/member/activity', icon: ClockIcon },
     { name: 'Meetings', href: '/member/meetings', icon: VideoCameraIcon },
 ];
 
@@ -38,10 +38,10 @@ export default function MemberMobileMenu() {
     }, [isOpen]);
 
     return (
-        <div className="md:hidden">
+        <div className="lg:hidden">
             <button
                 onClick={() => setIsOpen(true)}
-                className="p-2 text-[#1c1917] hover:text-[#d97757] transition-colors"
+                className="p-2 text-[#1c1917]/40 hover:text-accent-500 transition-colors"
             >
                 <Bars3Icon className="w-6 h-6" />
             </button>
@@ -57,15 +57,15 @@ export default function MemberMobileMenu() {
                     {/* Sidebar */}
                     <div className="fixed inset-y-0 left-0 z-[70] w-72 bg-[#fdfcf9] border-r border-[#e5dec9] shadow-2xl animate-in slide-in-from-left duration-300 flex flex-col">
                         <div className="p-6 flex items-center justify-between border-b border-[#e5dec9]">
-                            <h2 className="text-lg font-black text-[#1c1917] uppercase tracking-wider">Navigation</h2>
+                            <h2 className="text-lg font-black text-[#1c1917] tracking-tight uppercase">MENU</h2>
                             <button
                                 onClick={() => setIsOpen(false)}
-                                className="p-2 text-[#1c1917]/40 hover:text-[#d97757] transition-colors"
+                                className="p-2 text-[#1c1917]/20 hover:text-accent-500 transition-colors"
                             >
                                 <XMarkIcon className="w-6 h-6" />
                             </button>
                         </div>
-                        <nav className="flex-1 p-6 space-y-2 overflow-y-auto">
+                        <nav className="flex-1 p-6 space-y-3 overflow-y-auto">
                             {navItems.map((item) => {
                                 const isActive = pathname.startsWith(item.href);
                                 const Icon = item.icon;
@@ -73,13 +73,13 @@ export default function MemberMobileMenu() {
                                     <Link
                                         key={item.href}
                                         href={item.href}
-                                        className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-bold text-sm ${isActive
-                                            ? 'bg-accent-500 text-white shadow-md'
-                                            : 'text-[#1c1917]/60 hover:text-accent-600 hover:bg-beige-100'
+                                        className={`flex items-center gap-3 px-5 py-3.5 rounded-xl transition-all ${isActive
+                                            ? 'bg-accent-500 text-white shadow-xl shadow-accent-500/20'
+                                            : 'text-[#1c1917]/30 hover:text-accent-500 hover:bg-[#f7f3ed]'
                                             }`}
                                     >
                                         <Icon className="w-5 h-5" />
-                                        <span className="uppercase tracking-wide">{item.name}</span>
+                                        <span className="text-[10px] font-black uppercase tracking-[0.2em]">{item.name}</span>
                                     </Link>
                                 );
                             })}

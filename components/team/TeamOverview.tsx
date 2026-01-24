@@ -50,7 +50,7 @@ export default function TeamOverview({ projectName, teamName, members, adminName
                         <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-[#d97757]">Assigned Operators</h4>
                     </div>
                     <div className="grid grid-cols-1 gap-3">
-                        {members.map((member) => (
+                        {members.filter(m => m !== null).map((member) => (
                             <div key={member.id} className="flex items-center gap-4 p-4 hover:bg-[#f7f3ed]/50 rounded-2xl transition-all border border-transparent hover:border-[#e5dec9]">
                                 <div className="w-10 h-10 rounded-xl bg-[#f7f3ed] flex items-center justify-center text-[#1c1917]/40 border border-[#e5dec9]">
                                     <UserCircleIcon className="w-6 h-6" />

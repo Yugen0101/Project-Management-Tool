@@ -1,6 +1,5 @@
-import type { Config } from "tailwindcss";
-
-const config: Config = {
+/** @type {import('tailwindcss').Config} */
+module.exports = {
     content: [
         "./pages/**/*.{js,ts,jsx,tsx,mdx}",
         "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -9,7 +8,6 @@ const config: Config = {
     theme: {
         extend: {
             colors: {
-<<<<<<< HEAD
                 // TaskForge Sophisticated Beige Palette
                 primary: {
                     50: '#fdfcf9',   // Cream/Off-white
@@ -37,83 +35,50 @@ const config: Config = {
                     900: '#5c2d20',  // Deep rust
                     950: '#2e160e',  // Almost black rust
                 },
+                secondary: {
+                    50: '#fafaf9',
+                    100: '#f5f5f4',
+                    200: '#e7e5e4',
+                    300: '#d6d3d1',
+                    400: '#a8a29e',
+                    500: '#78716c',
+                    600: '#57534e',
+                    700: '#44403c',
+                    800: '#292524',
+                    900: '#1c1917',
+                },
                 beige: {
                     50: '#fdfcf9',
                     100: '#f7f3ed',
                     200: '#e5dec9',
                     300: '#d9cfb0',
                 },
-                // Status colors (softer, beige-compatible)
                 status: {
-                    success: '#7c9473', // Muted sage green
-                    warning: '#d97757', // Terracotta
-                    error: '#c85a54',   // Muted red
-                    info: '#7a8fa3',    // Muted blue
+                    success: '#7c9473',
+                    warning: '#d97757',
+                    error: '#c85a54',
+                    info: '#7a8fa3',
                 },
                 priority: {
                     low: '#9a8665',
                     medium: '#d97757',
                     high: '#c26242',
                     critical: '#8e4832',
-=======
-                // Modern Soft Dashboard Palette
-                background: '#f8fafc',
-                foreground: '#0f172a',
-                surface: '#ffffff',
-                border: '#e2e8f0',
-                primary: {
-                    50: '#f5f7ff',
-                    100: '#ebf0ff',
-                    200: '#d9e2ff',
-                    300: '#b8caff',
-                    400: '#8ca6ff',
-                    500: '#6366f1', // Indigo Accent
-                    600: '#4f46e5',
-                    700: '#4338ca',
-                    800: '#3730a3',
-                    900: '#312e81',
-                    950: '#1e1b4b',
                 },
-                secondary: {
-                    50: '#f8fafc',
-                    100: '#f1f5f9',
-                    200: '#e2e8f0',
-                    300: '#cbd5e1',
-                    400: '#94a3b8',
-                    500: '#64748b',
-                    600: '#475569',
-                    700: '#334155',
-                    800: '#1e293b',
-                    900: '#0f172a',
-                },
-                accent: {
-                    blue: '#0ea5e9',
-                    purple: '#a855f7',
-                    emerald: '#10b981',
-                    rose: '#f43f5e',
-                    amber: '#f59e0b',
-                },
-                // Status colors
-                status: {
-                    overdue: '#be123c',
-                    warning: '#d97706',
-                    success: '#059669',
-                    info: '#2563eb',
->>>>>>> f8a9eddf51e5dc62867bfd05e707e9748c4cf529
-                },
+                border: '#e5dec9',
             },
             fontFamily: {
                 sans: ['Inter', 'system-ui', 'sans-serif'],
             },
             boxShadow: {
-                'sm': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-                'card': '0 1px 3px 0 rgba(0, 0, 0, 0.02), 0 1px 2px -1px rgba(0, 0, 0, 0.02)',
-                'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05)',
-                'premium': '0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -4px rgba(0, 0, 0, 0.02)',
-                'modal': '0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03)',
+                sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+                card: '0 1px 3px 0 rgba(0, 0, 0, 0.02), 0 1px 2px -1px rgba(0, 0, 0, 0.02)',
+                soft: '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05)',
+                premium: '0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -4px rgba(0, 0, 0, 0.02)',
+                modal: '0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03)',
             },
             borderRadius: {
-                'xl': '0.75rem',
+                xl: '0.75rem',
                 '2xl': '1rem',
                 '3xl': '1.5rem',
             },
@@ -133,9 +98,5 @@ const config: Config = {
             },
         },
     },
-    plugins: [
-        require('@tailwindcss/typography'),
-    ],
+    plugins: [require("@tailwindcss/typography")],
 };
-
-export default config;

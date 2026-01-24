@@ -79,11 +79,11 @@ export default function UserManagementClient({ initialUsers }: { initialUsers: U
             <div className="flex justify-end">
                 <button
                     onClick={() => setIsModalOpen(true)}
-                    className="group relative px-10 py-5 bg-[#1c1917] text-[#f7f3ed] rounded-2xl overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-[#1c1917]/20 active:scale-95"
+                    className="group relative px-10 py-5 bg-accent-500 text-white rounded-2xl overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-accent-500/30 active:scale-95 border border-accent-400/20"
                 >
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#d97757]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     <div className="flex items-center gap-3 relative z-10">
-                        <PlusIcon className="w-5 h-5 text-[#d97757]" />
+                        <PlusIcon className="w-5 h-5 text-white" />
                         <span className="text-[12px] font-black uppercase tracking-[0.3em]">Deploy Personnel</span>
                     </div>
                 </button>
@@ -162,7 +162,7 @@ export default function UserManagementClient({ initialUsers }: { initialUsers: U
                                         value={formData.password}
                                         onChange={e => setFormData({ ...formData, password: e.target.value })}
                                     />
-                                    <button 
+                                    <button
                                         type="button"
                                         onClick={() => setFormData({ ...formData, password: Math.random().toString(36).slice(-10) })}
                                         className="px-4 bg-[#f7f3ed] border border-[#e5dec9] rounded-xl text-[9px] font-black uppercase tracking-tighter hover:bg-[#d97757] hover:text-white transition-all"

@@ -60,7 +60,7 @@ export default function TeamManager({
             const result = await getUsersForMentions();
             if (result.success) {
                 // Filter out users who are already members
-                const currentMemberIds = members.map(m => m.users.id);
+                const currentMemberIds = members.map(m => m.users?.id).filter(Boolean);
                 const filteredUsers = (result.data as User[]).filter(u => !currentMemberIds.includes(u.id));
                 setAllUsers(filteredUsers);
             } else {
@@ -131,14 +131,16 @@ export default function TeamManager({
                     </div>
                 ) : (
                     <div className="space-y-4">
-                        {members.map((member) => (
-                            <div key={member.users.id} className="flex items-center justify-between p-5 bg-[#fdfcf9] border border-[#e5dec9] rounded-[2rem] group hover:border-[#d97757] transition-all duration-500">
+                        {members.map((member, i) => (
+                            <div key={member.users?.id || i} className="flex items-center justify-between p-5 bg-[#fdfcf9] border border-[#e5dec9] rounded-[2rem] group hover:border-[#d97757] transition-all duration-500">
                                 <div className="flex items-center gap-5">
                                     <div className="w-12 h-12 rounded-2xl bg-white border border-[#e5dec9] flex items-center justify-center font-black text-[#d97757] shadow-sm group-hover:bg-[#d97757] group-hover:text-white transition-all transform group-hover:-rotate-3">
-                                        {member.users.full_name?.charAt(0)}
+                                        {member.users?.full_name?.charAt(0) || '?'}
                                     </div>
                                     <div className="space-y-1">
-                                        <p className="text-[14px] font-black text-[#1c1917] tracking-tight uppercase group-hover:text-[#d97757] transition-colors">{member.users.full_name}</p>
+                                        <p className="text-[14px] font-black text-[#1c1917] tracking-tight uppercase group-hover:text-[#d97757] transition-colors">
+                                            {member.users?.full_name || 'Expunged User'}
+                                        </p>
                                         <div className="flex items-center gap-2">
                                             <span className={`px-3 py-0.5 rounded-full border text-[8px] font-black uppercase tracking-widest ${member.role === 'associate' ? 'bg-[#f7f3ed] border-[#e5dec9] text-[#d97757]' : 'bg-white border-[#e5dec9] text-[#1c1917]/30 font-serif italic'
                                                 }`}>
@@ -148,7 +150,7 @@ export default function TeamManager({
                                     </div>
                                 </div>
                                 <button
-                                    onClick={() => handleRemoveMember(member.users.id)}
+                                    onClick={() => member.users?.id && handleRemoveMember(member.users.id)}
                                     className="opacity-0 group-hover:opacity-100 w-10 h-10 flex items-center justify-center text-[#1c1917]/10 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all"
                                 >
                                     <TrashIcon className="w-5 h-5" />

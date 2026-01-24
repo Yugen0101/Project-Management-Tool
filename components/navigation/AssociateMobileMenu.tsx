@@ -28,7 +28,7 @@ export default function AssociateMobileMenu() {
         <div className="lg:hidden">
             <button
                 onClick={() => setIsOpen(true)}
-                className="p-2 text-[#1c1917] hover:text-[#d97757] transition-colors"
+                className="p-2 text-[#1c1917]/40 hover:text-accent-500 transition-colors"
             >
                 <Bars3Icon className="w-6 h-6" />
             </button>
@@ -44,10 +44,10 @@ export default function AssociateMobileMenu() {
                     {/* Sidebar */}
                     <div className="fixed inset-y-0 left-0 z-[70] w-72 bg-[#fdfcf9] border-r border-[#e5dec9] shadow-2xl animate-in slide-in-from-left duration-300 flex flex-col">
                         <div className="p-6 flex items-center justify-between border-b border-[#e5dec9]">
-                            <h2 className="text-lg font-black text-[#1c1917] uppercase tracking-wider">Project Lead</h2>
+                            <h2 className="text-lg font-black text-[#1c1917] tracking-tight uppercase">MENU</h2>
                             <button
                                 onClick={() => setIsOpen(false)}
-                                className="p-2 text-[#1c1917]/40 hover:text-[#d97757] transition-colors"
+                                className="p-2 text-[#1c1917]/20 hover:text-accent-500 transition-colors"
                             >
                                 <XMarkIcon className="w-6 h-6" />
                             </button>
