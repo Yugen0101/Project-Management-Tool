@@ -18,7 +18,6 @@ export default async function AssociateLayout({
     const user = await getCurrentUser();
 
     return (
-<<<<<<< HEAD
         <div className="min-h-screen bg-beige-50 text-[#1c1917] flex">
             {/* Sidebar */}
             <aside className="w-72 bg-white/50 backdrop-blur-md border-r border-[#e5dec9] hidden lg:flex flex-col fixed inset-y-0 z-50">
