@@ -46,8 +46,8 @@ export default async function AdminUsersPage({
                         <UserGroupIcon className="w-8 h-8" />
                     </div>
                     <div>
-                        <h1 className="text-3xl font-bold text-secondary-900 tracking-tight">Personnel Roster</h1>
-                        <p className="text-secondary-400 text-sm font-medium mt-1">
+                        <h1 className="text-3xl font-semibold text-secondary-900 tracking-tight">User Directory</h1>
+                        <p className="text-secondary-400 text-sm font-normal mt-1">
                             Managing {totalCount || 0} active team members across the organization.
                         </p>
                     </div>
@@ -64,8 +64,8 @@ export default async function AdminUsersPage({
                         <IdentificationIcon className="w-6 h-6" />
                     </div>
                     <div>
-                        <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-widest">Aggregate</p>
-                        <p className="text-2xl font-bold text-secondary-900 tracking-tight">{totalCount || 0}</p>
+                        <p className="text-[10px] font-medium text-secondary-400 uppercase tracking-widest">Aggregate</p>
+                        <p className="text-2xl font-medium text-secondary-900 tracking-tight">{totalCount || 0}</p>
                     </div>
                 </div>
                 <div className="card flex items-center gap-6 group hover:border-indigo-200 transition-all">
@@ -73,8 +73,8 @@ export default async function AdminUsersPage({
                         <ShieldCheckIcon className="w-6 h-6" />
                     </div>
                     <div>
-                        <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-widest">Executives</p>
-                        <p className="text-2xl font-bold text-secondary-900 tracking-tight">{adminCount || 0}</p>
+                        <p className="text-[10px] font-medium text-secondary-400 uppercase tracking-widest">Executives</p>
+                        <p className="text-2xl font-medium text-secondary-900 tracking-tight">{adminCount || 0}</p>
                     </div>
                 </div>
                 <div className="card flex items-center gap-6 group hover:border-emerald-200 transition-all">
@@ -82,8 +82,8 @@ export default async function AdminUsersPage({
                         <UserIcon className="w-6 h-6" />
                     </div>
                     <div>
-                        <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-widest">Associates</p>
-                        <p className="text-2xl font-bold text-secondary-900 tracking-tight">{associateCount || 0}</p>
+                        <p className="text-[10px] font-medium text-secondary-400 uppercase tracking-widest">Associates</p>
+                        <p className="text-2xl font-medium text-secondary-900 tracking-tight">{associateCount || 0}</p>
                     </div>
                 </div>
                 <div className="card flex items-center gap-6 group hover:border-amber-200 transition-all">
@@ -91,47 +91,47 @@ export default async function AdminUsersPage({
                         <SparklesIcon className="w-6 h-6" />
                     </div>
                     <div>
-                        <p className="text-[10px] font-bold text-secondary-400 uppercase tracking-widest">Tactical</p>
-                        <p className="text-2xl font-bold text-secondary-900 tracking-tight">{memberCount || 0}</p>
+                        <p className="text-[10px] font-medium text-secondary-400 uppercase tracking-widest">Team Member</p>
+                        <p className="text-2xl font-medium text-secondary-900 tracking-tight">{memberCount || 0}</p>
                     </div>
                 </div>
             </div>
 
             {/* Users Table */}
-            <div className="card p-0 overflow-hidden">
-                <div className="p-8 border-b border-border bg-secondary-50/50 flex items-center justify-between">
-                    <h3 className="text-sm font-bold text-secondary-900 uppercase tracking-widest flex items-center gap-2">
-                        <IdentificationIcon className="w-5 h-5 text-primary-600" />
-                        Management Registry
+            <div className="card p-0 overflow-hidden border border-[#e5dec9]/60 shadow-lg shadow-[#d9cfb0]/5">
+                <div className="p-8 border-b border-border bg-[#fdfcf9]/50 flex items-center justify-between">
+                    <h3 className="text-xs font-medium text-secondary-900 uppercase tracking-widest flex items-center gap-2">
+                        <IdentificationIcon className="w-5 h-5 text-accent-500" />
+                        Directory Registry
                     </h3>
                     <div className="flex items-center gap-2">
-                        <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
-                        <span className="text-[10px] font-bold text-secondary-400 uppercase tracking-widest">System Synchronized</span>
+                        <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
+                        <span className="text-[9px] font-medium text-secondary-400 uppercase tracking-[0.2em]">Data Synchronized</span>
                     </div>
                 </div>
                 <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                         <thead>
                             <tr className="bg-white border-b border-border">
-                                <th className="px-8 py-5 text-[10px] font-bold uppercase text-secondary-400 tracking-widest">Member Entity</th>
-                                <th className="px-8 py-5 text-[10px] font-bold uppercase text-secondary-400 tracking-widest">Clearance Tier</th>
-                                <th className="px-8 py-5 text-[10px] font-bold uppercase text-secondary-400 tracking-widest text-center">Active Assignments</th>
-                                <th className="px-8 py-5 text-[10px] font-bold uppercase text-secondary-400 tracking-widest text-center">Task Queue</th>
-                                <th className="px-8 py-5 text-[10px] font-bold uppercase text-secondary-400 tracking-widest">Operational Status</th>
-                                <th className="px-8 py-5 text-[10px] font-bold uppercase text-secondary-400 tracking-widest text-right">Actions</th>
+                                <th className="px-8 py-5 text-[9px] font-medium uppercase text-secondary-400 tracking-[0.2em]">Identity</th>
+                                <th className="px-8 py-5 text-[9px] font-medium uppercase text-secondary-400 tracking-[0.2em]">Access Level</th>
+                                <th className="px-8 py-5 text-[9px] font-medium uppercase text-secondary-400 tracking-[0.2em] text-center">Projects</th>
+                                <th className="px-8 py-5 text-[9px] font-medium uppercase text-secondary-400 tracking-[0.2em] text-center">Workload</th>
+                                <th className="px-8 py-5 text-[9px] font-medium uppercase text-secondary-400 tracking-[0.2em]">Status</th>
+                                <th className="px-8 py-5 text-[9px] font-medium uppercase text-secondary-400 tracking-[0.2em] text-right">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-border">
                             {users?.map((user: any) => (
-                                <tr key={user.id} className="hover:bg-secondary-50 transition-colors group">
+                                <tr key={user.id} className="hover:bg-secondary-50/50 transition-colors group">
                                     <td className="px-8 py-6">
                                         <div className="flex items-center gap-4">
-                                            <div className="w-11 h-11 rounded-xl bg-[#f7f3ed] border border-[#e5dec9] flex items-center justify-center font-black text-accent-500 group-hover:bg-accent-500 group-hover:text-white group-hover:border-accent-500 transition-all shadow-sm shadow-accent-500/5">
+                                            <div className="w-10 h-10 rounded-xl bg-[#f7f3ed] border border-[#e5dec9] flex items-center justify-center font-medium text-accent-500 group-hover:bg-accent-500 group-hover:text-white group-hover:border-accent-500 transition-all shadow-sm">
                                                 {user.full_name?.charAt(0) || 'U'}
                                             </div>
                                             <div>
-                                                <p className="text-sm font-bold text-secondary-900 group-hover:text-primary-600 transition-colors">{user.full_name}</p>
-                                                <div className="flex items-center gap-1.5 text-[11px] font-medium text-secondary-400 mt-0.5">
+                                                <p className="text-sm font-medium text-secondary-900 group-hover:text-accent-600 transition-colors">{user.full_name}</p>
+                                                <div className="flex items-center gap-1.5 text-[10px] font-normal text-secondary-400 mt-0.5 uppercase tracking-tight">
                                                     <EnvelopeIcon className="w-3.5 h-3.5" />
                                                     {user.email}
                                                 </div>
@@ -140,7 +140,7 @@ export default async function AdminUsersPage({
                                     </td>
                                     <td className="px-8 py-6">
                                         <div className="flex flex-col gap-1">
-                                            <span className={`badge inline-flex w-fit ${user.role === 'admin' ? 'badge-danger' :
+                                            <span className={`badge inline-flex w-fit text-[9px] font-medium uppercase tracking-wider ${user.role === 'admin' ? 'badge-danger' :
                                                 user.role === 'associate' ? 'badge-info' :
                                                     'badge-success'}`}>
                                                 {user.role}
@@ -152,26 +152,26 @@ export default async function AdminUsersPage({
                                             <div className="flex -space-x-2">
                                                 {[...Array(Math.min(user.projects_count?.[0]?.count || 0, 3))].map((_, i) => (
                                                     <div key={i} className="w-6 h-6 rounded-lg bg-secondary-50 border border-border flex items-center justify-center shadow-sm">
-                                                        <div className="w-2 h-2 rounded-full bg-primary-500/40"></div>
+                                                        <div className="w-1.5 h-1.5 rounded-full bg-primary-500/40"></div>
                                                     </div>
                                                 ))}
                                             </div>
-                                            <span className="text-[11px] font-bold text-secondary-600 tracking-tight">
+                                            <span className="text-[10px] font-medium text-secondary-600 tracking-tight">
                                                 {user.projects_count?.[0]?.count || 0} Project{user.projects_count?.[0]?.count === 1 ? '' : 's'}
                                             </span>
                                         </div>
                                     </td>
                                     <td className="px-8 py-6 text-center">
-                                        <div className="inline-flex flex-col items-center justify-center w-12 h-12 bg-secondary-50 rounded-2xl border border-border group-hover:border-primary-300 transition-all">
-                                            <span className="text-lg font-bold text-primary-600 leading-none">{user.tasks_count?.[0]?.count || 0}</span>
-                                            <span className="text-[7px] font-bold text-secondary-400 uppercase tracking-[0.1em] mt-1">Units</span>
+                                        <div className="inline-flex flex-col items-center justify-center w-11 h-11 bg-secondary-50 rounded-xl border border-border group-hover:border-accent-300 transition-all shadow-sm">
+                                            <span className="text-base font-semibold text-accent-600 leading-none">{user.tasks_count?.[0]?.count || 0}</span>
+                                            <span className="text-[6px] font-medium text-secondary-400 uppercase tracking-[0.2em] mt-1">Tasks</span>
                                         </div>
                                     </td>
                                     <td className="px-8 py-6">
                                         <div className="flex items-center gap-2">
-                                            <span className={`w-2 h-2 rounded-full ${user.is_active ? 'bg-emerald-500' : 'bg-secondary-300'}`}></span>
-                                            <span className={`text-[11px] font-bold uppercase tracking-widest ${user.is_active ? 'text-emerald-600' : 'text-secondary-400'}`}>
-                                                {user.is_active ? 'ACTIVE' : 'DORMANT'}
+                                            <span className={`w-1.5 h-1.5 rounded-full ${user.is_active ? 'bg-emerald-500' : 'bg-secondary-300'}`}></span>
+                                            <span className={`text-[9px] font-medium uppercase tracking-[0.2em] ${user.is_active ? 'text-emerald-600' : 'text-secondary-400'}`}>
+                                                {user.is_active ? 'ACTIVE' : 'INACTIVE'}
                                             </span>
                                         </div>
                                     </td>

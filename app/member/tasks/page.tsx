@@ -52,9 +52,9 @@ export default async function MemberTasksPage({
                 <div className="space-y-3">
                     <div className="flex items-center gap-2 text-accent-500 mb-2">
                         <ClipboardDocumentListIcon className="w-5 h-5 shadow-sm" />
-                        <span className="text-[10px] font-black uppercase tracking-[0.4em]">Operational Matrix</span>
+                        <span className="text-[10px] font-semibold uppercase tracking-[0.4em]">Operational Matrix</span>
                     </div>
-                    <h1 className="text-5xl font-black text-[#1c1917] tracking-tighter uppercase leading-none">
+                    <h1 className="text-4xl font-semibold text-[#1c1917] tracking-tighter uppercase leading-none">
                         Active <span className="text-accent-500">Workspace</span>
                     </h1>
                     <p className="text-[#1c1917]/50 font-medium text-lg italic font-serif">You have {tasks?.filter(t => t.status !== 'completed').length || 0} active operational units requiring attention.</p>
@@ -71,7 +71,7 @@ export default async function MemberTasksPage({
                     <Link
                         key={tab.id}
                         href={`/member/tasks?status=${tab.id}`}
-                        className={`pb-5 text-[10px] font-black uppercase tracking-[0.2em] transition-all relative ${filterStatus === tab.id ? 'text-accent-500' : 'text-[#1c1917]/30 hover:text-[#1c1917]'}`}
+                        className={`pb-5 text-[10px] font-bold uppercase tracking-[0.2em] transition-all relative ${filterStatus === tab.id ? 'text-accent-500' : 'text-[#78716c] hover:text-[#1c1917]'}`}
                     >
                         {tab.label}
                         {filterStatus === tab.id && <div className="absolute bottom-[-1px] left-0 w-full h-[3px] bg-accent-500 rounded-full shadow-[0_0_10px_rgba(217,119,87,0.4)]"></div>}
@@ -86,17 +86,17 @@ export default async function MemberTasksPage({
                         <div className="p-8 flex flex-col md:flex-row md:items-center justify-between gap-8">
                             <div className="flex-1 min-w-0 space-y-4">
                                 <div className="flex items-center gap-3">
-                                    <span className="px-3 py-1 bg-[#f7f3ed] text-[9px] font-black uppercase text-accent-500 rounded-xl border border-[#e5dec9] tracking-widest shadow-sm">
+                                    <span className="px-3 py-1 bg-[#f7f3ed] text-[9px] font-medium uppercase text-accent-500 rounded-xl border border-[#e5dec9] tracking-widest shadow-sm">
                                         {task.project?.name}
                                     </span>
-                                    <span className={`badge text-[9px] font-black uppercase tracking-widest py-1 px-3 ${task.status === 'completed' ? 'bg-[#7c9473]/10 text-[#7c9473] border-[#7c9473]/20' :
-                                        task.status === 'in_progress' ? 'bg-accent-500/10 text-accent-500 border-accent-500/20' :
-                                            'bg-[#7a8fa3]/10 text-[#7a8fa3] border-[#7a8fa3]/20'
+                                    <span className={`badge ${task.status === 'completed' ? 'badge-success' :
+                                        task.status === 'in_progress' ? 'badge-warning' :
+                                            'badge-info'
                                         }`}>
                                         {task.status?.replace('_', ' ')}
                                     </span>
                                 </div>
-                                <h3 className="text-2xl font-black text-[#1c1917] tracking-tight group-hover:text-accent-500 transition-colors uppercase leading-[0.9]">
+                                <h3 className="text-2xl font-semibold text-[#1c1917] tracking-tight group-hover:text-accent-500 transition-colors uppercase leading-[0.9]">
                                     {task.title}
                                 </h3>
                                 <p className="text-[#1c1917]/40 text-sm font-medium leading-relaxed italic line-clamp-1 italic">
@@ -106,8 +106,8 @@ export default async function MemberTasksPage({
 
                             <div className="flex items-center gap-12 shrink-0">
                                 <div className="text-right hidden sm:block space-y-1">
-                                    <p className="text-[9px] font-black uppercase text-[#1c1917]/20 tracking-[0.2em]">Deadline Protocol</p>
-                                    <div className="flex items-center gap-2 text-[11px] font-black text-[#1c1917]/40 justify-end uppercase tracking-widest">
+                                    <p className="text-[9px] font-medium uppercase text-[#78716c] tracking-[0.2em]">Deadline Protocol</p>
+                                    <div className="flex items-center gap-2 text-[11px] font-medium text-[#78716c] justify-end uppercase tracking-widest">
                                         <CalendarIcon className="w-4 h-4 text-accent-500" />
                                         {task.due_date ? format(new Date(task.due_date), 'MM.dd.yyyy') : 'UNSET'}
                                     </div>
@@ -128,8 +128,8 @@ export default async function MemberTasksPage({
                         <div className="w-24 h-24 bg-[#f7f3ed] rounded-[2rem] flex items-center justify-center text-[#1c1917]/10 mb-8 animate-pulse">
                             <ClipboardDocumentListIcon className="w-12 h-12" />
                         </div>
-                        <h3 className="text-3xl font-black text-[#1c1917] tracking-tighter uppercase">No Assignments</h3>
-                        <p className="text-[#1c1917]/30 text-sm font-bold uppercase tracking-widest mt-3 text-center max-w-sm">Current Operational Matrix is clear. No active assignments detected.</p>
+                        <h3 className="text-3xl font-semibold text-[#1c1917] tracking-tighter uppercase">No Assignments</h3>
+                        <p className="text-[#1c1917]/30 text-sm font-medium uppercase tracking-widest mt-3 text-center max-w-sm">Current Operational Matrix is clear. No active assignments detected.</p>
                     </div>
                 )}
             </div>

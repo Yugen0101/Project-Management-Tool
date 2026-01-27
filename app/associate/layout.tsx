@@ -25,10 +25,10 @@ export default async function AssociateLayout({
                     <div className="flex flex-col items-center gap-4 text-center">
                         <TaskForgeLogo size="lg" />
                         <div>
-                            <h1 className="text-xl font-black tracking-tight uppercase">
+                            <h1 className="text-xl font-semibold tracking-tight uppercase">
                                 Task<span className="text-accent-500">Forge</span>
                             </h1>
-                            <span className="block text-[10px] text-accent-500 uppercase tracking-[0.3em] font-black mt-1">Project Lead</span>
+                            <span className="block text-[10px] text-accent-500 uppercase tracking-[0.3em] font-semibold mt-1">Project Lead</span>
                         </div>
                     </div>
                 </div>
@@ -37,12 +37,12 @@ export default async function AssociateLayout({
 
                 <div className="p-6 mt-auto border-t border-[#e5dec9]">
                     <div className="flex items-center gap-3 px-4 py-4 bg-[#f7f3ed] rounded-[1.25rem] border border-[#e5dec9] shadow-sm mb-4 group hover:border-accent-200 transition-all">
-                        <div className="w-9 h-9 rounded-xl bg-accent-500 text-white flex items-center justify-center font-black text-xs shadow-lg shadow-accent-500/20 group-hover:scale-105 transition-transform">
+                        <div className="w-9 h-9 rounded-xl bg-accent-500 text-white flex items-center justify-center font-semibold text-xs shadow-lg shadow-accent-500/20 group-hover:scale-105 transition-transform">
                             {user?.full_name?.charAt(0) || 'A'}
                         </div>
                         <div className="flex-1 min-w-0">
-                            <p className="text-[10px] font-black text-[#1c1917] truncate uppercase tracking-tight">{user?.full_name}</p>
-                            <p className="text-[8px] font-black text-accent-500 uppercase tracking-[0.2em] truncate">Operations Lead</p>
+                            <p className="text-[10px] font-semibold text-[#1c1917] truncate uppercase tracking-tight">{user?.full_name}</p>
+                            <p className="text-[8px] font-semibold text-accent-500 uppercase tracking-[0.2em] truncate">Operations Lead</p>
                         </div>
                     </div>
                     <div className="px-4">
@@ -61,7 +61,7 @@ export default async function AssociateLayout({
                         </div>
                         <div className="flex items-center gap-3">
                             <span className="w-8 h-1 bg-accent-500 rounded-full"></span>
-                            <h2 className="text-[10px] font-black text-[#1c1917] uppercase tracking-[0.4em]">Project Lead Portal</h2>
+                            <h2 className="text-[10px] font-semibold text-[#78716c] uppercase tracking-[0.4em]">Project Lead Portal</h2>
                         </div>
                     </div>
                     <div className="flex items-center gap-4">

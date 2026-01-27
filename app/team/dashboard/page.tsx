@@ -108,7 +108,7 @@ export default async function TeamDashboard() {
                 <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[80%] bg-beige-100/50 blur-[120px] rounded-full -z-10"></div>
                 <div className="text-center space-y-6 max-w-sm relative z-10">
                     <ShieldCheckIcon className="w-20 h-20 text-[#1c1917]/10 mx-auto" />
-                    <h1 className="text-2xl font-black text-[#1c1917] tracking-tight uppercase">No assignments yet</h1>
+                    <h1 className="text-2xl font-semibold text-[#1c1917] tracking-tight uppercase">No assignments yet</h1>
                     <p className="text-[#1c1917]/50 text-sm font-medium">Your account is active but you haven't been assigned to a project yet. Please contact your manager.</p>
                 </div>
             </div>
@@ -128,16 +128,16 @@ export default async function TeamDashboard() {
                         <SparklesIcon className="w-6 h-6" />
                     </div>
                     <div>
-                        <h1 className="text-xl font-bold tracking-tight text-[#1c1917]">TaskForge</h1>
-                        <p className="text-[10px] font-bold text-accent-500 uppercase tracking-widest">Team Node</p>
+                        <h1 className="text-xl font-semibold tracking-tight text-[#1c1917]">TaskForge</h1>
+                        <p className="text-[10px] font-semibold text-accent-500 uppercase tracking-widest">Team Node</p>
                     </div>
                 </div>
 
                 <div className="flex items-center gap-6">
                     <div className="flex items-center gap-3">
                         <div className="text-right hidden sm:block">
-                            <p className="text-sm font-bold text-[#1c1917]">{user.full_name}</p>
-                            <p className="text-[10px] font-black text-[#1c1917]/30 uppercase tracking-widest mt-0.5">Assigned Operator</p>
+                            <p className="text-sm font-semibold text-[#1c1917]">{user.full_name}</p>
+                            <p className="text-[10px] font-medium text-[#78716c] uppercase tracking-widest mt-0.5">Assigned Operator</p>
                         </div>
                         <div className="w-9 h-9 rounded-xl bg-[#f7f3ed] flex items-center justify-center text-[#d97757] font-bold border border-[#e5dec9] shadow-sm">
                             {user.full_name?.charAt(0) || 'U'}
@@ -157,11 +157,11 @@ export default async function TeamDashboard() {
                 <div className="space-y-4">
                     <div className="flex items-center gap-2">
                         <span className="w-8 h-1 bg-accent-500 rounded-full"></span>
-                        <h2 className="text-xs font-black text-accent-500 uppercase tracking-wider">Mission Log</h2>
+                        <h2 className="text-xs font-semibold text-accent-500 uppercase tracking-wider">Mission Log</h2>
                     </div>
-                    <h2 className="text-4xl font-black text-[#1c1917] tracking-tight">Focus Protocol Active</h2>
+                    <h2 className="text-4xl font-semibold text-[#1c1917] tracking-tight">Focus Protocol Active</h2>
                     <p className="text-[#1c1917]/60 text-lg font-medium">
-                        You have {tasks?.filter(t => t.status !== 'Completed').length || 0} active assignments for <span className="text-[#1c1917] font-black">{projectInfo.name}</span>.
+                        You have {tasks?.filter(t => t.status !== 'Completed').length || 0} active assignments for <span className="text-[#1c1917] font-semibold">{projectInfo.name}</span>.
                     </p>
                 </div>
 
@@ -184,7 +184,7 @@ export default async function TeamDashboard() {
                         {/* Task List */}
                         <section className="space-y-6">
                             <div className="flex items-center justify-between px-2">
-                                <h3 className="text-sm font-black text-[#1c1917]/40 uppercase tracking-[0.3em]">Assigned Directives</h3>
+                                <h3 className="text-sm font-semibold text-[#78716c] uppercase tracking-[0.3em]">Assigned Directives</h3>
                                 <div className="h-px flex-1 bg-beige-200 mx-6"></div>
                             </div>
                             <div className="grid gap-6">
@@ -194,16 +194,16 @@ export default async function TeamDashboard() {
                                             <div className="flex-1 space-y-5">
                                                 <div className="flex items-center gap-4">
                                                     <span className={`badge ${task.priority === 'high' ? 'bg-[#d97757]/10 text-[#d97757] border-[#d97757]/20' :
-                                                            task.priority === 'medium' ? 'badge-warning' : 'bg-beige-50 text-[#1c1917]/40'
+                                                        task.priority === 'medium' ? 'badge-warning' : 'bg-beige-50 text-[#1c1917]/40'
                                                         }`}>
                                                         {task.priority || 'NORMAL'}
                                                     </span>
-                                                    <span className="text-[10px] font-black text-[#1c1917]/30 uppercase tracking-widest">
+                                                    <span className="text-[10px] font-medium text-[#78716c] uppercase tracking-widest">
                                                         Origin: {task.creator?.full_name}
                                                     </span>
                                                 </div>
                                                 <div>
-                                                    <h4 className="text-2xl font-black text-[#1c1917] tracking-tight group-hover:text-accent-500 transition-colors uppercase leading-tight">
+                                                    <h4 className="text-2xl font-semibold text-[#1c1917] tracking-tight group-hover:text-accent-500 transition-colors uppercase leading-tight">
                                                         {task.title}
                                                     </h4>
                                                     <p className="text-[#1c1917]/50 text-sm font-medium mt-2 italic flex items-center gap-2">
@@ -211,7 +211,7 @@ export default async function TeamDashboard() {
                                                         {task.description || 'No detailed instructions provided.'}
                                                     </p>
                                                 </div>
-                                                <div className="flex items-center gap-8 text-[11px] font-black text-[#1c1917]/30 uppercase tracking-wider pt-3">
+                                                <div className="flex items-center gap-8 text-[11px] font-medium text-[#78716c] uppercase tracking-wider pt-3">
                                                     <div className="flex items-center gap-2">
                                                         <ClockIcon className="w-4 h-4 text-accent-500" />
                                                         Deadline: {format(new Date(task.due_date), 'MMM dd, yyyy')}
@@ -224,7 +224,7 @@ export default async function TeamDashboard() {
                                             </div>
                                             <div className="lg:w-px lg:h-32 bg-beige-200 hidden lg:block"></div>
                                             <div className="flex flex-col gap-4 min-w-[220px]">
-                                                <p className="text-[10px] font-black text-[#1c1917]/20 uppercase tracking-[0.3em] text-center">Status Control</p>
+                                                <p className="text-[10px] font-medium text-[#78716c] uppercase tracking-[0.3em] text-center">Status Control</p>
                                                 <TaskStatusUpdate taskId={task.id} currentStatus={task.status} />
                                             </div>
                                         </div>
@@ -232,7 +232,7 @@ export default async function TeamDashboard() {
                                 )) : (
                                     <div className="py-24 text-center bg-white/50 border-2 border-dashed border-beige-200 rounded-[2.5rem]">
                                         <ClipboardDocumentCheckIcon className="w-16 h-16 text-beige-300 mx-auto mb-6" />
-                                        <h4 className="text-xl font-black text-[#1c1917]/30 uppercase tracking-widest">Repository Sync Clear</h4>
+                                        <h4 className="text-xl font-semibold text-[#78716c] uppercase tracking-widest">Repository Sync Clear</h4>
                                     </div>
                                 )}
                             </div>
@@ -244,7 +244,7 @@ export default async function TeamDashboard() {
                         <section className="space-y-6">
                             <div className="flex items-center gap-3 px-2">
                                 <span className="w-8 h-1 bg-accent-500 rounded-full"></span>
-                                <h3 className="text-sm font-black text-[#1c1917] uppercase tracking-widest">Unit Comms</h3>
+                                <h3 className="text-sm font-semibold text-[#1c1917] uppercase tracking-widest">Unit Comms</h3>
                             </div>
                             <ProjectChat projectId={projectInfo.id} currentUserId={user.id} />
                         </section>

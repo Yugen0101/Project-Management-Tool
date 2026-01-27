@@ -18,12 +18,12 @@ export default function SignOutButton() {
         <button
             onClick={handleSignOut}
             className="flex items-center gap-4 group transition-all hover:translate-x-1"
-            title="Terminate Protocol"
+            title="Sign Out"
         >
             <div className="w-9 h-9 bg-[#1c1917]/5 rounded-xl flex items-center justify-center group-hover:bg-[#1c1917] group-hover:text-white transition-all shadow-sm border border-[#e5dec9]">
                 <PowerIcon className="w-5 h-5" />
             </div>
-            <span className="text-[10px] font-black text-[#1c1917]/30 uppercase tracking-[0.4em] group-hover:text-[#1c1917] transition-colors">Terminate</span>
+            <span className="text-[10px] font-semibold text-[#1c1917]/70 uppercase tracking-[0.4em] group-hover:text-[#1c1917] transition-colors">Sign Out</span>
         </button>
     );
 }

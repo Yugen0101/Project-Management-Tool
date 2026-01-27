@@ -30,7 +30,7 @@ export default async function AssociateProjectKanbanPage({ params }: { params: P
         .from('projects')
         .select(`
             *,
-            tasks:tasks(*, assigned_user:users(*)),
+            tasks:tasks(*, assigned_user:users!tasks_assigned_to_fkey(*)),
             columns:kanban_columns(*)
         `)
         .eq('id', id)

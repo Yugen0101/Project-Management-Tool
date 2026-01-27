@@ -59,26 +59,26 @@ function LoginForm() {
             <div className="w-full max-w-md relative z-10">
                 <div className="card shadow-2xl shadow-beige-300/20 border-beige-200 !p-10">
                     <div className="text-center mb-10">
-                        <div className="relative w-20 h-20 flex items-center justify-center mx-auto mb-6">
-                            <TaskForgeLogo size="lg" />
+                        <div className="relative w-32 h-32 flex items-center justify-center mx-auto mb-6">
+                            <TaskForgeLogo size="xl" />
                         </div>
-                        <h1 className="text-3xl font-bold text-[#1c1917] mb-2 tracking-tight">
+                        <h1 className="text-3xl font-semibold text-[#1c1917] mb-2 tracking-tight">
                             Task<span className="text-accent-600">Forge</span>
                         </h1>
-                        <p className="text-xs font-bold uppercase tracking-wider text-[#1c1917]/40">
+                        <p className="text-xs font-semibold uppercase tracking-wider text-[#1c1917]/40">
                             Secure Workspace Access
                         </p>
                     </div>
 
                     <form onSubmit={handleLogin} className="space-y-8">
                         {error && (
-                            <div className="bg-status-error/10 border border-status-error/20 text-status-error px-4 py-3 rounded-xl text-xs font-bold tracking-tight">
+                            <div className="bg-status-error/10 border border-status-error/20 text-status-error px-4 py-3 rounded-xl text-xs font-semibold tracking-tight">
                                 {error}
                             </div>
                         )}
 
                         <div className="space-y-2">
-                            <label htmlFor="email" className="block text-xs font-bold text-[#1c1917]/50 ml-1">
+                            <label htmlFor="email" className="block text-xs font-semibold text-[#1c1917]/50 ml-1">
                                 Email Address
                             </label>
                             <input
@@ -96,10 +96,10 @@ function LoginForm() {
 
                         <div className="space-y-3">
                             <div className="flex justify-between items-center ml-1">
-                                <label htmlFor="password" title="password" className="block text-xs font-bold text-[#1c1917]/50">
+                                <label htmlFor="password" title="password" className="block text-xs font-semibold text-[#1c1917]/50">
                                     Password
                                 </label>
-                                <a href="#" className="text-[10px] font-bold text-accent-500 hover:text-accent-600">Forgot Password?</a>
+                                <a href="#" className="text-[10px] font-semibold text-accent-500 hover:text-accent-600">Forgot Password?</a>
                             </div>
                             <input
                                 id="password"
@@ -128,7 +128,7 @@ function LoginForm() {
                     </div>
                 </div>
 
-                <div className="mt-8 text-center text-[10px] font-bold uppercase tracking-wider text-[#1c1917]/30">
+                <div className="mt-8 text-center text-[10px] font-semibold uppercase tracking-wider text-[#1c1917]/30">
                     <p>© 2026 TaskForge. All Rights Reserved.</p>
                 </div>
             </div>

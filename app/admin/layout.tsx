@@ -46,39 +46,40 @@ export default async function AdminLayout({
         <div className="min-h-screen bg-[#fdfcf9] text-[#1c1917]">
             <Toaster position="top-right" richColors />
 
-            {/* Main Header - Increased height for prominent branding */}
-            <header className="h-24 bg-white border-b border-[#e5dec9] sticky top-0 z-50 flex items-center justify-between px-10 shadow-sm shadow-[#d9cfb0]/10">
+            {/* Main Header - Refined for prominent branding */}
+            <header className="h-24 bg-white border-b border-[#e5dec9]/60 sticky top-0 z-50 flex items-center justify-between px-10 shadow-sm shadow-[#d9cfb0]/5">
                 <div className="flex items-center gap-10">
-                    <div className="flex items-center gap-5">
+                    <div className="flex items-center gap-6">
                         <TaskForgeLogo size="lg" />
                         <div className="flex flex-col justify-center">
-                            <h1 className="text-2xl font-black tracking-tight uppercase leading-none">
+                            <h1 className="text-2xl font-bold tracking-tighter uppercase leading-none">
                                 Task<span className="text-accent-500">Forge</span>
                             </h1>
-                            <span className="text-[10px] text-[#1c1917]/30 font-black tracking-[0.3em] uppercase mt-1">Registry Command</span>
+                            <span className="text-[10px] text-[#1c1917]/30 font-semibold tracking-[0.4em] uppercase mt-1.5">Executive Suite</span>
                         </div>
                     </div>
 
                     {/* Module Indicators */}
-                    <div className="hidden lg:flex items-center gap-6 border-l border-[#e5dec9] pl-8">
-                        <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 rounded-full bg-status-success shadow-[0_0_8px_rgba(124,148,115,0.4)]"></div>
-                            <span className="text-[10px] font-black text-[#1c1917]/40 uppercase tracking-widest">System Healthy</span>
+                    <div className="hidden lg:flex items-center gap-8 border-l border-[#e5dec9] pl-10">
+                        <div className="flex items-center gap-2.5">
+                            <div className="w-2 h-2 rounded-full bg-status-success shadow-[0_0_10px_rgba(124,148,115,0.4)]"></div>
+                            <span className="text-[10px] font-semibold text-[#1c1917]/40 uppercase tracking-[0.2em]">Status: Operational</span>
                         </div>
                     </div>
                 </div>
 
-                <div className="flex items-center gap-6">
+                <div className="flex items-center gap-8">
+
                     <NotificationCenter />
-                    <div className="flex items-center gap-6 pl-6 border-l border-[#e5dec9]">
+                    <div className="flex items-center gap-8 pl-8 border-l border-[#e5dec9]">
                         <div className="text-right hidden sm:block">
-                            <p className="text-xs font-black uppercase tracking-tight">{user.full_name}</p>
-                            <p className="text-[9px] font-black text-accent-500 uppercase tracking-[0.2em]">Systems Executive</p>
+                            <p className="text-sm font-semibold uppercase tracking-tight">{user.full_name}</p>
+                            <p className="text-[9px] font-semibold text-accent-500 uppercase tracking-[0.2em] mt-0.5">Management</p>
                         </div>
-                        <div className="w-10 h-10 rounded-xl bg-accent-500 text-white flex items-center justify-center font-black text-xs shadow-lg shadow-accent-500/20">
+                        <div className="w-12 h-12 rounded-xl bg-accent-500 text-white flex items-center justify-center font-bold text-sm shadow-xl shadow-accent-500/20">
                             {user.full_name.charAt(0)}
                         </div>
-                        <div className="border-l border-[#e5dec9] pl-6">
+                        <div className="border-l border-[#e5dec9] pl-8">
                             <SignOutButton />
                         </div>
                     </div>

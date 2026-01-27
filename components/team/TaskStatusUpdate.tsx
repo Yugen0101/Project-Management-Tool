@@ -16,10 +16,10 @@ export default function TaskStatusUpdate({ taskId, currentStatus }: TaskStatusUp
 
     const handleStatusChange = async (newStatus: string) => {
         if (newStatus === status) return;
-        
+
         setLoading(true);
         const res = await updateTaskStatus(taskId, newStatus);
-        
+
         if (res.success) {
             setStatus(newStatus);
             toast.success(`Task moved to ${newStatus}`);
@@ -43,9 +43,9 @@ export default function TaskStatusUpdate({ taskId, currentStatus }: TaskStatusUp
                     onClick={() => handleStatusChange(s.name)}
                     disabled={loading}
                     className={`
-                        flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all
-                        ${status === s.name 
-                            ? `${s.bg} ${s.color} border border-current shadow-sm` 
+                        flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-semibold uppercase tracking-widest transition-all
+                        ${status === s.name
+                            ? `${s.bg} ${s.color} border border-current shadow-sm`
                             : 'bg-white text-[#1c1917]/30 border border-[#e5dec9] hover:border-[#1c1917]/10'
                         }
                         disabled:opacity-50

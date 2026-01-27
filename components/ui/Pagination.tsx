@@ -28,21 +28,21 @@ export default function Pagination({
                 <button
                     onClick={() => router.push(createPageURL(currentPage - 1))}
                     disabled={currentPage <= 1}
-                    className="relative inline-flex items-center rounded-xl border border-[#e5dec9] bg-white px-5 py-2.5 text-[10px] font-black uppercase tracking-widest text-[#1c1917]/40 hover:text-[#d97757] disabled:opacity-30 transition-all"
+                    className="relative inline-flex items-center rounded-xl border border-[#e5dec9] bg-white px-5 py-2.5 text-[10px] font-semibold uppercase tracking-widest text-[#1c1917]/40 hover:text-[#d97757] disabled:opacity-30 transition-all font-sans"
                 >
                     Prev
                 </button>
                 <button
                     onClick={() => router.push(createPageURL(currentPage + 1))}
                     disabled={currentPage >= totalPages}
-                    className="relative ml-3 inline-flex items-center rounded-xl border border-[#e5dec9] bg-white px-5 py-2.5 text-[10px] font-black uppercase tracking-widest text-[#1c1917]/40 hover:text-[#d97757] disabled:opacity-30 transition-all"
+                    className="relative ml-3 inline-flex items-center rounded-xl border border-[#e5dec9] bg-white px-5 py-2.5 text-[10px] font-semibold uppercase tracking-widest text-[#1c1917]/40 hover:text-[#d97757] disabled:opacity-30 transition-all font-sans"
                 >
                     Next
                 </button>
             </div>
             <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
                 <div>
-                    <p className="text-[10px] font-black text-[#1c1917]/30 uppercase tracking-[0.3em] italic font-serif">
+                    <p className="text-[10px] font-semibold text-[#78716c] uppercase tracking-[0.3em] font-sans">
                         REGISTRY INDEX <span className="text-[#1c1917] ml-2">{currentPage}</span> <span className="mx-2 text-[#e5dec9]">/</span> <span className="text-[#1c1917]/60">{totalPages}</span>
                     </p>
                 </div>

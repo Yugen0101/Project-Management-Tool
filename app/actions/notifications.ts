@@ -56,19 +56,47 @@ export async function clearAllNotifications() {
 /**
  * Utility to parse @mentions in a comment and create notifications
  */
+// Utility to parse @mentions (both @[id] and raw emails)
 export async function processMentions(content: string, taskId: string, taskTitle: string) {
     const user = await getCurrentUser();
     if (!user) return;
 
     const supabase = await createClient();
-    const mentionRegex = /@\[([0-9a-fA-F-]+)\]/g;
-    let match;
     const notifiedIds = new Set<string>();
 
+    // 1. Check for standard @[UUID] format
+    const mentionRegex = /@\[([0-9a-fA-F-]+)\]/g;
+    let match;
     while ((match = mentionRegex.exec(content)) !== null) {
-        const mentionedUserId = match[1];
-        if (mentionedUserId && mentionedUserId !== user.id) {
-            notifiedIds.add(mentionedUserId);
+        if (match[1] && match[1] !== user.id) {
+            notifiedIds.add(match[1]);
+        }
+    }
+
+    // 2. Check for raw email addresses
+    // Simple regex for emails: characters@characters.domain
+    const emailRegex = /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi;
+    let emailMatch;
+    const foundEmails = new Set<string>();
+
+    while ((emailMatch = emailRegex.exec(content)) !== null) {
+        foundEmails.add(emailMatch[1].toLowerCase());
+    }
+
+    if (foundEmails.size > 0) {
+        // Fetch users by email
+        const emailsArray = Array.from(foundEmails);
+        const { data: usersByEmail } = await supabase
+            .from('users')
+            .select('id')
+            .in('email', emailsArray);
+
+        if (usersByEmail) {
+            usersByEmail.forEach(u => {
+                if (u.id !== user.id) {
+                    notifiedIds.add(u.id);
+                }
+            });
         }
     }
 

@@ -57,15 +57,15 @@ export default async function MemberProjectDetailPage({ params }: { params: Prom
                 <div className="space-y-4 flex-1">
                     <div className="flex items-center gap-3">
                         <span className="w-8 h-1 bg-accent-500 rounded-full shadow-[0_0_10px_rgba(217,119,87,0.4)]"></span>
-                        <h2 className="text-[10px] font-black text-accent-500 uppercase tracking-[0.4em]">MISSION LOG</h2>
+                        <h2 className="text-[10px] font-semibold">MISSION LOG</h2>
                     </div>
-                    <h1 className="text-6xl font-black text-[#1c1917] tracking-tighter uppercase leading-none">
+                    <h1 className="text-6xl font-semibold">
                         Focus <span className="text-accent-500">Protocol</span> Active
                     </h1>
-                    <div className="flex items-center gap-4 text-[#1c1917]/40">
-                        <span className="text-[10px] font-black uppercase tracking-[0.2em]">{project.name}</span>
+                    <div className="flex items-center gap-4 text-[#1c1917]/70">
+                        <span className="text-[10px] font-semibold">{project.name}</span>
                         <span className="w-1.5 h-1.5 bg-[#e5dec9] rounded-full"></span>
-                        <span className="text-[10px] font-black uppercase tracking-[0.2em]">Deployment Stream Active</span>
+                        <span className="text-[10px] font-semibold">Deployment Stream Active</span>
                     </div>
                 </div>
                 <div className="flex gap-3 shrink-0">
@@ -85,7 +85,7 @@ export default async function MemberProjectDetailPage({ params }: { params: Prom
                     <div className="space-y-6">
                         <div className="flex items-center gap-3">
                             <span className="w-8 h-px bg-[#d97757]"></span>
-                            <h3 className="text-xl font-black text-[#1c1917] tracking-tight uppercase">Operational Streams</h3>
+                            <h3 className="text-xl font-semibold">Operational Streams</h3>
                         </div>
                         <SprintManager
                             projectId={id}
@@ -101,20 +101,20 @@ export default async function MemberProjectDetailPage({ params }: { params: Prom
                     <div className="space-y-6">
                         <div className="flex items-center gap-3">
                             <span className="w-8 h-px bg-[#d97757]"></span>
-                            <h3 className="text-xl font-black text-[#1c1917] tracking-tight uppercase">Resource Allocation</h3>
+                            <h3 className="text-xl font-semibold">Resource Allocation</h3>
                         </div>
                         <TeamWorkload projectId={id} />
 
                         <div className="card bg-white border-[#e5dec9] p-8 rounded-[2rem] shadow-sm space-y-6">
                             <div className="space-y-1 text-center">
-                                <p className="text-[9px] font-black text-[#1c1917]/20 uppercase tracking-[0.4em]">Project Personnel</p>
+                                <p className="text-[9px] font-semibold text-[#1c1917]/60 uppercase tracking-[0.4em]">Project Team</p>
                                 <div className="flex flex-wrap justify-center gap-3 pt-4">
                                     {project.user_projects?.map((up: any) => (
                                         <div key={up.user_id} className="group relative">
-                                            <div className="w-10 h-10 rounded-xl bg-[#f7f3ed] border border-[#e5dec9] flex items-center justify-center text-xs font-black text-[#d97757] hover:bg-[#d97757] hover:text-white transition-all transform hover:-rotate-6 cursor-help">
+                                            <div className="w-10 h-10 rounded-xl bg-[#f7f3ed] border border-[#e5dec9] flex items-center justify-center text-xs font-medium text-[#d97757] hover:bg-[#d97757] hover:text-white transition-all transform hover:-rotate-6 cursor-help">
                                                 {up.users?.full_name?.charAt(0) || 'U'}
                                             </div>
-                                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-[#1c1917] text-white text-[9px] font-black uppercase rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10 pointer-events-none">
+                                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1 bg-[#1c1917] text-white text-[9px] font-semibold uppercase rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10 pointer-events-none">
                                                 {up.users?.full_name || 'Unknown'}
                                             </div>
                                         </div>

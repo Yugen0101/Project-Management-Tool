@@ -32,7 +32,7 @@ export default function ProjectInsights({ projectId }: { projectId: string }) {
         loadData();
     }, [projectId]);
 
-    if (loading) return <div className="h-48 flex items-center justify-center text-slate-400 font-bold animate-pulse">Analyzing Project Data...</div>;
+    if (loading) return <div className="h-48 flex items-center justify-center text-secondary-600 font-semibold animate-pulse">Analyzing Project Data...</div>;
     if (!health) return null;
 
     const statusColors = {
@@ -53,23 +53,23 @@ export default function ProjectInsights({ projectId }: { projectId: string }) {
                 {/* Health Status Card */}
                 <div className={`card p-6 border-2 ${statusColors[health.health_status as keyof typeof statusColors]}`}>
                     <div className="flex items-center justify-between mb-2">
-                        <span className="text-[10px] font-black uppercase tracking-widest opacity-70">Project Health</span>
+                        <span className="text-[10px] font-medium">Project Health</span>
                         {statusIcons[health.health_status as keyof typeof statusIcons]}
                     </div>
                     <div className="flex items-baseline gap-2">
-                        <h4 className="text-2xl font-black">{health.health_status}</h4>
+                        <h4 className="text-2xl font-semibold">{health.health_status}</h4>
                     </div>
-                    <p className="text-xs mt-2 opacity-80 font-medium">Based on {health.overdue_tasks} overdue tasks out of {health.total_tasks}.</p>
+                    <p className="text-xs mt-2 opacity-90 font-semibold">Based on {health.overdue_tasks} overdue tasks out of {health.total_tasks}.</p>
                 </div>
 
                 {/* Progress Card */}
                 <div className="card p-6 border-beige-200 bg-white">
                     <div className="flex items-center justify-between mb-2">
-                        <span className="text-[10px] font-black uppercase tracking-widest text-accent-600">Completion</span>
+                        <span className="text-[10px] font-medium uppercase tracking-widest text-accent-600">Completion</span>
                         <ArrowTrendingUpIcon className="w-5 h-5 text-accent-600" />
                     </div>
                     <div className="flex items-baseline gap-2">
-                        <h4 className="text-4xl font-black text-[#1c1917]">{health.progress_percentage}%</h4>
+                        <h4 className="text-4xl font-semibold text-[#1c1917]">{health.progress_percentage}%</h4>
                     </div>
                     <div className="w-full h-2 bg-beige-100 rounded-full mt-3 overflow-hidden">
                         <div
@@ -82,12 +82,12 @@ export default function ProjectInsights({ projectId }: { projectId: string }) {
                 {/* Stuck Tasks Count */}
                 <div className="card p-6 bg-white border-[#e5dec9] shadow-lg shadow-[#d9cfb0]/10">
                     <div className="flex items-center justify-between mb-2 text-[#d97757]">
-                        <span className="text-[10px] font-black uppercase tracking-widest opacity-80">Workflow Risks</span>
+                        <span className="text-[10px] font-semibold uppercase tracking-widest opacity-90">Workflow Risks</span>
                         <ClockIcon className="w-5 h-5" />
                     </div>
                     <div className="flex items-center gap-3">
-                        <h4 className="text-4xl font-black text-[#1c1917]">{(risks?.stuckTasks?.length || 0) + (risks?.overdueRisks?.length || 0)}</h4>
-                        <div className="text-xs font-bold leading-tight text-[#1c1917]/60">
+                        <h4 className="text-4xl font-semibold text-[#1c1917]">{(risks?.stuckTasks?.length || 0) + (risks?.overdueRisks?.length || 0)}</h4>
+                        <div className="text-xs font-semibold leading-tight text-[#1c1917]/75">
                             Stuck or High-Priority<br />Overdue Tasks
                         </div>
                     </div>
@@ -97,7 +97,7 @@ export default function ProjectInsights({ projectId }: { projectId: string }) {
             {/* Risk Indicators List */}
             {((risks?.stuckTasks?.length || 0) > 0 || (risks?.overdueRisks?.length || 0) > 0) && (
                 <div className="card p-4 border-[#e5dec9] bg-[#f7f3ed]/50">
-                    <h5 className="text-[10px] font-black uppercase tracking-widest text-[#1c1917]/40 mb-3 flex items-center gap-2">
+                    <h5 className="text-[10px] font-semibold uppercase tracking-widest text-[#1c1917]/70 mb-3 flex items-center gap-2">
                         <ExclamationTriangleIcon className="w-4 h-4 text-[#d97757]" />
                         Specific Delivery Risks
                     </h5>

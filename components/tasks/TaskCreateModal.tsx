@@ -66,8 +66,8 @@ export default function TaskCreateModal({
                 {/* Header */}
                 <div className="px-10 py-8 border-b border-[#f7f3ed] flex items-center justify-between bg-[#f7f3ed]/30">
                     <div>
-                        <h2 className="text-2xl font-black text-[#1c1917] tracking-tight uppercase">NEW TASK UNIT</h2>
-                        <p className="text-[10px] font-black text-[#1c1917]/30 uppercase tracking-[0.2em] mt-1">Initialise operational task parameters</p>
+                        <h2 className="text-2xl font-semibold text-[#1c1917] tracking-tight uppercase">Create New Task</h2>
+                        <p className="text-[10px] font-medium text-[#1c1917]/30 uppercase tracking-[0.2em] mt-1">Add a new task to your project</p>
                     </div>
                     <button onClick={onClose} className="w-10 h-10 rounded-full bg-white border border-[#e5dec9] flex items-center justify-center text-[#1c1917]/40 hover:text-[#d97757] transition-all">
                         <XMarkIcon className="w-6 h-6" />
@@ -76,7 +76,7 @@ export default function TaskCreateModal({
 
                 <form onSubmit={handleSubmit} className="p-10 space-y-6">
                     <div className="space-y-2">
-                        <label className="block text-[10px] font-black text-[#1c1917]/40 uppercase tracking-[0.2em] ml-1">Task Title</label>
+                        <label className="block text-[10px] font-medium text-[#78716c] uppercase tracking-[0.2em] ml-1">Task Title</label>
                         <input
                             type="text"
                             required
@@ -88,7 +88,7 @@ export default function TaskCreateModal({
                     </div>
 
                     <div className="space-y-2">
-                        <label className="block text-[10px] font-black text-[#1c1917]/40 uppercase tracking-[0.2em] ml-1">Description</label>
+                        <label className="block text-[10px] font-medium text-[#78716c] uppercase tracking-[0.2em] ml-1">Description</label>
                         <textarea
                             className="input py-4 bg-[#fdfcf9] min-h-[100px] resize-none"
                             placeholder="Detailed mission objectives..."
@@ -99,7 +99,7 @@ export default function TaskCreateModal({
 
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                            <label className="block text-[10px] font-black text-[#1c1917]/40 uppercase tracking-[0.2em] ml-1">Priority</label>
+                            <label className="block text-[10px] font-medium text-[#78716c] uppercase tracking-[0.2em] ml-1">Priority</label>
                             <select
                                 className="input py-4 bg-[#fdfcf9] appearance-none"
                                 value={formData.priority}
@@ -112,7 +112,7 @@ export default function TaskCreateModal({
                             </select>
                         </div>
                         <div className="space-y-2">
-                            <label className="block text-[10px] font-black text-[#1c1917]/40 uppercase tracking-[0.2em] ml-1">Deadline</label>
+                            <label className="block text-[10px] font-medium text-[#78716c] uppercase tracking-[0.2em] ml-1">Deadline</label>
                             <input
                                 type="date"
                                 className="input py-4 bg-[#fdfcf9]"
@@ -123,14 +123,14 @@ export default function TaskCreateModal({
                     </div>
 
                     <div className="space-y-2">
-                        <label className="block text-[10px] font-black text-[#1c1917]/40 uppercase tracking-[0.2em] ml-1">Assign Asset</label>
+                        <label className="block text-[10px] font-medium text-[#78716c] uppercase tracking-[0.2em] ml-1">Assign To</label>
                         <select
                             className="input py-4 bg-[#fdfcf9] appearance-none"
                             value={formData.assigned_to}
                             onChange={e => setFormData({ ...formData, assigned_to: e.target.value })}
                         >
                             <option value="">Unassigned</option>
-                            {members.map(member => (
+                            {members.filter(m => m.user).map(member => (
                                 <option key={member.user.id} value={member.user.id}>{member.user.full_name}</option>
                             ))}
                         </select>
@@ -142,14 +142,14 @@ export default function TaskCreateModal({
                             onClick={onClose}
                             className="btn-secondary flex-1 py-4 border-[#e5dec9]"
                         >
-                            ABORT
+                            Cancel
                         </button>
                         <button
                             type="submit"
                             disabled={loading || !formData.title}
                             className="btn-primary flex-1 py-4 disabled:opacity-50"
                         >
-                            {loading ? 'INITIALISING...' : 'CREATE UNIT'}
+                            {loading ? 'Creating...' : 'Create Task'}
                         </button>
                     </div>
                 </form>

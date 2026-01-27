@@ -21,20 +21,38 @@
 
   /* Custom Scrollbar */
   ::-webkit-scrollbar {
-    width: 8px;
+    width: 10px;
+    height: 10px;
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-transparent;
+    @apply bg-beige-50;
+    border-radius: 10px;
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: #e7e5e4;
-    border-radius: 9999px;
+    background: linear-gradient(180deg, #e5dec9 0%, #d9cfb0 100%);
+    border-radius: 10px;
+    border: 2px solid #fdfcf9;
+    transition: all 0.3s ease;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background-color: #d6d3d1;
+    background: linear-gradient(180deg, #d9cfb0 0%, #c9b896 100%);
+    border-color: #f7f3ed;
+  }
+
+  /* Improved Focus States */
+  *:focus-visible {
+    outline: 2px solid #d97757;
+    outline-offset: 2px;
+    border-radius: 0.5rem;
+  }
+
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline: none;
   }
 }
 
@@ -42,30 +60,30 @@
 
   /* Primary Button (Terracotta with white text) */
   .btn-primary {
-    @apply bg-accent-500 hover:bg-accent-600 text-white px-8 py-4 rounded-2xl font-bold transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center gap-2;
+    @apply bg-accent-500 hover:bg-accent-600 text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center gap-2;
   }
 
   /* Soft UI Button Style (Alternate) */
   .btn-soft {
-    @apply bg-white hover:bg-secondary-50 text-secondary-700 px-7 py-3.5 rounded-2xl font-bold tracking-tight transition-all duration-300 border border-border shadow-sm hover:shadow-premium hover:-translate-y-0.5 text-sm flex items-center justify-center gap-2;
+    @apply bg-white hover:bg-secondary-50 text-secondary-700 px-7 py-3.5 rounded-2xl font-semibold tracking-tight transition-all duration-300 border border-border shadow-sm hover:shadow-premium hover:-translate-y-0.5 text-sm flex items-center justify-center gap-2;
   }
 
   .btn-ghost {
-    @apply bg-transparent hover:bg-secondary-100/50 text-secondary-600 px-5 py-2.5 rounded-xl font-bold transition-all duration-200 text-sm;
+    @apply bg-transparent hover:bg-secondary-100/50 text-secondary-600 px-5 py-2.5 rounded-xl font-semibold transition-all duration-200 text-sm;
   }
 
   /* Soft Secondary Button (Light beige) */
   .btn-secondary {
-    @apply bg-white hover:bg-beige-50 text-[#1c1917]/70 px-8 py-4 rounded-2xl font-bold transition-all duration-300 border border-beige-200 shadow-sm flex items-center justify-center gap-2;
+    @apply bg-white hover:bg-beige-50 text-[#1c1917]/85 px-8 py-4 rounded-2xl font-semibold transition-all duration-300 border border-beige-200 shadow-sm flex items-center justify-center gap-2;
   }
 
   /* Outline Button */
   .btn-outline {
-    @apply border-2 border-beige-300 text-accent-600 hover:bg-beige-50 px-8 py-4 rounded-2xl font-bold transition-all duration-300 flex items-center justify-center gap-2;
+    @apply border-2 border-beige-300 text-accent-600 hover:bg-beige-50 px-8 py-4 rounded-2xl font-semibold transition-all duration-300 flex items-center justify-center gap-2;
   }
 
   .btn-danger {
-    @apply bg-status-error/10 hover:bg-status-error/20 text-status-error px-6 py-3 rounded-xl font-bold transition-all duration-300 border border-status-error/20;
+    @apply bg-status-error/10 hover:bg-status-error/20 text-status-error px-6 py-3 rounded-xl font-semibold transition-all duration-300 border border-status-error/20;
   }
 
   /* Beige Card Styles */
@@ -79,42 +97,51 @@
 
   /* Input Styles */
   .input {
-    @apply w-full px-4 py-4 bg-white border border-beige-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-accent-500/10 focus:border-accent-500/40 transition-all text-[#1c1917] placeholder-[#1c1917]/40;
+    @apply w-full px-4 py-4 bg-white border border-beige-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-accent-500/10 focus:border-accent-500/40 transition-all text-[#1c1917] placeholder-[#1c1917]/60;
   }
 
   /* Badge Styles */
   .badge {
-    @apply inline-flex items-center px-4 py-1.5 rounded-full text-xs font-bold tracking-tight;
+    @apply inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold tracking-tight;
   }
 
   .badge-success {
-    @apply bg-status-success/10 text-status-success border border-status-success/20;
+    @apply bg-status-success/30 text-status-success border border-status-success/40 font-bold;
   }
 
   .badge-warning {
-    @apply bg-accent-50 text-accent-700 border border-accent-200;
+    @apply bg-accent-100/80 text-accent-800 border border-accent-400 font-bold;
   }
 
   .badge-danger {
-    @apply bg-status-error/10 text-status-error border border-status-error/20;
+    @apply bg-status-error/30 text-status-error border border-status-error/40 font-bold;
   }
 
   .badge-info {
-    @apply bg-status-info/10 text-status-info border border-status-info/20;
+    @apply bg-status-info/30 text-status-info border border-status-info/50 font-bold;
   }
 
   /* Sidebar Navigation */
   .nav-link {
-    @apply flex items-center gap-3 px-5 py-3.5 font-bold text-[13px] text-secondary-500 hover:text-primary-600 hover:bg-primary-50/70 rounded-[1.25rem] transition-all duration-300;
+    @apply flex items-center gap-3 px-5 py-3.5 font-semibold text-[13px] text-secondary-800 hover:text-primary-600 hover:bg-primary-50/70 rounded-[1.25rem] transition-all duration-300;
   }
 
   .nav-link-active {
-    @apply flex items-center gap-3 px-5 py-3.5 font-bold text-[13px] bg-primary-600 text-white rounded-[1.25rem] shadow-xl shadow-primary-500/30;
+    @apply flex items-center gap-3 px-5 py-3.5 font-semibold text-[13px] bg-primary-600 text-white rounded-[1.25rem] shadow-xl shadow-primary-500/30;
   }
 
   /* Glassmorphism */
   .glass {
     @apply bg-white/80 backdrop-blur-2xl border border-beige-200 shadow-2xl shadow-beige-300/10;
+  }
+
+  /* Smooth Transitions */
+  .transition-smooth {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .transition-smooth-fast {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 
@@ -163,5 +190,14 @@
 
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-indigo-500;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }

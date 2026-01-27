@@ -68,7 +68,7 @@ module.exports = {
                 border: '#e5dec9',
             },
             fontFamily: {
-                sans: ['Inter', 'system-ui', 'sans-serif'],
+                sans: ['Plus Jakarta Sans', 'Inter', 'system-ui', 'sans-serif'],
             },
             boxShadow: {
                 sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',

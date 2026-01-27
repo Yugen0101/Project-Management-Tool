@@ -205,8 +205,23 @@ export async function getUsersForMentions() {
     const supabase = await createClient();
     const { data, error } = await supabase
         .from('users')
-        .select('id, full_name, email')
+        .select('id, full_name, email, role')
         .eq('is_active', true);
+
+    if (error) return handleActionError(error);
+    return successResponse(data);
+}
+
+export async function getUsersByRoles(roles: string[]) {
+    const currentUser = await getCurrentUser();
+    if (!currentUser) return handleActionError({ message: 'Unauthorized', status: 401 });
+
+    const supabase = await createClient();
+    const { data, error } = await supabase
+        .from('users')
+        .select('id, full_name, email, role')
+        .eq('is_active', true)
+        .in('role', roles);
 
     if (error) return handleActionError(error);
     return successResponse(data);

@@ -38,14 +38,14 @@ export default async function AdminProjectKanbanPage({ params }: { params: Promi
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <div className="flex items-center gap-3 text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">
+                    <div className="flex items-center gap-3 text-xs font-medium text-slate-400 uppercase tracking-widest mb-1">
                         <Link href="/admin/projects" className="hover:text-primary-600 transition-colors">Projects</Link>
                         <span>/</span>
                         <Link href={`/admin/projects/${id}`} className="hover:text-primary-600 transition-colors uppercase">{project.name}</Link>
                         <span>/</span>
                         <span className="text-slate-900">Board Oversight</span>
                     </div>
-                    <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                    <h1 className="text-2xl font-semibold text-slate-900 flex items-center gap-2">
                         <Squares2X2Icon className="w-7 h-7 text-primary-600" />
                         Admin Board View
                     </h1>

@@ -8,7 +8,8 @@ import {
     ClipboardDocumentListIcon,
     FolderIcon,
     ClockIcon,
-    VideoCameraIcon
+    VideoCameraIcon,
+    BookOpenIcon
 } from '@heroicons/react/24/outline';
 
 const navItems = [
@@ -16,6 +17,7 @@ const navItems = [
     { name: 'Projects', href: '/member/projects', icon: FolderIcon },
     { name: 'Activity', href: '/member/activity', icon: ClockIcon },
     { name: 'Meetings', href: '/member/meetings', icon: VideoCameraIcon },
+    { name: 'User Guide', href: '/member/guide', icon: BookOpenIcon },
 ];
 
 export default function MemberMobileMenu() {
@@ -57,7 +59,7 @@ export default function MemberMobileMenu() {
                     {/* Sidebar */}
                     <div className="fixed inset-y-0 left-0 z-[70] w-72 bg-[#fdfcf9] border-r border-[#e5dec9] shadow-2xl animate-in slide-in-from-left duration-300 flex flex-col">
                         <div className="p-6 flex items-center justify-between border-b border-[#e5dec9]">
-                            <h2 className="text-lg font-black text-[#1c1917] tracking-tight uppercase">MENU</h2>
+                            <h2 className="text-lg font-semibold text-[#1c1917] tracking-tight uppercase">MENU</h2>
                             <button
                                 onClick={() => setIsOpen(false)}
                                 className="p-2 text-[#1c1917]/20 hover:text-accent-500 transition-colors"
@@ -79,7 +81,7 @@ export default function MemberMobileMenu() {
                                             }`}
                                     >
                                         <Icon className="w-5 h-5" />
-                                        <span className="text-[10px] font-black uppercase tracking-[0.2em]">{item.name}</span>
+                                        <span className="text-[10px] font-semibold uppercase tracking-[0.2em]">{item.name}</span>
                                     </Link>
                                 );
                             })}

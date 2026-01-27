@@ -32,8 +32,8 @@ export default function MemberPerformance() {
                         <CheckBadgeIcon className="w-5 h-5" />
                     </div>
                     <div>
-                        <p className="text-[10px] font-black text-[#1c1917]/30 uppercase tracking-[0.2em] leading-none mb-2">Resolved</p>
-                        <p className="text-2xl font-black text-[#1c1917] tracking-tight">{metrics.completed_tasks}</p>
+                        <p className="text-[10px] font-medium text-[#1c1917]/30 uppercase tracking-[0.2em] leading-none mb-2">Resolved</p>
+                        <p className="text-2xl font-semibold text-[#1c1917] tracking-tight">{metrics.completed_tasks}</p>
                     </div>
                 </div>
             </div>
@@ -44,8 +44,8 @@ export default function MemberPerformance() {
                         <ClockIcon className="w-5 h-5" />
                     </div>
                     <div>
-                        <p className="text-[10px] font-black text-[#1c1917]/30 uppercase tracking-[0.2em] leading-none mb-2">Overdue</p>
-                        <p className="text-2xl font-black text-[#c85a54] tracking-tight">{metrics.overdue_tasks}</p>
+                        <p className="text-[10px] font-medium text-[#1c1917]/30 uppercase tracking-[0.2em] leading-none mb-2">Overdue</p>
+                        <p className="text-2xl font-semibold text-[#c85a54] tracking-tight">{metrics.overdue_tasks}</p>
                     </div>
                 </div>
             </div>
@@ -56,7 +56,7 @@ export default function MemberPerformance() {
                         <BoltIcon className="w-5 h-5" />
                     </div>
                     <div>
-                        <p className="text-[10px] font-black text-[#1c1917]/30 uppercase tracking-[0.2em] leading-none mb-2">Efficiency</p>
+                        <p className="text-[10px] font-medium text-[#1c1917]/30 uppercase tracking-[0.2em] leading-none mb-2">Efficiency</p>
                         <p className="text-2xl font-black text-[#1c1917] tracking-tight">
                             {metrics.completed_tasks + metrics.active_tasks > 0
                                 ? Math.round((metrics.completed_tasks / (metrics.completed_tasks + metrics.active_tasks)) * 100)

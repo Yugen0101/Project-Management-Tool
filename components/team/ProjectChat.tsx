@@ -35,7 +35,7 @@ export default function ProjectChat({ projectId, currentUserId }: { projectId: s
                 `)
                 .eq('project_id', projectId)
                 .order('created_at', { ascending: true });
-            
+
             if (data) setMessages(data as any);
         };
 
@@ -59,12 +59,12 @@ export default function ProjectChat({ projectId, currentUserId }: { projectId: s
                         .select('full_name, role')
                         .eq('id', payload.new.sender_id)
                         .single();
-                    
+
                     const newMessage = {
                         ...payload.new,
                         sender: userData
                     } as Message;
-                    
+
                     setMessages(prev => [...prev, newMessage]);
                 }
             )
@@ -99,48 +99,48 @@ export default function ProjectChat({ projectId, currentUserId }: { projectId: s
             <div className="px-8 py-6 border-b border-[#e5dec9] bg-[#f7f3ed]/50 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                     <ChatBubbleLeftRightIcon className="w-6 h-6 text-[#d97757]" />
-                    <h3 className="text-[11px] font-black uppercase tracking-[0.3em] text-[#1c1917]">Project Direct Comms</h3>
+                    <h3 className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[#1c1917]">Project Direct Comms</h3>
                 </div>
                 <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span className="text-[9px] font-black uppercase tracking-widest text-[#1c1917]/30 italic">Secure Node</span>
+                    <span className="text-[9px] font-medium uppercase tracking-widest text-[#78716c] italic">Secure Node</span>
                 </div>
             </div>
 
             {/* Messages */}
-            <div 
+            <div
                 ref={scrollRef}
                 className="flex-1 overflow-y-auto p-8 space-y-6 scrollbar-hide"
             >
                 {messages.length === 0 && (
                     <div className="h-full flex flex-col items-center justify-center opacity-20 filter grayscale">
                         <ChatBubbleLeftRightIcon className="w-16 h-16 mb-4" />
-                        <p className="text-[10px] font-black uppercase tracking-widest italic">No telemetry broadcast found.</p>
+                        <p className="text-[10px] font-medium uppercase tracking-widest italic text-[#78716c]">No telemetry broadcast found.</p>
                     </div>
                 )}
                 {messages.map((msg) => (
-                    <div 
-                        key={msg.id} 
+                    <div
+                        key={msg.id}
                         className={`flex flex-col ${msg.sender_id === currentUserId ? 'items-end' : 'items-start'}`}
                     >
                         <div className="flex items-center gap-2 mb-1">
-                            <span className="text-[9px] font-black uppercase tracking-widest text-[#1c1917]/40">
+                            <span className="text-[9px] font-semibold uppercase tracking-widest text-[#1c1917]/40">
                                 {msg.sender?.full_name}
                             </span>
-                            <span className="text-[8px] font-black uppercase tracking-[0.2em] px-2 py-0.5 bg-[#f7f3ed] rounded-full text-[#1c1917]/20 border border-[#e5dec9]">
+                            <span className="text-[8px] font-medium uppercase tracking-[0.2em] px-2 py-0.5 bg-[#f7f3ed] rounded-full text-[#78716c] border border-[#e5dec9]">
                                 {msg.sender?.role}
                             </span>
                         </div>
                         <div className={`
                             max-w-[80%] px-6 py-4 rounded-3xl text-sm font-medium leading-relaxed
-                            ${msg.sender_id === currentUserId 
-                                ? 'bg-[#d97757] text-white rounded-tr-none shadow-lg shadow-[#d97757]/20' 
+                            ${msg.sender_id === currentUserId
+                                ? 'bg-[#d97757] text-white rounded-tr-none shadow-lg shadow-[#d97757]/20'
                                 : 'bg-[#f7f3ed] text-[#1c1917] rounded-tl-none border border-[#e5dec9]'
                             }
                         `}>
                             {msg.content}
                         </div>
-                        <span className="text-[8px] font-black text-[#1c1917]/20 uppercase mt-1">
+                        <span className="text-[8px] font-medium text-[#1c1917]/20 uppercase mt-1">
                             {format(new Date(msg.created_at), 'HH:mm')}
                         </span>
                     </div>
@@ -155,7 +155,7 @@ export default function ProjectChat({ projectId, currentUserId }: { projectId: s
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
                         placeholder="Broadcast message to Admin & Associates..."
-                        className="w-full pl-6 pr-16 py-5 bg-white border border-[#e5dec9] rounded-2xl text-sm font-bold placeholder-[#1c1917]/20 focus:outline-none focus:border-[#d97757] transition-all italic font-serif"
+                        className="w-full pl-6 pr-16 py-5 bg-white border border-[#e5dec9] rounded-2xl text-sm font-normal placeholder-[#1c1917]/20 focus:outline-none focus:border-[#d97757] transition-all italic font-serif"
                     />
                     <button
                         type="submit"

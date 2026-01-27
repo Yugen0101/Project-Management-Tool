@@ -76,10 +76,10 @@ export default async function MemberDashboard() {
                 <div className="space-y-4">
                     <div className="flex items-center gap-2">
                         <span className="w-8 h-1 bg-accent-500 rounded-full"></span>
-                        <h2 className="text-xs font-black text-accent-500 uppercase tracking-wider">Personal Workspace</h2>
+                        <h2 className="text-xs font-semibold text-accent-500 uppercase tracking-wider">Personal Workspace</h2>
                     </div>
-                    <h1 className="text-5xl font-black text-[#1c1917] tracking-tight">Welcome, {user?.full_name?.split(' ')[0]}</h1>
-                    <p className="text-[#1c1917]/60 text-xl font-medium">You have {activeTasks.length} active tasks requiring your attention today.</p>
+                    <h1 className="text-4xl font-semibold text-[#1c1917] tracking-tight">Welcome, {user?.full_name?.split(' ')[0]}</h1>
+                    <p className="text-[#1c1917]/80 text-xl font-medium">You have {activeTasks.length} active tasks requiring your attention today.</p>
                 </div>
 
                 <div className="card !p-6 bg-white border-[#e5dec9] flex items-center gap-6 shadow-lg shadow-[#d9cfb0]/20 shrink-0 rounded-2xl">
@@ -87,8 +87,8 @@ export default async function MemberDashboard() {
                         <FireIcon className="w-7 h-7" />
                     </div>
                     <div>
-                        <p className="text-[10px] font-black text-[#1c1917]/40 uppercase tracking-wider">Efficiency Rating</p>
-                        <p className="text-2xl font-black text-[#1c1917] tracking-tight">98.4%</p>
+                        <p className="text-[10px] font-medium text-secondary-600 uppercase tracking-wider">Efficiency Rating</p>
+                        <p className="text-2xl font-semibold text-[#1c1917] tracking-tight">98.4%</p>
                     </div>
                 </div>
             </div>
@@ -100,8 +100,8 @@ export default async function MemberDashboard() {
                         <ClockIcon className="w-8 h-8" />
                     </div>
                     <div>
-                        <p className="text-5xl font-black text-[#1c1917] tracking-tight">{activeTasks.length}</p>
-                        <p className="text-[10px] font-black text-[#1c1917]/40 uppercase tracking-widest mt-2">Active Tasks</p>
+                        <p className="text-4xl font-semibold text-[#1c1917] tracking-tight">{activeTasks.length}</p>
+                        <p className="text-[10px] font-medium text-secondary-600 uppercase tracking-widest mt-2">Active Tasks</p>
                     </div>
                 </div>
 
@@ -110,8 +110,8 @@ export default async function MemberDashboard() {
                         <FireIcon className="w-8 h-8" />
                     </div>
                     <div>
-                        <p className="text-5xl font-black text-[#d97757] tracking-tight">{urgentTasks}</p>
-                        <p className="text-[10px] font-black text-[#d97757]/60 uppercase tracking-widest mt-2">Urgent Items</p>
+                        <p className="text-4xl font-semibold text-[#d97757] tracking-tight">{urgentTasks}</p>
+                        <p className="text-[10px] font-medium text-[#d97757]/80 uppercase tracking-widest mt-2">Urgent Items</p>
                     </div>
                 </div>
 
@@ -120,8 +120,8 @@ export default async function MemberDashboard() {
                         <CheckBadgeIcon className="w-8 h-8" />
                     </div>
                     <div>
-                        <p className="text-5xl font-black text-[#1c1917] tracking-tight">{completedThisWeek}</p>
-                        <p className="text-[10px] font-black text-[#1c1917]/40 uppercase tracking-widest mt-2">Completed</p>
+                        <p className="text-4xl font-semibold text-[#1c1917] tracking-tight">{completedThisWeek}</p>
+                        <p className="text-[10px] font-medium text-secondary-600 uppercase tracking-widest mt-2">Completed</p>
                     </div>
                 </div>
             </div>
@@ -131,7 +131,7 @@ export default async function MemberDashboard() {
                 <div className="space-y-6">
                     <div className="flex items-center gap-3">
                         <span className="w-8 h-1 bg-accent-500 rounded-full"></span>
-                        <h3 className="text-xl font-black text-[#1c1917] tracking-tight">Upcoming Syncs</h3>
+                        <h3 className="text-xl font-semibold">Upcoming Syncs</h3>
                     </div>
                     <div className="card bg-white border-[#e5dec9] p-2 overflow-hidden shadow-sm shadow-[#d9cfb0]/10">
                         <MeetingList
@@ -145,7 +145,7 @@ export default async function MemberDashboard() {
                 <div className="space-y-6">
                     <div className="flex items-center gap-3">
                         <span className="w-8 h-1 bg-accent-500 rounded-full"></span>
-                        <h3 className="text-xl font-black text-[#1c1917] tracking-tight">Performance</h3>
+                        <h3 className="text-xl font-semibold text-[#1c1917] tracking-tight">Performance</h3>
                     </div>
                     <div className="bg-white border border-[#e5dec9] rounded-[2rem] p-6 shadow-sm shadow-[#d9cfb0]/10 overflow-hidden h-full">
                         <MemberPerformance />
@@ -158,7 +158,7 @@ export default async function MemberDashboard() {
                 <div className="flex items-center justify-between px-2">
                     <div className="flex items-center gap-3">
                         <span className="w-8 h-1 bg-accent-500 rounded-full"></span>
-                        <h3 className="text-3xl font-black text-[#1c1917] tracking-tight">Recent Tasks</h3>
+                        <h3 className="text-3xl font-semibold text-[#1c1917] tracking-tight">Recent Tasks</h3>
                     </div>
                     <div className="flex items-center gap-4">
                         <button className="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-[#e5dec9] text-[#1c1917]/30 hover:text-accent-500 transition-all shadow-sm">
@@ -179,22 +179,22 @@ export default async function MemberDashboard() {
                                             }`}>
                                             {task.priority || 'NORMAL'}
                                         </span>
-                                        <span className="text-[10px] font-black text-[#1c1917]/40 uppercase tracking-wider flex items-center gap-2">
+                                        <span className="text-[10px] font-medium text-[#78716c] uppercase tracking-wider flex items-center gap-2">
                                             <span className="w-1 h-1 rounded-full bg-accent-500"></span>
                                             {task.project?.name}
                                         </span>
                                     </div>
-                                    <h4 className="text-xl font-black text-[#1c1917] tracking-tight group-hover:text-accent-500 transition-colors">
+                                    <h4 className="text-xl font-semibold text-[#1c1917] tracking-tight group-hover:text-accent-500 transition-colors">
                                         {task.title}
                                     </h4>
-                                    <p className="text-[#1c1917]/60 text-sm font-medium max-w-2xl line-clamp-1 italic">
+                                    <p className="text-[#1c1917]/75 text-sm font-medium max-w-2xl line-clamp-1 italic">
                                         {task.description || 'No additional details provided.'}
                                     </p>
                                 </div>
 
                                 <div className="flex items-center gap-10 shrink-0">
                                     <div className="text-right space-y-1">
-                                        <div className="flex items-center gap-2 justify-end text-[11px] font-bold text-[#1c1917]/30 uppercase tracking-wide">
+                                        <div className="flex items-center gap-2 justify-end text-[11px] font-medium text-[#78716c] uppercase tracking-wide">
                                             <ClockIcon className="w-4 h-4 text-accent-500" />
                                             {task.due_date ? format(new Date(task.due_date), 'MMM dd, yyyy') : 'UNSET'}
                                         </div>
@@ -216,8 +216,8 @@ export default async function MemberDashboard() {
                     {activeTasks.length === 0 && (
                         <div className="py-20 text-center bg-white rounded-[2rem] border-2 border-dashed border-[#e5dec9]">
                             <CheckBadgeIcon className="w-16 h-16 text-[#e5dec9] mx-auto mb-4" />
-                            <h3 className="text-xl font-black text-[#1c1917] tracking-tight">Repository Clean</h3>
-                            <p className="text-[#1c1917]/40 text-sm font-medium mt-1">All tasks have been synchronized.</p>
+                            <h3 className="text-xl font-semibold text-[#1c1917] tracking-tight">Repository Clean</h3>
+                            <p className="text-[#1c1917]/70 text-sm font-medium mt-1">All tasks have been synchronized.</p>
                         </div>
                     )}
                 </div>

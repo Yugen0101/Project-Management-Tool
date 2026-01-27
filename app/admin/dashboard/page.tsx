@@ -64,12 +64,12 @@ export default async function AdminDashboard() {
             <div className="flex flex-col gap-4">
                 <div className="flex items-center gap-2">
                     <span className="w-8 h-1 bg-accent-500 rounded-full"></span>
-                    <h2 className="text-xs font-bold text-accent-600 uppercase tracking-wider">Control Center</h2>
+                    <h2 className="text-xs font-medium text-accent-600 uppercase tracking-wider">Control Center</h2>
                 </div>
-                <h1 className="text-5xl font-bold text-[#1c1917] tracking-tight">
+                <h1 className="text-5xl font-semibold text-[#1c1917] tracking-tight">
                     System Online, <span className="text-accent-600">{user.full_name.split(' ')[0]}</span>
                 </h1>
-                <p className="text-[#1c1917]/50 font-medium text-lg">
+                <p className="text-[#1c1917]/75 font-normal text-lg">
                     Monitoring {activeProjects || 0} active project nodes across the organization.
                 </p>
             </div>
@@ -79,11 +79,11 @@ export default async function AdminDashboard() {
                 <div className="card bg-white border-beige-200 p-8 group hover:border-beige-300 transition-all duration-500 shadow-sm">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-[10px] font-bold text-[#1c1917]/40 uppercase tracking-widest">Total Projects</p>
-                            <p className="text-5xl font-bold text-[#1c1917] mt-3 tracking-tight">{totalProjects || 0}</p>
+                            <p className="text-[10px] font-medium text-[#1c1917]/70 uppercase tracking-widest">Total Projects</p>
+                            <p className="text-5xl font-semibold text-[#1c1917] mt-3 tracking-tight">{totalProjects || 0}</p>
                             <div className="flex items-center gap-2 mt-2">
                                 <span className="w-1.5 h-1.5 rounded-full bg-status-success"></span>
-                                <p className="text-status-success text-[10px] font-bold uppercase tracking-tight">{activeProjects || 0} active</p>
+                                <p className="text-status-success text-[10px] font-medium uppercase tracking-tight">{activeProjects || 0} active</p>
                             </div>
                         </div>
                         <div className="w-14 h-14 bg-beige-100 rounded-2xl flex items-center justify-center text-[#1c1917]/30 border border-beige-200 group-hover:bg-accent-500 group-hover:text-white transition-all duration-500">
@@ -95,9 +95,9 @@ export default async function AdminDashboard() {
                 <div className="card bg-white border-beige-200 p-8 group hover:border-beige-300 transition-all duration-500 shadow-sm">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-[10px] font-bold text-[#1c1917]/40 uppercase tracking-widest">Total Users</p>
-                            <p className="text-5xl font-bold text-[#1c1917] mt-3 tracking-tight">{totalUsers || 0}</p>
-                            <p className="text-[#1c1917]/30 text-[10px] font-bold uppercase tracking-tight mt-2">Team members</p>
+                            <p className="text-[10px] font-medium text-[#1c1917]/70 uppercase tracking-widest">Total Users</p>
+                            <p className="text-5xl font-semibold text-[#1c1917] mt-3 tracking-tight">{totalUsers || 0}</p>
+                            <p className="text-[#1c1917]/60 text-[10px] font-medium uppercase tracking-tight mt-2">Team members</p>
                         </div>
                         <div className="w-14 h-14 bg-beige-100 rounded-2xl flex items-center justify-center text-[#1c1917]/30 border border-beige-200 group-hover:bg-accent-500 group-hover:text-white transition-all duration-500">
                             <UserGroupIcon className="w-7 h-7" />
@@ -108,9 +108,9 @@ export default async function AdminDashboard() {
                 <div className="card bg-white border-beige-200 p-8 group hover:border-beige-300 transition-all duration-500 shadow-sm">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-[10px] font-bold text-[#1c1917]/40 uppercase tracking-widest">Total Tasks</p>
-                            <p className="text-5xl font-bold text-[#1c1917] mt-3 tracking-tight">{totalTasks || 0}</p>
-                            <p className="text-status-success text-[10px] font-bold uppercase tracking-tight mt-2">{completedTasks || 0} completed</p>
+                            <p className="text-[10px] font-medium text-[#1c1917]/70 uppercase tracking-widest">Total Tasks</p>
+                            <p className="text-5xl font-semibold text-[#1c1917] mt-3 tracking-tight">{totalTasks || 0}</p>
+                            <p className="text-status-success text-[10px] font-medium uppercase tracking-tight mt-2">{completedTasks || 0} completed</p>
                         </div>
                         <div className="w-14 h-14 bg-beige-100 rounded-2xl flex items-center justify-center text-[#1c1917]/30 border border-beige-200 group-hover:bg-accent-500 group-hover:text-white transition-all duration-500">
                             <ClipboardDocumentCheckIcon className="w-7 h-7" />
@@ -121,9 +121,9 @@ export default async function AdminDashboard() {
                 <div className="card bg-status-error/5 border-status-error/20 p-8 group hover:border-status-error/30 transition-all duration-500 shadow-sm">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-[10px] font-bold text-status-error/60 uppercase tracking-widest">Overdue Tasks</p>
-                            <p className="text-5xl font-bold text-status-error mt-3 tracking-tight">{overdueTasks || 0}</p>
-                            <p className="text-status-error/70 text-[10px] font-bold uppercase tracking-tight mt-2">Attention Required</p>
+                            <p className="text-[10px] font-medium text-status-error/60 uppercase tracking-widest">Overdue Tasks</p>
+                            <p className="text-5xl font-semibold text-status-error mt-3 tracking-tight">{overdueTasks || 0}</p>
+                            <p className="text-status-error/70 text-[10px] font-medium uppercase tracking-tight mt-2">Attention Required</p>
                         </div>
                         <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-status-error border border-status-error/20 group-hover:bg-status-error group-hover:text-white transition-all duration-500 shadow-sm">
                             <ExclamationTriangleIcon className="w-7 h-7" />
@@ -135,18 +135,18 @@ export default async function AdminDashboard() {
             {/* Quick Actions */}
             <div className="bg-white border border-beige-200 rounded-[2rem] p-10 relative overflow-hidden shadow-sm">
                 <div className="relative z-10">
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-[#1c1917]/40 mb-8 flex items-center gap-3">
+                    <h3 className="text-xs font-medium uppercase tracking-wider text-[#1c1917]/70 mb-8 flex items-center gap-3">
                         <span className="w-2 h-2 rounded-full bg-accent-500"></span>
                         Management Interface
                     </h3>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <Link href="/admin/projects?action=create" className="btn-primary py-4 text-sm font-bold">
+                        <Link href="/admin/projects?action=create" className="btn-primary py-4 text-sm font-medium">
                             + Initialise Project
                         </Link>
-                        <Link href="/admin/users?action=create" className="btn-secondary py-4 text-sm font-bold">
-                            + Enrol Personnel
+                        <Link href="/admin/users?action=create" className="btn-secondary py-4 text-sm font-medium">
+                            + Create User
                         </Link>
-                        <Link href="/admin/audit-logs" className="btn-secondary py-4 text-sm font-bold">
+                        <Link href="/admin/audit-logs" className="btn-secondary py-4 text-sm font-medium">
                             Access Registries
                         </Link>
                     </div>
@@ -159,8 +159,8 @@ export default async function AdminDashboard() {
                 {/* Recent Projects */}
                 <div className="space-y-6">
                     <div className="flex items-center justify-between px-2">
-                        <h3 className="text-2xl font-bold text-[#1c1917] tracking-tight">Active Projects</h3>
-                        <Link href="/admin/projects" className="text-xs font-bold text-accent-600 uppercase tracking-tight hover:opacity-70 transition-opacity flex items-center gap-2">
+                        <h3 className="text-2xl font-semibold text-[#1c1917] tracking-tight">Active Projects</h3>
+                        <Link href="/admin/projects" className="text-xs font-medium text-accent-600 uppercase tracking-tight hover:opacity-70 transition-opacity flex items-center gap-2">
                             VIEW ALL →
                         </Link>
                     </div>
@@ -174,10 +174,10 @@ export default async function AdminDashboard() {
                                 >
                                     <div className="flex items-center justify-between">
                                         <div className="flex-1">
-                                            <h4 className="font-bold text-[#1c1917] text-lg group-hover:text-accent-600 transition-colors uppercase tracking-tight">
+                                            <h4 className="font-semibold text-[#1c1917] text-lg group-hover:text-accent-600 transition-colors uppercase tracking-tight">
                                                 {project.name}
                                             </h4>
-                                            <p className="text-sm text-[#1c1917]/60 mt-1">
+                                            <p className="text-sm text-[#1c1917]/75 mt-1">
                                                 Created by {project.created_by?.full_name || 'Unknown'}
                                             </p>
                                         </div>
@@ -202,8 +202,8 @@ export default async function AdminDashboard() {
                 {/* Team Roster */}
                 <div className="space-y-6">
                     <div className="flex items-center justify-between px-2">
-                        <h3 className="text-2xl font-bold text-[#1c1917] tracking-tight">Team Roster</h3>
-                        <Link href="/admin/users" className="text-xs font-bold text-accent-600 uppercase tracking-tight hover:opacity-70 transition-opacity flex items-center gap-2">
+                        <h3 className="text-2xl font-semibold text-[#1c1917] tracking-tight">Team Roster</h3>
+                        <Link href="/admin/users" className="text-xs font-medium text-accent-600 uppercase tracking-tight hover:opacity-70 transition-opacity flex items-center gap-2">
                             VIEW ALL →
                         </Link>
                     </div>
@@ -212,14 +212,14 @@ export default async function AdminDashboard() {
                             recentUsers.map((u: any) => (
                                 <div key={u.id} className="p-5 hover:bg-beige-50 transition-colors flex items-center justify-between group">
                                     <div className="flex items-center gap-4">
-                                        <div className="w-10 h-10 rounded-lg bg-beige-100 flex items-center justify-center text-sm font-bold text-accent-600 border border-beige-200">
+                                        <div className="w-10 h-10 rounded-lg bg-beige-100 flex items-center justify-center text-sm font-semibold text-accent-600 border border-beige-200">
                                             {u.full_name?.charAt(0) || 'U'}
                                         </div>
                                         <div>
-                                            <h5 className="text-sm font-bold text-[#1c1917] group-hover:text-accent-600 transition-colors uppercase tracking-tight">
+                                            <h5 className="text-sm font-semibold text-[#1c1917] group-hover:text-accent-600 transition-colors uppercase tracking-tight">
                                                 {u.full_name}
                                             </h5>
-                                            <p className="text-xs text-[#1c1917]/50 uppercase tracking-tight font-bold">
+                                            <p className="text-xs text-[#1c1917]/65 uppercase tracking-tight font-medium">
                                                 {u.role}
                                             </p>
                                         </div>

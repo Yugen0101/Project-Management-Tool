@@ -82,7 +82,7 @@ export default function ActivityFeed({
     if (!activities || activities.length === 0) {
         return (
             <div className="py-20 text-center border-2 border-dashed border-[#e5dec9] rounded-[2.5rem]">
-                <p className="text-[10px] font-black uppercase text-[#1c1917]/20 tracking-[0.3em] font-serif italic">No operational logs recorded</p>
+                <p className="text-[10px] font-medium uppercase text-[#78716c] tracking-[0.3em] font-serif italic">No operational logs recorded</p>
             </div>
         );
     }
@@ -105,7 +105,7 @@ export default function ActivityFeed({
                                 <div className="flex min-w-0 flex-1 justify-between space-x-6 pt-2">
                                     <div>
                                         <p className="text-sm text-[#1c1917]/60 leading-tight">
-                                            <span className="font-black text-[#1c1917] uppercase tracking-tight">{item.user?.full_name || 'System'}</span>
+                                            <span className="font-semibold text-[#1c1917] uppercase tracking-tight">{item.user?.full_name || 'System'}</span>
                                             <span className="italic font-serif ml-1">
                                                 {item.action_type === 'status_changed' ? `moved unit to ${item.new_value}` :
                                                     item.action_type === 'assigned' ? `reallocated asset to unit` :
@@ -115,7 +115,7 @@ export default function ActivityFeed({
                                             </span>
                                         </p>
                                     </div>
-                                    <div className="whitespace-nowrap text-right text-[9px] font-black uppercase tracking-[0.2em] text-[#1c1917]/20">
+                                    <div className="whitespace-nowrap text-right text-[9px] font-medium uppercase tracking-[0.2em] text-[#78716c]">
                                         <time dateTime={item.created_at}>
                                             {formatDistanceToNow(new Date(item.created_at), { addSuffix: true })}
                                         </time>

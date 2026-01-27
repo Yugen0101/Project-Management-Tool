@@ -56,15 +56,15 @@ export default async function AdminTaskDetailPage({ params }: { params: Promise<
                 <div className="flex items-center gap-4">
                     <Link
                         href={`/admin/projects/${task.project.id}`}
-                        className="p-2 bg-slate-50 text-slate-400 hover:text-primary-600 rounded-xl transition-all"
+                        className="p-2 bg-beige-50 text-secondary-600 hover:text-accent-600 rounded-xl transition-all"
                     >
                         <ChevronLeftIcon className="w-5 h-5" />
                     </Link>
                     <div>
-                        <div className="flex items-center gap-2 text-[10px] font-black uppercase text-slate-400 tracking-widest">
+                        <div className="flex items-center gap-2 text-[10px] font-semibold uppercase text-secondary-600 tracking-widest">
                             Project: {task.project.name}
                         </div>
-                        <h1 className="text-2xl font-black text-slate-900">Task Management</h1>
+                        <h1 className="text-2xl font-semibold text-[#1c1917]">Task Management</h1>
                     </div>
                 </div>
                 <div className="flex items-center gap-3">
@@ -84,48 +84,48 @@ export default async function AdminTaskDetailPage({ params }: { params: Promise<
                     <div className="card p-8 space-y-8">
                         <div className="space-y-4">
                             <div className="flex items-center gap-3">
-                                <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${task.priority === 'high' ? 'bg-red-100 text-red-700' :
-                                    task.priority === 'medium' ? 'bg-orange-100 text-orange-700' :
-                                        'bg-blue-100 text-blue-700'
+                                <span className={`badge ${task.priority === 'high' ? 'badge-danger' :
+                                    task.priority === 'medium' ? 'badge-warning' :
+                                        'badge-info'
                                     }`}>
                                     {task.priority || 'medium'} Priority
                                 </span>
-                                <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${task.status === 'completed' ? 'bg-emerald-100 text-emerald-700' :
-                                    task.status === 'in_progress' ? 'bg-amber-100 text-amber-700' :
-                                        'bg-slate-100 text-slate-700'
+                                <span className={`badge ${task.status === 'completed' ? 'badge-success' :
+                                    task.status === 'in_progress' ? 'badge-warning' :
+                                        'badge-info'
                                     }`}>
                                     {task.status?.replace('_', ' ') || 'todo'}
                                 </span>
                             </div>
-                            <h2 className="text-4xl font-black text-slate-900 leading-tight">
+                            <h2 className="text-4xl font-semibold text-[#1c1917] leading-tight">
                                 {task.title}
                             </h2>
                         </div>
 
-                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 p-6 bg-slate-50 rounded-2xl border border-slate-100">
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 p-6 bg-beige-50/50 rounded-2xl border border-beige-100">
                             <div>
-                                <p className="text-[10px] font-black text-slate-400 uppercase mb-1">Status</p>
-                                <p className="text-sm font-bold text-slate-700">{task.status || 'To Do'}</p>
+                                <p className="text-[10px] font-semibold text-secondary-600 uppercase mb-1">Status</p>
+                                <p className="text-sm font-semibold text-[#1c1917] capitalize">{task.status?.replace('_', ' ') || 'To Do'}</p>
                             </div>
                             <div>
-                                <p className="text-[10px] font-black text-slate-400 uppercase mb-1">Due Date</p>
-                                <p className="text-sm font-bold text-slate-700">
+                                <p className="text-[10px] font-semibold text-secondary-600 uppercase mb-1">Due Date</p>
+                                <p className="text-sm font-semibold text-[#1c1917]">
                                     {task.due_date ? format(new Date(task.due_date), 'MMM d, yyyy') : 'No Date'}
                                 </p>
                             </div>
                             <div>
-                                <p className="text-[10px] font-black text-slate-400 uppercase mb-1">Created</p>
-                                <p className="text-sm font-bold text-slate-700">{format(new Date(task.created_at), 'MMM d')}</p>
+                                <p className="text-[10px] font-semibold text-secondary-600 uppercase mb-1">Created</p>
+                                <p className="text-sm font-semibold text-[#1c1917]">{format(new Date(task.created_at), 'MMM d')}</p>
                             </div>
                             <div>
-                                <p className="text-[10px] font-black text-slate-400 uppercase mb-1">Owner</p>
-                                <p className="text-sm font-bold text-slate-700">{task.assignee?.full_name?.split(' ')[0] || 'Member'}</p>
+                                <p className="text-[10px] font-semibold text-secondary-600 uppercase mb-1">Owner</p>
+                                <p className="text-sm font-semibold text-[#1c1917]">{task.assignee?.full_name?.split(' ')[0] || 'Member'}</p>
                             </div>
                         </div>
 
                         <div className="space-y-4">
-                            <h3 className="text-sm font-black uppercase tracking-widest text-slate-400">Description</h3>
-                            <div className="p-6 bg-white border border-slate-100 rounded-2xl text-slate-600 leading-relaxed font-medium">
+                            <h3 className="text-sm font-semibold uppercase tracking-widest text-secondary-700">Description</h3>
+                            <div className="p-6 bg-white border border-beige-100 rounded-2xl text-[#1c1917]/85 leading-relaxed font-medium">
                                 {task.description || 'No detailed description was provided for this task.'}
                             </div>
                         </div>
@@ -133,7 +133,7 @@ export default async function AdminTaskDetailPage({ params }: { params: Promise<
 
                     {/* Collaboration Section */}
                     <div className="space-y-6">
-                        <h3 className="text-2xl font-black text-slate-900">Team Discussion</h3>
+                        <h3 className="text-2xl font-semibold text-[#1c1917]">Team Discussion</h3>
                         <TaskComments taskId={id} projectPath={`/admin/projects/${task.project.id}`} />
                     </div>
                 </div>
@@ -143,7 +143,7 @@ export default async function AdminTaskDetailPage({ params }: { params: Promise<
                     {/* Activity Feed */}
                     <div className="card p-0 overflow-hidden">
                         <div className="p-6 border-b border-slate-50 bg-slate-50/50">
-                            <h3 className="font-black text-slate-900 flex items-center gap-2 text-sm uppercase tracking-widest">
+                            <h3 className="font-semibold text-[#1c1917] flex items-center gap-2 text-sm uppercase tracking-widest">
                                 <ArrowPathIcon className="w-5 h-5 text-primary-600" />
                                 Audit log
                             </h3>
@@ -156,14 +156,14 @@ export default async function AdminTaskDetailPage({ params }: { params: Promise<
                     {/* Assignment Card */}
                     <div className="card p-6 space-y-6 bg-primary-600 text-white border-0 shadow-xl shadow-primary-900/20">
                         <div className="space-y-4">
-                            <h4 className="text-[10px] font-black uppercase tracking-widest text-primary-200">Task Assignee</h4>
+                            <h4 className="text-[10px] font-semibold uppercase tracking-widest text-primary-100">Task Assignee</h4>
                             <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-xl font-black text-white border border-white/30">
+                                <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-xl font-bold text-white border border-white/30">
                                     {task.assignee?.full_name?.charAt(0) || '?'}
                                 </div>
                                 <div>
-                                    <p className="text-lg font-black">{task.assignee?.full_name || 'Unassigned'}</p>
-                                    <p className="text-[10px] font-bold text-primary-200 uppercase tracking-widest">Active Contributor</p>
+                                    <p className="text-lg font-semibold">{task.assignee?.full_name || 'Unassigned'}</p>
+                                    <p className="text-[10px] font-semibold text-primary-100 uppercase tracking-widest">Active Contributor</p>
                                 </div>
                             </div>
                         </div>

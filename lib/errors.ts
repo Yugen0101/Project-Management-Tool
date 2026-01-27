@@ -11,11 +11,13 @@ export type AppError = {
  * useful feedback in development.
  */
 export function handleActionError(error: any): AppError {
-    // Log the actual error for server-side monitoring (could be piped to Axiom/Sentry/etc)
+    // Log the actual error for server-side monitoring
     console.error('[System Error]:', {
         timestamp: new Date().toISOString(),
-        message: error?.message,
+        message: error?.message || 'Unknown Error',
         code: error?.code,
+        details: error?.details,
+        hint: error?.hint,
         stack: process.env.NODE_ENV !== 'production' ? error?.stack : undefined
     });
 

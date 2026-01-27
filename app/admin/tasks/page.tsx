@@ -54,10 +54,12 @@ export default async function AdminTasksPage({
                         <ClipboardDocumentListIcon className="w-8 h-8" />
                     </div>
                     <div>
-                        <h1 className="text-3xl font-bold text-secondary-900 tracking-tight">Task Registry</h1>
-                        <p className="text-secondary-400 text-sm font-medium mt-1">
-                            Overseeing {count || 0} tasks across all organizational projects.
-                        </p>
+                        <div>
+                            <h1 className="text-3xl font-semibold text-secondary-900 tracking-tight">Task Registry</h1>
+                            <p className="text-secondary-400 text-sm font-normal mt-1">
+                                Overseeing {count || 0} tasks across all organizational projects.
+                            </p>
+                        </div>
                     </div>
                 </div>
                 <div className="flex gap-3">
@@ -74,7 +76,7 @@ export default async function AdminTasksPage({
                     <MagnifyingGlassIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-secondary-400 group-focus-within:text-primary-600 transition-colors" />
                     <input
                         type="text"
-                        placeholder="Search tasks, projects, or personnel..."
+                        placeholder="Search tasks, projects, or users..."
                         className="input pl-11 w-full"
                     />
                 </div>
@@ -87,7 +89,7 @@ export default async function AdminTasksPage({
                         <Link
                             key={tab.value}
                             href={`/admin/tasks?status=${tab.value}`}
-                            className={`px-6 py-2 rounded-lg text-xs font-bold transition-all ${filterStatus === tab.value ? 'bg-white text-secondary-900 shadow-sm' : 'text-secondary-500 hover:text-secondary-900'}`}
+                            className={`px-6 py-2 rounded-lg text-xs font-medium transition-all ${filterStatus === tab.value ? 'bg-white text-secondary-900 shadow-sm' : 'text-secondary-500 hover:text-secondary-900'}`}
                         >
                             {tab.label}
                         </Link>
@@ -98,19 +100,19 @@ export default async function AdminTasksPage({
             {/* Tasks Table Card */}
             <div className="card p-0 overflow-hidden">
                 <div className="p-8 border-b border-border bg-secondary-50/50 flex items-center justify-between">
-                    <h3 className="text-sm font-bold text-secondary-900 uppercase tracking-widest flex items-center gap-2">
+                    <h3 className="text-sm font-medium text-secondary-900 uppercase tracking-widest flex items-center gap-2">
                         <MapIcon className="w-5 h-5 text-primary-600" />
                         Operational Task Flow
                     </h3>
                     <div className="flex items-center gap-2">
                         <span className="w-2 h-2 bg-primary-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(79,70,229,0.5)]"></span>
-                        <span className="text-[10px] font-bold text-secondary-400 uppercase tracking-widest">Real-time Mapping</span>
+                        <span className="text-[10px] font-medium text-secondary-400 uppercase tracking-widest">Real-time Mapping</span>
                     </div>
                 </div>
                 <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                         <thead>
-                            <tr className="bg-white border-b border-border text-[10px] font-bold uppercase text-secondary-400 tracking-widest">
+                            <tr className="bg-white border-b border-border text-[10px] font-medium uppercase text-secondary-400 tracking-widest">
                                 <th className="px-8 py-5">Task Identity</th>
                                 <th className="px-8 py-5">Project Link</th>
                                 <th className="px-8 py-5">Assignee</th>
@@ -124,28 +126,28 @@ export default async function AdminTasksPage({
                                 <tr key={task.id} className="hover:bg-secondary-50 transition-colors group">
                                     <td className="px-8 py-6">
                                         <div className="max-w-[300px]">
-                                            <p className="text-sm font-bold text-secondary-900 group-hover:text-primary-600 transition-colors truncate">{task.title}</p>
-                                            <p className="text-[11px] font-medium text-secondary-400 mt-1 line-clamp-1">{task.description || 'No additional details provided.'}</p>
+                                            <p className="text-sm font-medium text-secondary-900 group-hover:text-primary-600 transition-colors truncate">{task.title}</p>
+                                            <p className="text-[11px] font-normal text-secondary-400 mt-1 line-clamp-1">{task.description || 'No additional details provided.'}</p>
                                         </div>
                                     </td>
                                     <td className="px-8 py-6">
-                                        <span className="text-[10px] font-bold text-secondary-900 bg-secondary-100 px-3 py-1 rounded-lg border border-border">
+                                        <span className="text-[10px] font-medium text-secondary-900 bg-secondary-100 px-3 py-1 rounded-lg border border-border">
                                             {task.project?.name || 'Global'}
                                         </span>
                                     </td>
                                     <td className="px-8 py-6">
                                         {task.assigned_user ? (
                                             <div className="flex items-center gap-3">
-                                                <div className="w-9 h-9 rounded-lg bg-primary-50 text-primary-600 border border-primary-100 flex items-center justify-center font-bold text-xs group-hover:bg-primary-600 group-hover:text-white transition-all">
+                                                <div className="w-9 h-9 rounded-lg bg-primary-50 text-primary-600 border border-primary-100 flex items-center justify-center font-medium text-xs group-hover:bg-primary-600 group-hover:text-white transition-all">
                                                     {task.assigned_user.full_name?.charAt(0)}
                                                 </div>
                                                 <div>
-                                                    <p className="text-xs font-bold text-secondary-900">{task.assigned_user.full_name}</p>
-                                                    <p className="text-[10px] font-medium text-secondary-400">{task.assigned_user.email}</p>
+                                                    <p className="text-xs font-medium text-secondary-900">{task.assigned_user.full_name}</p>
+                                                    <p className="text-[10px] font-normal text-secondary-400">{task.assigned_user.email}</p>
                                                 </div>
                                             </div>
                                         ) : (
-                                            <span className="text-[11px] font-bold text-secondary-300 italic">Unassigned</span>
+                                            <span className="text-[11px] font-medium text-secondary-300 italic">Unassigned</span>
                                         )}
                                     </td>
                                     <td className="px-8 py-6">
@@ -157,7 +159,7 @@ export default async function AdminTasksPage({
                                         </span>
                                     </td>
                                     <td className="px-8 py-6">
-                                        <div className="flex items-center gap-2 text-xs font-bold text-secondary-500">
+                                        <div className="flex items-center gap-2 text-xs font-medium text-secondary-500">
                                             <CalendarIcon className="w-4 h-4 text-primary-500" />
                                             {task.due_date ? format(new Date(task.due_date), 'MMM dd, yyyy') : 'No Date'}
                                         </div>
@@ -187,8 +189,8 @@ export default async function AdminTasksPage({
                         <div className="w-16 h-16 bg-secondary-50 rounded-full flex items-center justify-center text-secondary-200 mb-6">
                             <ClipboardDocumentListIcon className="w-8 h-8" />
                         </div>
-                        <h3 className="text-lg font-bold text-secondary-900">No tasks found</h3>
-                        <p className="text-xs font-bold text-secondary-400 uppercase tracking-widest mt-2">The registry is currently empty in this sector.</p>
+                        <h3 className="text-lg font-semibold text-secondary-900">No tasks found</h3>
+                        <p className="text-xs font-medium text-secondary-400 uppercase tracking-widest mt-2">The registry is currently empty in this sector.</p>
                     </div>
                 )}
             </div>

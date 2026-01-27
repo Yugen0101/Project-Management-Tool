@@ -102,7 +102,7 @@ export default function ProjectActions({
                 <button
                     onClick={handleDelete}
                     disabled={isDeleting}
-                    className="btn-secondary flex items-center gap-2 text-red-700 bg-red-50 border-red-200 hover:bg-red-100 font-bold transition-all hover:scale-[1.02]"
+                    className="btn-secondary flex items-center gap-2 text-red-700 bg-red-50 border-red-200 hover:bg-red-100 font-medium transition-all hover:scale-[1.02]"
                 >
                     <TrashIcon className="w-5 h-5" />
                     Hard Delete

@@ -51,7 +51,7 @@ export default function ScheduleMeetingModal({
                 onSuccess();
                 onClose();
             } else {
-                toast.error(result.error || 'Tactical failure during meeting allocation');
+                toast.error(result.error || 'Failed to schedule meeting');
             }
         } catch (err: any) {
             console.error('Schedule meeting error:', err);

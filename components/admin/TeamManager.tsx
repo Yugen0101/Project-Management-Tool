@@ -64,11 +64,11 @@ export default function TeamManager({
                 const filteredUsers = (result.data as User[]).filter(u => !currentMemberIds.includes(u.id));
                 setAllUsers(filteredUsers);
             } else {
-                toast.error(result.error || 'Failed to fetch personnel');
+                toast.error(result.error || 'Failed to fetch users');
             }
         } catch (err: any) {
             console.error('Fetch users error:', err);
-            toast.error('Connection failure during personnel sync');
+            toast.error('Connection failure during users sync');
         } finally {
             setLoading(false);
         }
@@ -82,7 +82,7 @@ export default function TeamManager({
         const result = await assignUserToProject(projectId, selectedUserId, selectedRole);
 
         if (result.success) {
-            toast.success('Personnel assigned to project');
+            toast.success('User added to team');
             setIsModalOpen(false);
             setSelectedUserId('');
             // In a real app, we'd probably router.refresh() or fetch updated members
@@ -99,7 +99,7 @@ export default function TeamManager({
 
         const result = await removeUserFromProject(projectId, userId);
         if (result.success) {
-            toast.success('Personnel removed');
+            toast.success('User removed from project');
             window.location.reload();
         } else {
             toast.error(result.error);
@@ -112,9 +112,9 @@ export default function TeamManager({
                 <div className="space-y-1">
                     <div className="flex items-center gap-3">
                         <span className="w-6 h-px bg-[#d97757]"></span>
-                        <h3 className="text-[11px] font-black text-[#1c1917] uppercase tracking-[0.4em]">Project Personnel</h3>
+                        <h3 className="text-[11px] font-semibold text-[#1c1917] uppercase tracking-[0.4em]">Project Team</h3>
                     </div>
-                    <p className="text-[8px] font-black text-[#1c1917]/30 uppercase tracking-[0.2em] ml-9 underline decoration-[#d97757]/20 underline-offset-4">Assigned Active Units</p>
+                    <p className="text-[8px] font-semibold text-[#1c1917]/60 uppercase tracking-[0.2em] ml-9 underline decoration-[#d97757]/20 underline-offset-4">Assigned Active Units</p>
                 </div>
                 <button
                     onClick={() => setIsModalOpen(true)}
@@ -127,24 +127,24 @@ export default function TeamManager({
             <div className="p-6 space-y-4">
                 {members.length === 0 ? (
                     <div className="py-8 text-center bg-slate-50 rounded-2xl border border-dashed border-slate-200">
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">No personnel assigned</p>
+                        <p className="text-[10px] font-semibold text-secondary-600 uppercase tracking-widest italic">No members assigned</p>
                     </div>
                 ) : (
                     <div className="space-y-4">
                         {members.map((member, i) => (
                             <div key={member.users?.id || i} className="flex items-center justify-between p-5 bg-[#fdfcf9] border border-[#e5dec9] rounded-[2rem] group hover:border-[#d97757] transition-all duration-500">
                                 <div className="flex items-center gap-5">
-                                    <div className="w-12 h-12 rounded-2xl bg-white border border-[#e5dec9] flex items-center justify-center font-black text-[#d97757] shadow-sm group-hover:bg-[#d97757] group-hover:text-white transition-all transform group-hover:-rotate-3">
+                                    <div className="w-12 h-12 rounded-2xl bg-white border border-[#e5dec9] flex items-center justify-center font-semibold text-[#d97757] shadow-sm group-hover:bg-[#d97757] group-hover:text-white transition-all transform group-hover:-rotate-3">
                                         {member.users?.full_name?.charAt(0) || '?'}
                                     </div>
                                     <div className="space-y-1">
-                                        <p className="text-[14px] font-black text-[#1c1917] tracking-tight uppercase group-hover:text-[#d97757] transition-colors">
+                                        <p className="text-[14px] font-semibold text-[#1c1917] tracking-tight uppercase group-hover:text-[#d97757] transition-colors">
                                             {member.users?.full_name || 'Expunged User'}
                                         </p>
                                         <div className="flex items-center gap-2">
-                                            <span className={`px-3 py-0.5 rounded-full border text-[8px] font-black uppercase tracking-widest ${member.role === 'associate' ? 'bg-[#f7f3ed] border-[#e5dec9] text-[#d97757]' : 'bg-white border-[#e5dec9] text-[#1c1917]/30 font-serif italic'
+                                            <span className={`px-3 py-0.5 rounded-full border text-[8px] font-semibold uppercase tracking-widest ${member.role === 'associate' ? 'bg-[#f7f3ed] border-[#e5dec9] text-[#d97757]' : 'bg-white border-[#e5dec9] text-[#1c1917]/70 font-serif italic'
                                                 }`}>
-                                                {member.role === 'associate' ? 'Operations Lead' : 'Tactical Member'}
+                                                {member.role === 'associate' ? 'Project Associate' : 'Team Member'}
                                             </span>
                                         </div>
                                     </div>
@@ -171,8 +171,8 @@ export default function TeamManager({
                                     <UserGroupIcon className="w-5 h-5" />
                                 </div>
                                 <div>
-                                    <h2 className="text-lg font-black text-[#1c1917] tracking-tight uppercase">DEPLOY PERSONNEL</h2>
-                                    <p className="text-[9px] font-bold text-[#1c1917]/40 uppercase tracking-[0.2em] mt-0.5">Assign asset to operational matrix</p>
+                                    <h2 className="text-lg font-semibold text-[#1c1917] tracking-tight uppercase">ADD TO TEAM</h2>
+                                    <p className="text-[9px] font-semibold text-[#1c1917]/70 uppercase tracking-[0.2em] mt-0.5">Assign a person to this project</p>
                                 </div>
                             </div>
                             <button onClick={() => setIsModalOpen(false)} className="w-8 h-8 rounded-full bg-white border border-[#e5dec9] flex items-center justify-center text-[#1c1917]/30 hover:text-[#d97757] hover:border-[#d97757] transition-all">
@@ -182,18 +182,18 @@ export default function TeamManager({
 
                         <form onSubmit={handleAddMember} className="p-8 space-y-6">
                             <div className="space-y-2 group">
-                                <label className="flex items-center justify-between text-[10px] font-black text-[#1c1917]/40 uppercase tracking-[0.2em] ml-1 group-focus-within:text-[#d97757] transition-colors">
-                                    <span>Select Asset</span>
+                                <label className="flex items-center justify-between text-[10px] font-semibold text-[#1c1917]/70 uppercase tracking-[0.2em] ml-1 group-focus-within:text-[#d97757] transition-colors">
+                                    <span>Select User</span>
                                     <span className="text-[8px] opacity-50">REQUIRED</span>
                                 </label>
                                 <div className="relative">
                                     <select
                                         required
-                                        className="w-full px-5 py-4 bg-white border border-[#e5dec9] rounded-xl text-sm font-bold text-[#1c1917] appearance-none focus:outline-none focus:border-[#d97757] focus:ring-4 focus:ring-[#d97757]/10 transition-all shadow-sm"
+                                        className="w-full px-5 py-4 bg-white border border-[#e5dec9] rounded-xl text-sm font-medium text-[#1c1917] appearance-none focus:outline-none focus:border-[#d97757] focus:ring-4 focus:ring-[#d97757]/10 transition-all shadow-sm"
                                         value={selectedUserId}
                                         onChange={e => setSelectedUserId(e.target.value)}
                                     >
-                                        <option value="">Choose personnel...</option>
+                                        <option value="">Choose user...</option>
                                         {allUsers.map(user => (
                                             <option key={user.id} value={user.id}>{user.full_name}</option>
                                         ))}
@@ -205,9 +205,9 @@ export default function TeamManager({
                             </div>
 
                             <div className="space-y-2 group">
-                                <label className="flex items-center justify-between text-[10px] font-black text-[#1c1917]/40 uppercase tracking-[0.2em] ml-1 group-focus-within:text-[#d97757] transition-colors">
+                                <label className="flex items-center justify-between text-[10px] font-semibold text-[#1c1917]/70 uppercase tracking-[0.2em] ml-1 group-focus-within:text-[#d97757] transition-colors">
                                     <span>Designated Role</span>
-                                    <span className="text-[8px] opacity-50">OPERATIONAL CLEARANCE</span>
+                                    <span className="text-[8px] opacity-50">PROJECT PERMISSION</span>
                                 </label>
                                 <div className="grid grid-cols-2 gap-3">
                                     <button
@@ -219,7 +219,7 @@ export default function TeamManager({
                                             }`}
                                     >
                                         <ShieldCheckIcon className="w-5 h-5" />
-                                        <span className="text-[9px] font-black uppercase tracking-wider">Tactical</span>
+                                        <span className="text-[9px] font-semibold uppercase tracking-wider">Member</span>
                                     </button>
                                     <button
                                         type="button"
@@ -230,7 +230,7 @@ export default function TeamManager({
                                             }`}
                                     >
                                         <UserGroupIcon className="w-5 h-5" />
-                                        <span className="text-[9px] font-black uppercase tracking-wider">Lead</span>
+                                        <span className="text-[9px] font-semibold uppercase tracking-wider">Lead</span>
                                     </button>
                                 </div>
                             </div>
@@ -239,16 +239,16 @@ export default function TeamManager({
                                 <button
                                     type="button"
                                     onClick={() => setIsModalOpen(false)}
-                                    className="px-6 py-4 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] text-[#1c1917]/40 border border-transparent hover:bg-[#f7f3ed] transition-all"
+                                    className="px-6 py-4 rounded-xl text-[10px] font-semibold uppercase tracking-[0.2em] text-[#1c1917]/70 border border-transparent hover:bg-[#f7f3ed] transition-all"
                                 >
                                     Abort
                                 </button>
                                 <button
                                     type="submit"
                                     disabled={loading || !selectedUserId}
-                                    className="flex-1 px-6 py-4 rounded-xl bg-[#d97757] text-white font-black text-[10px] uppercase tracking-[0.2em] shadow-xl shadow-[#d97757]/20 hover:bg-[#c26242] hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="flex-1 px-6 py-4 rounded-xl bg-[#d97757] text-white font-semibold text-[10px] uppercase tracking-[0.2em] shadow-xl shadow-[#d97757]/20 hover:bg-[#c26242] hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
-                                    {loading ? 'INITIALIZING...' : 'CONFIRM DEPLOYMENT'}
+                                    {loading ? 'ADDING...' : 'ADD TO TEAM'}
                                 </button>
                             </div>
                         </form>

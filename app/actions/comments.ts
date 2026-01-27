@@ -55,3 +55,38 @@ export async function getComments(taskId: string) {
     if (error) return handleActionError(error);
     return successResponse(data);
 }
+
+export async function deleteComment(commentId: string, projectPath: string) {
+    const user = await getCurrentUser();
+    if (!user) return handleActionError({ message: 'Unauthorized', status: 401 });
+
+    const supabase = await createClient();
+
+    // 1. Fetch comment to verify ownership
+    const { data: comment, error: fetchError } = await supabase
+        .from('comments')
+        .select('user_id')
+        .eq('id', commentId)
+        .single();
+
+    if (fetchError || !comment) return handleActionError({ message: 'Comment not found', status: 404 });
+
+    // 2. Check permissions: Author OR Admin OR Associate
+    if (comment.user_id !== user.id && user.role !== 'admin' && user.role !== 'associate') {
+        return handleActionError({ message: 'Unauthorized to delete this comment', status: 403 });
+    }
+
+    // 3. Delete comment using admin client to bypass RLS for Admins/Associates
+    const { createAdminClient } = await import('@/lib/supabase/admin');
+    const supabaseAdmin = await createAdminClient();
+
+    const { error } = await supabaseAdmin
+        .from('comments')
+        .delete()
+        .eq('id', commentId);
+
+    if (error) return handleActionError(error);
+
+    revalidatePath(projectPath);
+    return successResponse({ message: 'Comment deleted' });
+}

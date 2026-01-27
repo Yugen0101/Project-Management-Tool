@@ -216,3 +216,87 @@ export async function deleteTask(taskId: string, projectId: string) {
     revalidatePath(`/admin/projects/${projectId}`);
     return successResponse();
 }
+
+export async function updateTask(taskId: string, data: any) {
+    const user = await getCurrentUser();
+    if (!user) return handleActionError({ message: 'Unauthorized', status: 401 });
+
+    const supabase = await createClient();
+
+    // 1. Verify Access
+    // User must be creator, assignee, admin, or an associate of the project
+    const { data: task, error: fetchError } = await supabase
+        .from('tasks')
+        .select(`
+            *,
+            project:projects(
+                id,
+                user_projects!inner(user_id, role)
+            )
+        `)
+        .eq('id', taskId)
+        .eq('project.user_projects.user_id', user.id) // Ensure user is part of project
+        .single();
+
+    if (fetchError || !task) {
+        // Fallback: Check if admin or if explicit assignee/creator
+        const { data: basicTask, error: basicError } = await supabase
+            .from('tasks')
+            .select('*, project_id')
+            .eq('id', taskId)
+            .single();
+
+        if (basicError || !basicTask) return handleActionError({ message: 'Task not found or access denied', status: 404 });
+
+        const isCreatorOrAssignee = basicTask.created_by === user.id || basicTask.assigned_to === user.id;
+        const isAdmin = user.role === 'admin';
+
+        if (!isCreatorOrAssignee && !isAdmin) {
+            // Check if associate of the project
+            const { data: association } = await supabase
+                .from('user_projects')
+                .select('role')
+                .eq('project_id', basicTask.project_id)
+                .eq('user_id', user.id)
+                .single();
+
+            if (!association || association.role !== 'associate') {
+                return handleActionError({ message: 'Unauthorized to edit this task', status: 403 });
+            }
+        }
+    }
+
+    // 2. Prepare Update Data
+    const updateData: any = {
+        updated_at: new Date().toISOString()
+    };
+
+    if (data.title !== undefined) updateData.title = data.title;
+    if (data.description !== undefined) updateData.description = data.description;
+    if (data.priority !== undefined) updateData.priority = data.priority;
+    if (data.due_date !== undefined) updateData.due_date = data.due_date;
+
+    // 3. Perform Update
+    const { error } = await supabase
+        .from('tasks')
+        .update(updateData)
+        .eq('id', taskId);
+
+    if (error) return handleActionError(error);
+
+    // 4. Log Audit
+    await logAudit({
+        action_type: 'TASK_UPDATED',
+        resource_type: 'task',
+        resource_id: taskId,
+        details: { changes: updateData }
+    });
+
+    // 5. Revalidate
+    revalidatePath(`/admin/tasks/${taskId}`);
+    revalidatePath(`/associate/tasks/${taskId}`);
+    revalidatePath(`/member/tasks/${taskId}`);
+    // revalidatePath(`/admin/projects/${task?.project_id || data.projectId}`); // Optional, might be too heavy
+
+    return successResponse();
+}

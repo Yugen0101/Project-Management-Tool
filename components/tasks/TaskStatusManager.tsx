@@ -8,6 +8,7 @@ import {
     ArrowPathIcon
 } from '@heroicons/react/24/outline';
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 interface TaskStatusManagerProps {
     task: any;
@@ -17,6 +18,7 @@ interface TaskStatusManagerProps {
 
 export default function TaskStatusManager({ task, columns, projectId }: TaskStatusManagerProps) {
     const [loading, setLoading] = useState(false);
+    const router = useRouter();
 
     const handleUpdate = async (columnName: string) => {
         setLoading(true);
@@ -36,6 +38,7 @@ export default function TaskStatusManager({ task, columns, projectId }: TaskStat
 
             if (result.success) {
                 toast.success(`Task unit synchronized: ${columnName}`);
+                router.refresh();
             } else {
                 toast.error(result.error || 'Failed to update task status.');
             }
@@ -54,7 +57,7 @@ export default function TaskStatusManager({ task, columns, projectId }: TaskStat
 
     if (isCompleted) {
         return (
-            <div className="flex items-center justify-center p-4 bg-emerald-50 rounded-2xl border border-emerald-100 text-emerald-700 text-[10px] font-black uppercase tracking-widest gap-2">
+            <div className="flex items-center justify-center p-4 bg-emerald-50 rounded-2xl border border-emerald-100 text-emerald-700 text-[10px] font-semibold uppercase tracking-widest gap-2">
                 <CheckBadgeIcon className="w-5 h-5" />
                 Objective Finalized
             </div>
@@ -74,7 +77,7 @@ export default function TaskStatusManager({ task, columns, projectId }: TaskStat
                     ) : (
                         <PlayCircleIcon className="w-5 h-5" />
                     )}
-                    <span className="text-[11px] font-black uppercase tracking-[0.2em]">Start Progress</span>
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.2em]">Start Progress</span>
                 </button>
             )}
 
@@ -89,7 +92,7 @@ export default function TaskStatusManager({ task, columns, projectId }: TaskStat
                     ) : (
                         <CheckBadgeIcon className="w-5 h-5" />
                     )}
-                    <span className="text-[11px] font-black uppercase tracking-[0.2em]">Mark as Complete</span>
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.2em]">Mark as Complete</span>
                 </button>
             )}
         </div>

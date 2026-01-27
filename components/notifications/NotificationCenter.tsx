@@ -85,7 +85,7 @@ export default function NotificationCenter() {
             >
                 <BellIcon className="w-5 h-5" />
                 {unreadCount > 0 && (
-                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary-500 text-white text-[10px] font-bold flex items-center justify-center rounded-full ring-4 ring-white shadow-lg shadow-primary-500/20">
+                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary-500 text-white text-[10px] font-semibold flex items-center justify-center rounded-full ring-4 ring-white shadow-lg shadow-primary-500/20">
                         {unreadCount}
                     </span>
                 )}
@@ -95,16 +95,16 @@ export default function NotificationCenter() {
                 <div className="absolute right-0 mt-4 w-96 bg-white rounded-[2rem] shadow-2xl shadow-secondary-500/10 border border-slate-100 z-50 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-500">
                     <div className="px-8 py-6 border-b border-slate-50 flex items-center justify-between bg-slate-50/50">
                         <div>
-                            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 flex items-center gap-3">
+                            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-900 flex items-center gap-3">
                                 <span className="w-2 h-2 rounded-full bg-primary-500 animate-pulse"></span>
                                 Notifications
                             </h3>
-                            <p className="text-[10px] font-bold text-slate-300 uppercase tracking-tight mt-0.5 font-sans">Recent Workspace Updates</p>
+                            <p className="text-[10px] font-semibold text-slate-300 uppercase tracking-tight mt-0.5 font-sans">Recent Workspace Updates</p>
                         </div>
                         {unreadCount > 0 && (
                             <button
                                 onClick={handleClearAll}
-                                className="text-[11px] font-bold uppercase tracking-tight text-primary-500 hover:opacity-70 transition-opacity flex items-center gap-2"
+                                className="text-[11px] font-semibold uppercase tracking-tight text-primary-500 hover:opacity-70 transition-opacity flex items-center gap-2"
                             >
                                 <TrashIcon className="w-4 h-4" />
                                 Clear All
@@ -118,7 +118,7 @@ export default function NotificationCenter() {
                                 <div className="w-16 h-16 bg-slate-50 rounded-[2rem] flex items-center justify-center text-slate-200 mx-auto mb-6">
                                     <InboxIcon className="w-8 h-8" />
                                 </div>
-                                <h3 className="text-sm font-bold text-slate-900 tracking-tight">All caught up</h3>
+                                <h3 className="text-sm font-semibold text-slate-900 tracking-tight">All caught up</h3>
                                 <p className="text-xs font-medium text-slate-400 mt-2 text-center max-w-[200px] mx-auto">No new notifications at the moment.</p>
                             </div>
                         )}
@@ -134,7 +134,7 @@ export default function NotificationCenter() {
                                     </div>
                                     <div className="flex-1 space-y-1">
                                         <div className="flex items-center justify-between">
-                                            <p className="text-sm font-bold text-slate-900 leading-tight tracking-tight">{n.title}</p>
+                                            <p className="text-sm font-semibold text-slate-900 leading-tight tracking-tight">{n.title}</p>
                                             {!n.is_read && (
                                                 <span className="w-1.5 h-1.5 rounded-full bg-primary-500 shadow-sm shadow-primary-500/50"></span>
                                             )}
@@ -147,7 +147,7 @@ export default function NotificationCenter() {
                                                     setIsOpen(false);
                                                     handleMarkAsRead(n.id);
                                                 }}
-                                                className="inline-block text-[11px] font-bold text-primary-500 hover:opacity-70 transition-opacity mt-2"
+                                                className="inline-block text-[11px] font-semibold text-primary-500 hover:opacity-70 transition-opacity mt-2"
                                             >
                                                 View Details →
                                             </Link>
@@ -168,7 +168,7 @@ export default function NotificationCenter() {
                     </div>
 
                     <div className="p-6 bg-slate-50/50 text-center border-t border-slate-50">
-                        <button className="text-[11px] font-bold uppercase tracking-wider text-slate-400 hover:text-primary-500 transition-all">
+                        <button className="text-[11px] font-medium uppercase tracking-wider text-slate-400 hover:text-primary-500 transition-all">
                             Notification Settings
                         </button>
                     </div>

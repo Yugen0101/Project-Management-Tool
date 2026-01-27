@@ -35,6 +35,9 @@ export default async function ProjectDetailPage({ params, searchParams }: {
 }) {
     const { id } = await params;
     const { view = 'sprints' } = await searchParams;
+
+    console.log('Fetching details for project ID:', id);
+
     const supabase = await createClient();
 
     const user = await getCurrentUser();
@@ -48,15 +51,21 @@ export default async function ProjectDetailPage({ params, searchParams }: {
         .from('projects')
         .select(`
             *,
-            tasks:tasks(*, users!assigned_to(*)),
+            tasks:tasks(*),
             sprints:sprints(*),
-            user_projects:user_projects(*, users(*))
+            user_projects:user_projects(*, users:users(*))
         `)
         .eq('id', id)
         .single();
 
     if (projectError || !project) {
-        console.error('Project fetch error:', projectError);
+        console.error('Project fetch error:', {
+            code: projectError?.code,
+            message: projectError?.message,
+            hint: projectError?.hint,
+            details: projectError?.details,
+            id: id
+        });
         return notFound();
     }
 
@@ -69,9 +78,9 @@ export default async function ProjectDetailPage({ params, searchParams }: {
         <div className="space-y-10">
             {/* Breadcrumbs & Actions */}
             <div className="flex justify-between items-center">
-                <div className="flex items-center gap-2 text-xs font-bold text-secondary-400">
+                <div className="flex items-center gap-2 text-xs font-semibold text-secondary-600">
                     <Link href="/admin/projects" className="hover:text-primary-600 transition-colors uppercase tracking-widest">Projects</Link>
-                    <span className="opacity-30">/</span>
+                    <span className="opacity-50">/</span>
                     <span className="text-secondary-900 uppercase tracking-widest">{project.name}</span>
                 </div>
                 <div className="flex gap-2">
@@ -92,39 +101,39 @@ export default async function ProjectDetailPage({ params, searchParams }: {
                         <div className="space-y-2">
                             <div className="flex items-center gap-2">
                                 <div className="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-pulse shadow-[0_0_10px_rgba(52,211,153,0.5)]"></div>
-                                <h1 className="text-4xl font-bold tracking-tight">{project.name}</h1>
+                                <h1 className="text-4xl font-semibold tracking-tight">{project.name}</h1>
                             </div>
-                            <p className="text-white/80 font-medium max-w-xl line-clamp-2 italic">
+                            <p className="text-white font-medium max-w-xl line-clamp-2 italic opacity-90">
                                 {project.description || 'Defining the roadmap for next generation operational standards.'}
                             </p>
                         </div>
                         <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
-                            <div className="text-[10px] font-bold text-white/60 uppercase tracking-widest mb-1 text-right">Completion</div>
-                            <div className="text-3xl font-black text-white text-right">{progressPercentage}%</div>
+                            <div className="text-[10px] font-semibold text-white/75 uppercase tracking-widest mb-1 text-right">Completion</div>
+                            <div className="text-3xl font-semibold text-white text-right">{progressPercentage}%</div>
                         </div>
                     </div>
 
                     <div className="mt-12 flex gap-12 border-t border-white/10 pt-8 overflow-x-auto no-scrollbar">
                         <div>
-                            <div className="text-[10px] font-bold text-white/50 uppercase tracking-widest mb-2">Developed</div>
-                            <div className="text-sm font-bold">{format(new Date(project.created_at), 'MMM dd, yyyy')}</div>
+                            <div className="text-[10px] font-semibold text-white/75 uppercase tracking-widest mb-2">Developed</div>
+                            <div className="text-sm font-medium">{format(new Date(project.created_at), 'MMM dd, yyyy')}</div>
                         </div>
                         <div>
-                            <div className="text-[10px] font-bold text-white/50 uppercase tracking-widest mb-2">Target Date</div>
-                            <div className="text-sm font-bold text-white">{format(new Date(project.end_date), 'MMM dd, yyyy')}</div>
+                            <div className="text-[10px] font-semibold text-white/75 uppercase tracking-widest mb-2">Target Date</div>
+                            <div className="text-sm font-medium text-white">{format(new Date(project.end_date), 'MMM dd, yyyy')}</div>
                         </div>
                         <div>
-                            <div className="text-[10px] font-bold text-white/50 uppercase tracking-widest mb-2">Assigned Group</div>
-                            <div className="text-sm font-bold">CORE_UNIT_{project.id.slice(0, 4).toUpperCase()}</div>
+                            <div className="text-[10px] font-semibold text-white/75 uppercase tracking-widest mb-2">Assigned Group</div>
+                            <div className="text-sm font-medium">CORE_UNIT_{project.id.slice(0, 4).toUpperCase()}</div>
                         </div>
                         <div className="ml-auto flex -space-x-3">
                             {project.user_projects?.slice(0, 4).map((up: any) => (
-                                <div key={up.id} className="w-10 h-10 rounded-full border-2 border-white/20 bg-[#1c1917] flex items-center justify-center text-[10px] font-black text-white shadow-lg" title={up.users?.full_name}>
+                                <div key={up.id} className="w-10 h-10 rounded-full border-2 border-white/20 bg-[#1c1917] flex items-center justify-center text-[10px] font-medium text-white shadow-lg" title={up.users?.full_name}>
                                     {up.users?.full_name?.charAt(0) || '?'}
                                 </div>
                             ))}
                             {(project.user_projects?.length || 0) > 4 && (
-                                <div className="w-10 h-10 rounded-full border-2 border-white/20 bg-accent-500 flex items-center justify-center text-[10px] font-black text-white shadow-lg">
+                                <div className="w-10 h-10 rounded-full border-2 border-white/20 bg-accent-500 flex items-center justify-center text-[10px] font-medium text-white shadow-lg">
                                     +{project.user_projects!.length - 4}
                                 </div>
                             )}
@@ -135,14 +144,14 @@ export default async function ProjectDetailPage({ params, searchParams }: {
 
             {/* View Selection Tabs */}
             <div className="flex border-b border-border gap-8 overflow-x-auto no-scrollbar">
-                <Link href={`?view=sprints`} className={`pb-4 text-xs font-bold uppercase tracking-widest transition-all relative ${view === 'sprints' ? 'text-primary-600' : 'text-secondary-400 hover:text-secondary-600'}`}>
+                <Link href={`?view=sprints`} className={`pb-4 text-xs font-semibold uppercase tracking-widest transition-all relative ${view === 'sprints' ? 'text-primary-600' : 'text-secondary-600 hover:text-secondary-800'}`}>
                     Sprints & Tasks
                     {view === 'sprints' && <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-600 rounded-full"></span>}
                 </Link>
-                <Link href={`/admin/projects/${id}/kanban`} className={`pb-4 text-xs font-bold uppercase tracking-widest transition-all relative text-secondary-400 hover:text-secondary-600`}>
+                <Link href={`/admin/projects/${id}/kanban`} className={`pb-4 text-xs font-semibold uppercase tracking-widest transition-all relative text-secondary-600 hover:text-secondary-800`}>
                     Execution Board
                 </Link>
-                <Link href={`?view=insights`} className={`pb-4 text-xs font-bold uppercase tracking-widest transition-all relative ${view === 'insights' ? 'text-primary-600' : 'text-secondary-400 hover:text-secondary-600'}`}>
+                <Link href={`?view=insights`} className={`pb-4 text-xs font-semibold uppercase tracking-widest transition-all relative ${view === 'insights' ? 'text-primary-600' : 'text-secondary-600 hover:text-secondary-800'}`}>
                     Advanced Analytics
                     {view === 'insights' && <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-600 rounded-full"></span>}
                 </Link>
@@ -175,8 +184,8 @@ export default async function ProjectDetailPage({ params, searchParams }: {
                                 <SprintPerformance projectId={id} />
                             </div>
                             <div className="card p-6 space-y-4">
-                                <h3 className="font-bold text-slate-900 flex items-center gap-2">
-                                    <ClockIcon className="w-5 h-5 text-purple-500" />
+                                <h3 className="font-medium text-slate-900 flex items-center gap-2">
+                                    <ClockIcon className="w-5 h-5 text-accent-500" />
                                     Recent Activity
                                 </h3>
                                 <ActivityFeed projectId={id} />
@@ -187,11 +196,11 @@ export default async function ProjectDetailPage({ params, searchParams }: {
 
                 {/* Refined Info Sidebar */}
                 <div className="space-y-8">
-                    {/* Repository Details */}
+                    {/* Project Configuration */}
                     <div className="card space-y-6">
                         <div className="flex items-center justify-between border-b border-border pb-4">
-                            <h3 className="text-sm font-bold text-secondary-900 uppercase tracking-wider">Repository Details</h3>
-                            <Link href={`/admin/projects/${id}/edit`} className="text-[10px] font-bold text-primary-600 hover:underline">Edit Hub</Link>
+                            <h3 className="text-xs font-semibold text-[#1c1917]/80 uppercase tracking-widest">Project Configuration</h3>
+                            <button className="text-[10px] font-medium text-primary-600 hover:underline uppercase tracking-wider">Project Settings</button>
                         </div>
                         <div className="grid grid-cols-1 gap-5">
                             <div className="flex items-center gap-4 group">
@@ -199,8 +208,8 @@ export default async function ProjectDetailPage({ params, searchParams }: {
                                     <ClockIcon className="w-5 h-5" />
                                 </div>
                                 <div>
-                                    <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-widest">Last Sync</div>
-                                    <div className="text-xs font-bold text-secondary-900">12 Minutes Ago</div>
+                                    <div className="text-[10px] font-semibold text-secondary-600 uppercase tracking-widest">Last Activity</div>
+                                    <div className="text-xs font-medium text-secondary-900">12 Minutes Ago</div>
                                 </div>
                             </div>
                             <div className="flex items-center gap-4 group">
@@ -208,10 +217,10 @@ export default async function ProjectDetailPage({ params, searchParams }: {
                                     <TagIcon className="w-5 h-5" />
                                 </div>
                                 <div>
-                                    <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-widest">Metadata Tags</div>
+                                    <div className="text-[10px] font-semibold text-secondary-600 uppercase tracking-widest">Classification</div>
                                     <div className="flex gap-1 mt-1">
-                                        <span className="badge badge-info">OPERATIONAL</span>
-                                        <span className="badge badge-success">V8-CORE</span>
+                                        <span className="badge badge-info uppercase">Operational</span>
+                                        <span className="badge badge-success uppercase">V8-CORE</span>
                                     </div>
                                 </div>
                             </div>
@@ -220,8 +229,8 @@ export default async function ProjectDetailPage({ params, searchParams }: {
                                     <SignalIcon className="w-5 h-5" />
                                 </div>
                                 <div>
-                                    <div className="text-[10px] font-bold text-secondary-400 uppercase tracking-widest">Operational Status</div>
-                                    <div className="text-xs font-bold text-secondary-900 uppercase">Resonant - Active</div>
+                                    <div className="text-[10px] font-semibold text-secondary-600 uppercase tracking-widest">Current Status</div>
+                                    <div className="text-xs font-medium text-secondary-900 uppercase">Strategic Expansion</div>
                                 </div>
                             </div>
                         </div>
@@ -230,8 +239,8 @@ export default async function ProjectDetailPage({ params, searchParams }: {
                     {/* Team Distribution */}
                     <div className="card">
                         <div className="flex items-center justify-between border-b border-border pb-4 mb-6">
-                            <h3 className="text-sm font-bold text-secondary-900 uppercase tracking-wider">Operational Unit</h3>
-                            {user.role === 'admin' && <Link href="#" className="text-[10px] font-bold text-primary-600">Reassign</Link>}
+                            <h3 className="text-xs font-semibold text-[#1c1917]/80 uppercase tracking-widest">Project Team</h3>
+                            {user.role === 'admin' && <button className="text-[10px] font-medium text-primary-600 uppercase tracking-wider">Manage</button>}
                         </div>
                         <div className="space-y-4">
                             <TeamManager
@@ -245,7 +254,7 @@ export default async function ProjectDetailPage({ params, searchParams }: {
                     <div className="card">
                         <div className="flex items-center gap-2 border-b border-border pb-4 mb-6">
                             <ArrowPathIcon className="w-4 h-4 text-primary-500" />
-                            <h3 className="text-sm font-bold text-secondary-900 uppercase tracking-wider">Sync Log</h3>
+                            <h3 className="text-xs font-semibold text-[#1c1917]/80 uppercase tracking-widest">Project Timeline</h3>
                         </div>
                         <ActivityFeed projectId={id} />
                     </div>

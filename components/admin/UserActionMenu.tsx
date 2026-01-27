@@ -80,22 +80,22 @@ export default function UserActionMenu({ user }: { user: User }) {
                             setIsEditModalOpen(true);
                             setIsOpen(false);
                         }}
-                        className="w-full text-left px-4 py-2.5 text-[10px] font-bold uppercase tracking-widest text-secondary-600 hover:bg-secondary-50 hover:text-primary-600 flex items-center gap-3 transition-colors"
+                        className="w-full text-left px-4 py-2.5 text-[10px] font-medium uppercase tracking-widest text-secondary-600 hover:bg-secondary-50 hover:text-primary-600 flex items-center gap-3 transition-colors"
                     >
                         <PencilSquareIcon className="w-4 h-4" />
-                        Edit Personnel
+                        Edit User
                     </button>
                     <button
                         onClick={handleToggle}
-                        className="w-full text-left px-4 py-2.5 text-[10px] font-bold uppercase tracking-widest text-secondary-600 hover:bg-secondary-50 hover:text-primary-600 flex items-center gap-3 transition-colors"
+                        className="w-full text-left px-4 py-2.5 text-[10px] font-medium uppercase tracking-widest text-secondary-600 hover:bg-secondary-50 hover:text-primary-600 flex items-center gap-3 transition-colors"
                     >
                         {user.is_active ? <NoSymbolIcon className="w-4 h-4" /> : <CheckIcon className="w-4 h-4" />}
-                        {user.is_active ? 'Deactivate Node' : 'Initialize Node'}
+                        {user.is_active ? 'Deactivate User' : 'Activate User'}
                     </button>
                     {user.role === 'associate' && (
                         <button
                             onClick={handleTogglePermission}
-                            className="w-full text-left px-4 py-2.5 text-[10px] font-bold uppercase tracking-widest text-secondary-600 hover:bg-secondary-50 hover:text-indigo-600 flex items-center gap-3 transition-colors"
+                            className="w-full text-left px-4 py-2.5 text-[10px] font-medium uppercase tracking-widest text-secondary-600 hover:bg-secondary-50 hover:text-indigo-600 flex items-center gap-3 transition-colors"
                         >
                             <VideoCameraIcon className={`w-4 h-4 ${user.can_schedule_meetings ? 'text-indigo-500' : 'text-secondary-400'}`} />
                             {user.can_schedule_meetings ? 'Restrict Zoom' : 'Enable Zoom'}
@@ -103,7 +103,7 @@ export default function UserActionMenu({ user }: { user: User }) {
                     )}
                     <button
                         onClick={handleReset}
-                        className="w-full text-left px-4 py-2.5 text-[10px] font-bold uppercase tracking-widest text-secondary-600 hover:bg-secondary-50 hover:text-primary-600 flex items-center gap-3 transition-colors"
+                        className="w-full text-left px-4 py-2.5 text-[10px] font-medium uppercase tracking-widest text-secondary-600 hover:bg-secondary-50 hover:text-primary-600 flex items-center gap-3 transition-colors"
                     >
                         <KeyIcon className="w-4 h-4" />
                         Reset Password
@@ -111,7 +111,7 @@ export default function UserActionMenu({ user }: { user: User }) {
                     <div className="border-t border-border my-2 mx-4" />
                     <button
                         onClick={handleDelete}
-                        className="w-full text-left px-4 py-2.5 text-[10px] font-bold uppercase tracking-widest text-rose-600 hover:bg-rose-50 flex items-center gap-3 transition-colors"
+                        className="w-full text-left px-4 py-2.5 text-[10px] font-medium uppercase tracking-widest text-rose-600 hover:bg-rose-50 flex items-center gap-3 transition-colors"
                     >
                         <TrashIcon className="w-4 h-4" />
                         Delete Account
