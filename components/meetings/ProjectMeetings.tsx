@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { 
-    VideoCameraIcon, 
+import {
+    VideoCameraIcon,
     PlusIcon,
     ArrowPathIcon
 } from '@heroicons/react/24/outline';
@@ -10,11 +10,11 @@ import MeetingList from './MeetingList';
 import ScheduleMeetingModal from './ScheduleMeetingModal';
 import { getProjectMeetings } from '@/app/actions/meetings';
 
-export default function ProjectMeetings({ 
-    projectId, 
-    members, 
-    currentUser 
-}: { 
+export default function ProjectMeetings({
+    projectId,
+    members,
+    currentUser
+}: {
     projectId: string;
     members: any[];
     currentUser: any;
@@ -22,10 +22,9 @@ export default function ProjectMeetings({
     const [meetings, setMeetings] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    
+
     // Permission check for scheduling
-    const canSchedule = currentUser.role === 'admin' || 
-                        (currentUser.role === 'associate' && currentUser.can_schedule_meetings);
+    const canSchedule = currentUser.role === 'admin' || currentUser.role === 'associate';
 
     const loadMeetings = useCallback(async () => {
         setLoading(true);
@@ -48,7 +47,7 @@ export default function ProjectMeetings({
                     <h3 className="text-xl font-bold text-slate-900">Project Meetings</h3>
                 </div>
                 <div className="flex items-center gap-2">
-                    <button 
+                    <button
                         onClick={loadMeetings}
                         disabled={loading}
                         className="p-2 text-slate-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all"
@@ -57,7 +56,7 @@ export default function ProjectMeetings({
                         <ArrowPathIcon className={`w-5 h-5 ${loading ? 'animate-spin' : ''}`} />
                     </button>
                     {canSchedule && (
-                        <button 
+                        <button
                             onClick={() => setIsModalOpen(true)}
                             className="btn-primary py-2 px-4 text-xs flex items-center gap-2"
                         >
@@ -73,15 +72,15 @@ export default function ProjectMeetings({
                     <div className="w-8 h-8 border-4 border-primary-600 border-t-transparent rounded-full animate-spin"></div>
                 </div>
             ) : (
-                <MeetingList 
-                    meetings={meetings} 
+                <MeetingList
+                    meetings={meetings}
                     projectId={projectId}
                     currentUser={currentUser}
                 />
             )}
 
             {isModalOpen && (
-                <ScheduleMeetingModal 
+                <ScheduleMeetingModal
                     projectId={projectId}
                     members={members}
                     onClose={() => setIsModalOpen(false)}

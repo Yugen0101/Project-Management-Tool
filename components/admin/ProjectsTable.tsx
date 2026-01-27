@@ -107,9 +107,21 @@ export default function ProjectsTable({ projects, userRole = 'admin' }: { projec
                                         </span>
                                     </td>
                                     <td className="px-8 py-6 text-center">
-                                        <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#1c1917]/5 rounded-full text-[10px] font-medium text-[#1c1917]/60">
-                                            <HashtagIcon className="w-3 h-3 text-accent-500" />
-                                            {project.tasks?.length || 0}
+                                        <div className="flex flex-col gap-1.5 items-center">
+                                            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#1c1917]/5 rounded-full text-[10px] font-medium text-[#1c1917]/60">
+                                                <HashtagIcon className="w-3 h-3 text-accent-500" />
+                                                {project.tasks?.length || 0} Units
+                                            </div>
+                                            <div className="w-20 h-1 bg-[#f7f3ed] rounded-full overflow-hidden border border-[#e5dec9]">
+                                                <div
+                                                    className="h-full bg-accent-500"
+                                                    style={{
+                                                        width: `${project.tasks && project.tasks.length > 0
+                                                            ? (project.tasks.filter((t: any) => t.status === 'completed').length / project.tasks.length) * 100
+                                                            : 0}%`
+                                                    }}
+                                                ></div>
+                                            </div>
                                         </div>
                                     </td>
                                     <td className="px-8 py-6 text-center">

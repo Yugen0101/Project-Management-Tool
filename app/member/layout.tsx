@@ -26,14 +26,14 @@ export default async function MemberLayout({
 
             {/* Sidebar */}
             <aside className="w-72 bg-white/50 backdrop-blur-md border-r border-[#e5dec9] hidden lg:flex flex-col fixed inset-y-0 z-50">
-                <div className="p-10 pb-6">
+                <div className="p-10 pb-4">
                     <div className="flex flex-col items-center gap-4 text-center">
                         <TaskForgeLogo size="lg" />
                         <div>
-                            <h1 className="text-xl font-semibold tracking-tight uppercase">
+                            <h1 className="text-xl font-bold tracking-tight uppercase leading-none">
                                 Task<span className="text-accent-500">Forge</span>
                             </h1>
-                            <span className="block text-[10px] text-accent-500 uppercase tracking-[0.3em] font-semibold mt-1">Team Node</span>
+                            <span className="block text-[10px] text-accent-500 uppercase tracking-[0.35em] font-bold mt-2">Member Node</span>
                         </div>
                     </div>
                 </div>

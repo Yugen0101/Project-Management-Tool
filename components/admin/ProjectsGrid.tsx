@@ -110,11 +110,22 @@ export default function ProjectsGrid({ projects, userRole = 'admin' }: { project
 
                     <div className="p-8 pt-10 mt-auto space-y-4">
                         <div className="flex justify-between items-center text-[10px] font-medium text-[#1c1917]/30 tracking-[0.3em] uppercase">
-                            <span>Progress</span>
-                            <span className="text-accent-500">Optimized</span>
+                            <span>Saturation</span>
+                            <span className="text-accent-500">
+                                {project.tasks && project.tasks.length > 0
+                                    ? Math.round((project.tasks.filter((t: any) => t.status === 'completed').length / project.tasks.length) * 100)
+                                    : 0}%
+                            </span>
                         </div>
                         <div className="w-full h-1.5 bg-[#f7f3ed] rounded-full overflow-hidden border border-[#e5dec9]">
-                            <div className="h-full bg-accent-500 rounded-full shadow-[0_0_10px_rgba(217,119,87,0.3)] animate-pulse" style={{ width: '100%' }}></div>
+                            <div
+                                className="h-full bg-accent-500 rounded-full shadow-[0_0_10px_rgba(217,119,87,0.3)]"
+                                style={{
+                                    width: `${project.tasks && project.tasks.length > 0
+                                        ? (project.tasks.filter((t: any) => t.status === 'completed').length / project.tasks.length) * 100
+                                        : 0}%`
+                                }}
+                            ></div>
                         </div>
                     </div>
 

@@ -124,18 +124,18 @@ export default function ProjectsRegistryClient({
                 </div>
 
                 <div className="flex items-center gap-6 pb-2 md:pb-0">
-                    <div className="flex items-center gap-2 p-1.5 bg-[#f7f3ed] rounded-xl border border-[#e5dec9]">
+                    <div className="flex items-center gap-3 p-2 bg-[#f7f3ed] rounded-2xl border border-[#e5dec9] shadow-inner">
                         <button
                             onClick={() => setViewMode('list')}
-                            className={`p-2 rounded-lg transition-all ${viewMode === 'list' ? 'bg-white text-accent-500 shadow-sm' : 'text-[#1c1917]/20 hover:text-[#1c1917]/40'}`}
+                            className={`p-2.5 rounded-xl transition-all ${viewMode === 'list' ? 'bg-white text-accent-500 shadow-md shadow-accent-500/5 ring-1 ring-accent-500/10' : 'text-[#1c1917]/20 hover:text-[#1c1917]/40'}`}
                         >
-                            <QueueListIcon className="w-4 h-4" />
+                            <QueueListIcon className="w-5 h-5" />
                         </button>
                         <button
                             onClick={() => setViewMode('grid')}
-                            className={`p-2 rounded-lg transition-all ${viewMode === 'grid' ? 'bg-white text-accent-500 shadow-sm' : 'text-[#1c1917]/20 hover:text-[#1c1917]/40'}`}
+                            className={`p-2.5 rounded-xl transition-all ${viewMode === 'grid' ? 'bg-white text-accent-500 shadow-md shadow-accent-500/5 ring-1 ring-accent-500/10' : 'text-[#1c1917]/20 hover:text-[#1c1917]/40'}`}
                         >
-                            <Squares2X2Icon className="w-4 h-4" />
+                            <Squares2X2Icon className="w-5 h-5" />
                         </button>
                     </div>
                 </div>
@@ -153,14 +153,16 @@ export default function ProjectsRegistryClient({
                         <span className="text-[10px] font-medium uppercase tracking-widest">Automation</span>
                     </div>
                 </div>
-                <div className="relative w-full lg:w-[24rem]">
-                    <MagnifyingGlassIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#1c1917]/20" />
+                <div className="relative w-full lg:w-[28rem] group">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[#1c1917]/20 group-focus-within:text-accent-600 transition-colors">
+                        <MagnifyingGlassIcon className="w-5 h-5" />
+                    </div>
                     <input
                         type="text"
-                        placeholder="Search Registry..."
+                        placeholder="Search infrastructure registry..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full h-12 pl-12 pr-4 bg-white border border-[#e5dec9] rounded-xl text-[11px] font-normal text-[#1c1917] placeholder-[#1c1917]/20 focus:outline-none focus:border-accent-500 transition-all"
+                        className="w-full h-14 pl-12 pr-4 bg-white border border-[#e5dec9] rounded-2xl text-[11px] font-bold text-[#1c1917] placeholder-[#1c1917]/20 focus:outline-none focus:border-accent-500/40 focus:ring-8 focus:ring-accent-500/5 transition-all shadow-sm"
                     />
                 </div>
             </div>

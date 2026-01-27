@@ -16,9 +16,9 @@ import { createClient } from '@/lib/supabase/server';
 export default async function AdminUsersPage({
     searchParams,
 }: {
-    searchParams: Promise<{ page?: string }>;
+    searchParams: Promise<{ page?: string; search?: string }>;
 }) {
-    const { page } = await searchParams;
+    const { page, search } = await searchParams;
     const currentPage = parseInt(page || '1');
     const pageSize = 10;
     const from = (currentPage - 1) * pageSize;
@@ -26,10 +26,19 @@ export default async function AdminUsersPage({
 
     const supabase = await createAdminClient();
 
+    // Base query for users
+    let usersQuery = supabase.from('users').select('*, projects_count:user_projects(count), tasks_count:tasks!assigned_to(count)');
+    let totalQuery = supabase.from('users').select('*', { count: 'exact', head: true });
+
+    if (search) {
+        usersQuery = usersQuery.or(`full_name.ilike.%${search}%,email.ilike.%${search}%`);
+        totalQuery = totalQuery.or(`full_name.ilike.%${search}%,email.ilike.%${search}%`);
+    }
+
     // Fetch users with counts of assigned projects and tasks
     const [{ data: users }, { count: totalCount }, { count: adminCount }, { count: associateCount }, { count: memberCount }] = await Promise.all([
-        supabase.from('users').select('*, projects_count:user_projects(count), tasks_count:tasks!assigned_to(count)').order('created_at', { ascending: false }).range(from, to),
-        supabase.from('users').select('*', { count: 'exact', head: true }),
+        usersQuery.order('created_at', { ascending: false }).range(from, to),
+        totalQuery,
         supabase.from('users').select('*', { count: 'exact', head: true }).eq('role', 'admin'),
         supabase.from('users').select('*', { count: 'exact', head: true }).eq('role', 'associate'),
         supabase.from('users').select('*', { count: 'exact', head: true }).eq('role', 'member'),

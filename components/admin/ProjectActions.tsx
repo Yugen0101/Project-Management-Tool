@@ -71,7 +71,7 @@ export default function ProjectActions({
 
     return (
         <div className="flex gap-3">
-            {(userRole === 'admin' || userRole === 'associate') && (
+            {userRole === 'admin' && (
                 <button
                     onClick={handleExport}
                     className="btn-secondary flex items-center gap-2"
@@ -91,7 +91,7 @@ export default function ProjectActions({
                 </button>
             )}
 
-            {status !== 'archived' && (userRole === 'admin' || userRole === 'associate') && (
+            {status !== 'archived' && userRole === 'admin' && (
                 <button
                     onClick={handleArchive}
                     disabled={isArchiving}

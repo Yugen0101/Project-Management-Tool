@@ -117,12 +117,8 @@ export default function SprintManager({
 
     return (
         <div className="space-y-6">
-            <div className="flex items-center justify-between mb-8">
-                <div className="flex items-center gap-3">
-                    <Bars2Icon className="w-5 h-5 text-accent-500" />
-                    <h3 className="text-[10px] font-bold text-[#1c1917]/70 uppercase tracking-[0.4em]">Strategic Roadmap</h3>
-                </div>
-                {!isMember && (
+            <div className={`flex items-center ${userRole === 'admin' ? 'justify-between' : 'justify-end'} mb-8`}>
+                {userRole === 'admin' && (
                     <button
                         onClick={() => setIsCreating(true)}
                         className="btn-primary !py-2.5 !px-6 !text-[10px] !rounded-xl shadow-lg shadow-accent-500/10"
@@ -178,7 +174,7 @@ export default function SprintManager({
                             <div className="h-4 w-px bg-white/20 hidden md:block"></div>
                             <span className="text-[10px] text-white/60 font-medium uppercase tracking-widest hidden md:block">{format(new Date(activeSprint.start_date), 'MM.dd')} — {format(new Date(activeSprint.end_date), 'MM.dd')}</span>
                         </div>
-                        {!isMember && (
+                        {userRole === 'admin' && (
                             <button
                                 onClick={() => handleUpdateStatus(activeSprint.id, 'completed')}
                                 className="bg-white text-accent-500 px-5 py-2.5 rounded-xl font-semibold text-[10px] uppercase tracking-widest hover:bg-[#fdfcf9] transition-all shadow-lg"
@@ -210,7 +206,7 @@ export default function SprintManager({
                                 <div className="h-4 w-px bg-[#e5dec9]"></div>
                                 <span className="text-[10px] text-secondary-600 font-bold uppercase tracking-widest">{format(new Date(sprint.start_date), 'MM.dd.yyyy')}</span>
                             </div>
-                            {!isMember && (
+                            {userRole === 'admin' && (
                                 <button
                                     onClick={() => handleUpdateStatus(sprint.id, 'active')}
                                     className="btn-secondary !px-5 !py-2.5 !text-[10px] !rounded-xl !border-[#e5dec9] !text-accent-500 hover:!bg-white"
@@ -230,19 +226,19 @@ export default function SprintManager({
                 ))}
             </div>
 
-            {/* Backlog Section */}
-            <div className="card !p-0 border-[#e5dec9] overflow-hidden shadow-sm shadow-[#d9cfb0]/10 rounded-[2rem] mt-12">
-                <div className="p-6 bg-[#f7f3ed] flex items-center justify-between border-b border-[#e5dec9]">
-                    <div className="flex items-center gap-4">
-                        <button onClick={() => toggleExpand('backlog')} className="text-[#1c1917]/40 hover:text-accent-500 transition-colors">
-                            {expandedSprints['backlog'] ? <ChevronDownIcon className="w-5 h-5" /> : <ChevronRightIcon className="w-5 h-5" />}
-                        </button>
-                        <h4 className="font-semibold text-[#1c1917] uppercase tracking-[0.2em] text-sm">Offline Backlog</h4>
-                        <span className="text-[9px] font-bold px-3 py-1 bg-white border border-[#e5dec9] text-accent-500 rounded-xl shadow-sm uppercase tracking-widest">
-                            {backlogTasks.length} Vectors
-                        </span>
-                    </div>
-                    {!isMember && (
+            {/* Backlog Section - Admin Only */}
+            {userRole === 'admin' && (
+                <div className="card !p-0 border-[#e5dec9] overflow-hidden shadow-sm shadow-[#d9cfb0]/10 rounded-[2.5rem] mt-12">
+                    <div className="p-6 bg-[#f7f3ed] flex items-center justify-between border-b border-[#e5dec9]">
+                        <div className="flex items-center gap-4">
+                            <button onClick={() => toggleExpand('backlog')} className="text-[#1c1917]/40 hover:text-accent-500 transition-colors">
+                                {expandedSprints['backlog'] ? <ChevronDownIcon className="w-5 h-5" /> : <ChevronRightIcon className="w-5 h-5" />}
+                            </button>
+                            <h4 className="font-semibold text-[#1c1917] uppercase tracking-[0.2em] text-sm">Offline Backlog</h4>
+                            <span className="text-[9px] font-bold px-3 py-1 bg-white border border-[#e5dec9] text-accent-500 rounded-xl shadow-sm uppercase tracking-widest">
+                                {backlogTasks.length} Vectors
+                            </span>
+                        </div>
                         <button
                             onClick={() => setIsAddingTask(true)}
                             className="btn-primary !py-2.5 !px-5 !text-[10px] !rounded-xl shadow-lg shadow-accent-500/10"
@@ -250,66 +246,66 @@ export default function SprintManager({
                             <PlusIcon className="w-4 h-4" />
                             INDEX NEW VECTOR
                         </button>
+                    </div>
+
+                    {isAddingTask && (
+                        <div className="p-8 bg-white border-b border-[#e5dec9] animate-in slide-in-from-top-2">
+                            <form onSubmit={handleCreateTask} className="flex flex-wrap items-end gap-6">
+                                <div className="flex-1 min-w-[240px] space-y-2">
+                                    <label className="text-[9px] font-semibold text-[#1c1917]/70 uppercase ml-2 tracking-widest">Operational Directive</label>
+                                    <input
+                                        required
+                                        className="input !py-3 font-normal"
+                                        placeholder="Task designation..."
+                                        value={taskFormData.title}
+                                        onChange={e => setTaskFormData({ ...taskFormData, title: e.target.value })}
+                                    />
+                                </div>
+                                <div className="w-40 space-y-2">
+                                    <label className="text-[9px] font-semibold text-[#1c1917]/70 uppercase ml-2 tracking-widest">Priority Class</label>
+                                    <select
+                                        className="input !py-3 appearance-none bg-white font-normal uppercase text-xs tracking-tight"
+                                        value={taskFormData.priority}
+                                        onChange={e => setTaskFormData({ ...taskFormData, priority: e.target.value })}
+                                    >
+                                        <option value="low">LOW</option>
+                                        <option value="medium">MEDIUM</option>
+                                        <option value="high">HIGH</option>
+                                        <option value="critical">CRITICAL</option>
+                                    </select>
+                                </div>
+                                <div className="w-56 space-y-2">
+                                    <label className="text-[9px] font-semibold text-[#1c1917]/70 uppercase ml-2 tracking-widest">Assigned Operator</label>
+                                    <select
+                                        className="input !py-3 appearance-none bg-white font-normal uppercase text-xs tracking-tight"
+                                        value={taskFormData.assigned_to}
+                                        onChange={e => setTaskFormData({ ...taskFormData, assigned_to: e.target.value })}
+                                    >
+                                        <option value="">UNALLOCATED</option>
+                                        {members?.map((m: any) => (
+                                            <option key={m.user_id} value={m.user_id}>{m.users?.full_name || m.user?.full_name}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="flex gap-3">
+                                    <button type="button" onClick={() => setIsAddingTask(false)} className="w-11 h-11 border border-[#e5dec9] rounded-xl flex items-center justify-center text-[#1c1917]/40 hover:text-accent-500 hover:bg-[#f7f3ed] transition-all">
+                                        <XMarkIcon className="w-5 h-5" />
+                                    </button>
+                                    <button type="submit" className="h-11 btn-primary !px-6 !text-[10px] !rounded-xl">ESTABLISH</button>
+                                </div>
+                            </form>
+                        </div>
+                    )}
+
+                    {expandedSprints['backlog'] && (
+                        <div className="p-4 space-y-1 bg-white">
+                            {backlogTasks.map(task => (
+                                <TaskRow key={task.id} task={task} onDelete={() => handleDeleteTask(task.id)} />
+                            ))}
+                        </div>
                     )}
                 </div>
-
-                {isAddingTask && (
-                    <div className="p-8 bg-white border-b border-[#e5dec9] animate-in slide-in-from-top-2">
-                        <form onSubmit={handleCreateTask} className="flex flex-wrap items-end gap-6">
-                            <div className="flex-1 min-w-[240px] space-y-2">
-                                <label className="text-[9px] font-semibold text-[#1c1917]/70 uppercase ml-2 tracking-widest">Operational Directive</label>
-                                <input
-                                    required
-                                    className="input !py-3 font-normal"
-                                    placeholder="Task designation..."
-                                    value={taskFormData.title}
-                                    onChange={e => setTaskFormData({ ...taskFormData, title: e.target.value })}
-                                />
-                            </div>
-                            <div className="w-40 space-y-2">
-                                <label className="text-[9px] font-semibold text-[#1c1917]/70 uppercase ml-2 tracking-widest">Priority Class</label>
-                                <select
-                                    className="input !py-3 appearance-none bg-white font-normal uppercase text-xs tracking-tight"
-                                    value={taskFormData.priority}
-                                    onChange={e => setTaskFormData({ ...taskFormData, priority: e.target.value })}
-                                >
-                                    <option value="low">LOW</option>
-                                    <option value="medium">MEDIUM</option>
-                                    <option value="high">HIGH</option>
-                                    <option value="critical">CRITICAL</option>
-                                </select>
-                            </div>
-                            <div className="w-56 space-y-2">
-                                <label className="text-[9px] font-semibold text-[#1c1917]/70 uppercase ml-2 tracking-widest">Assigned Operator</label>
-                                <select
-                                    className="input !py-3 appearance-none bg-white font-normal uppercase text-xs tracking-tight"
-                                    value={taskFormData.assigned_to}
-                                    onChange={e => setTaskFormData({ ...taskFormData, assigned_to: e.target.value })}
-                                >
-                                    <option value="">UNALLOCATED</option>
-                                    {members?.map((m: any) => (
-                                        <option key={m.user_id} value={m.user_id}>{m.users?.full_name || m.user?.full_name}</option>
-                                    ))}
-                                </select>
-                            </div>
-                            <div className="flex gap-3">
-                                <button type="button" onClick={() => setIsAddingTask(false)} className="w-11 h-11 border border-[#e5dec9] rounded-xl flex items-center justify-center text-[#1c1917]/40 hover:text-accent-500 hover:bg-[#f7f3ed] transition-all">
-                                    <XMarkIcon className="w-5 h-5" />
-                                </button>
-                                <button type="submit" className="h-11 btn-primary !px-6 !text-[10px] !rounded-xl">ESTABLISH</button>
-                            </div>
-                        </form>
-                    </div>
-                )}
-
-                {expandedSprints['backlog'] && (
-                    <div className="p-4 space-y-1 bg-white">
-                        {backlogTasks.map(task => (
-                            <TaskRow key={task.id} task={task} onDelete={() => handleDeleteTask(task.id)} />
-                        ))}
-                    </div>
-                )}
-            </div>
+            )}
         </div>
     );
 }

@@ -21,7 +21,7 @@ export default async function AssociateProjectsPage({ searchParams }: {
         .select(`
             project:projects(
                 *,
-                tasks:tasks(id),
+                tasks:tasks(id, status),
                 sprints:sprints(id),
                 user_projects:user_projects(id)
             )

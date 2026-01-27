@@ -1,173 +1,229 @@
 import { createClient } from '@/lib/supabase/server';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { getCurrentUser } from '@/lib/auth/session';
 import {
-    ChevronLeftIcon,
     CalendarIcon,
-    UsersIcon,
-    ClipboardDocumentListIcon,
-    VideoCameraIcon
+    ArrowPathIcon,
+    ClockIcon,
+    TagIcon,
+    SignalIcon,
 } from '@heroicons/react/24/outline';
+import { format } from 'date-fns';
 import Link from 'next/link';
+import SprintManager from '@/components/sprint/SprintManager';
+import ProjectInsights from '@/components/analytics/ProjectInsights';
+import TeamWorkload from '@/components/analytics/TeamWorkload';
+import SprintPerformance from '@/components/analytics/SprintPerformance';
+import ActivityFeed from '@/components/activity/ActivityFeed';
+import ProjectActions from '@/components/admin/ProjectActions';
 import ProjectMeetings from '@/components/meetings/ProjectMeetings';
+import TeamManager from '@/components/admin/TeamManager';
 
-export default async function AssociateProjectDetailPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function AssociateProjectDetailPage({ params, searchParams }: {
+    params: Promise<{ id: string }>,
+    searchParams: Promise<{ view?: string }>
+}) {
     const { id } = await params;
+    const { view = 'sprints' } = await searchParams;
     const user = await getCurrentUser();
 
     if (!user || user.role !== 'associate') {
-        return notFound();
+        redirect('/login');
     }
 
     const supabase = await createClient();
 
-    // Fetch project and ensure association
+    // Fetch project with tasks, sprints, and assigned users
+    // Ensure the associate is part of the project via user_projects
     const { data: project, error: projectError } = await supabase
         .from('projects')
         .select(`
             *,
-            user_projects!inner(role, user:users(*))
+            tasks:tasks(*),
+            sprints:sprints(*),
+            user_projects:user_projects(*, users:users(*))
         `)
         .eq('id', id)
-        .eq('user_projects.user_id', user.id)
         .single();
 
     if (projectError || !project) {
         return notFound();
     }
 
-    // 2. Fetch all tasks for this specific project to calculate workload
-    const { data: projectTasks } = await supabase
-        .from('tasks')
-        .select(`
-            *,
-            assignee:profiles(id, full_name)
-        `)
-        .eq('project_id', id);
+    // Verify access
+    const isMember = project.user_projects?.some((up: any) => up.user_id === user.id);
+    if (!isMember) {
+        return notFound();
+    }
 
-    // 3. Aggregate Workload per Member for this project
-    const memberStats = new Map();
-    projectTasks?.forEach((task: any) => {
-        if (task.assigned_to) {
-            if (!memberStats.has(task.assigned_to)) {
-                memberStats.set(task.assigned_to, { total: 0, completed: 0, in_progress: 0 });
-            }
-            const stats = memberStats.get(task.assigned_to);
-            stats.total++;
-            if (task.status === 'completed') stats.completed++;
-            if (task.status === 'in_progress') stats.in_progress++;
-        }
-    });
+    const tasks = project.tasks || [];
+    const sprints = project.sprints || [];
+    const completedTasks = tasks.filter((t: any) => t.status === 'completed').length;
+    const progressPercentage = tasks.length > 0 ? Math.round((completedTasks / tasks.length) * 100) : 0;
 
     return (
-        <div className="space-y-12 animate-in fade-in duration-1000">
-            {/* Header / Breadcrumbs */}
-            <div className="flex flex-col md:flex-row md:items-start justify-between gap-8">
-                <div className="space-y-4 flex-1">
-                    <div className="flex items-center gap-3">
-                        <span className="w-8 h-1 bg-accent-500 rounded-full shadow-[0_0_10px_rgba(217,119,87,0.4)]"></span>
-                        <h2 className="text-[10px] font-semibold text-accent-500 uppercase tracking-[0.4em]">MISSION LOG</h2>
+        <div className="space-y-10 animate-in fade-in duration-1000">
+            {/* Breadcrumbs & Actions */}
+            <div className="flex justify-between items-center">
+                <div className="flex items-center gap-2 text-xs font-semibold text-secondary-600">
+                    <Link href="/associate/projects" className="hover:text-primary-600 transition-colors uppercase tracking-widest">Projects</Link>
+                    <span className="opacity-50">/</span>
+                    <span className="text-secondary-900 uppercase tracking-widest">{project.name}</span>
+                </div>
+                <div className="flex gap-2">
+                    <ProjectActions
+                        projectId={id}
+                        status={project.status}
+                        isPublic={project.is_public}
+                        shareToken={project.share_token}
+                        userRole={user.role}
+                    />
+                </div>
+            </div>
+
+            {/* Hero Card */}
+            <div className="hero-card">
+                <div className="relative z-10 h-full flex flex-col justify-between">
+                    <div className="flex justify-between items-start">
+                        <div className="space-y-2">
+                            <div className="flex items-center gap-2">
+                                <div className="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-pulse shadow-[0_0_10px_rgba(52,211,153,0.5)]"></div>
+                                <h1 className="text-4xl font-semibold tracking-tight uppercase">{project.name}</h1>
+                            </div>
+                            <p className="text-white font-medium max-w-xl line-clamp-2 italic opacity-90">
+                                {project.description || 'Lead oversight deployed via specialized operational standards.'}
+                            </p>
+                        </div>
+                        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
+                            <div className="text-[10px] font-semibold text-white/75 uppercase tracking-widest mb-1 text-right">Saturation</div>
+                            <div className="text-3xl font-semibold text-white text-right">{progressPercentage}%</div>
+                        </div>
                     </div>
-                    <h1 className="text-6xl font-semibold text-[#1c1917] tracking-tighter uppercase leading-none">
-                        Focus <span className="text-accent-500">Protocol</span> Active
-                    </h1>
-                    <div className="flex items-center gap-4 text-[#1c1917]/40">
-                        <span className="text-[10px] font-medium uppercase tracking-[0.2em]">{project.name}</span>
-                        <span className="w-1.5 h-1.5 bg-[#e5dec9] rounded-full"></span>
-                        <span className="text-[10px] font-medium uppercase tracking-[0.2em]">Operational Stream Deployed</span>
+
+                    <div className="mt-12 flex gap-12 border-t border-white/10 pt-8 overflow-x-auto no-scrollbar">
+                        <div>
+                            <div className="text-[10px] font-semibold text-white/75 uppercase tracking-widest mb-2">Developed</div>
+                            <div className="text-sm font-medium">{format(new Date(project.created_at), 'MMM dd, yyyy')}</div>
+                        </div>
+                        <div>
+                            <div className="text-[10px] font-semibold text-white/75 uppercase tracking-widest mb-2">Target Date</div>
+                            <div className="text-sm font-medium text-white">{format(new Date(project.end_date), 'MMM dd, yyyy')}</div>
+                        </div>
+                        <div>
+                            <div className="text-[10px] font-semibold text-white/75 uppercase tracking-widest mb-2">Assigned Group</div>
+                            <div className="text-sm font-medium uppercase text-white/60 font-mono tracking-widest italic">{project.category || 'CORE-UNIT'}</div>
+                        </div>
+                        <div className="ml-auto flex -space-x-3">
+                            {project.user_projects?.slice(0, 4).map((up: any) => (
+                                <div key={up.id} className="w-10 h-10 rounded-full border-2 border-white/20 bg-[#1c1917] flex items-center justify-center text-[10px] font-medium text-white shadow-lg" title={up.users?.full_name}>
+                                    {up.users?.full_name?.charAt(0) || '?'}
+                                </div>
+                            ))}
+                            {(project.user_projects?.length || 0) > 4 && (
+                                <div className="w-10 h-10 rounded-full border-2 border-white/20 bg-accent-500 flex items-center justify-center text-[10px] font-medium text-white shadow-lg">
+                                    +{project.user_projects!.length - 4}
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
-                <Link
-                    href={`/associate/projects/${id}/kanban`}
-                    className="btn-primary !py-4 !px-8 flex items-center gap-2 shadow-xl shadow-accent-500/20"
-                >
-                    <ClipboardDocumentListIcon className="w-5 h-5" />
+            </div>
+
+            {/* View Selection Tabs */}
+            <div className="flex border-b border-[#e5dec9] gap-8 overflow-x-auto no-scrollbar">
+                <Link href={`?view=sprints`} className={`pb-4 text-[10px] font-black uppercase tracking-[0.2em] transition-all relative ${view === 'sprints' ? 'text-accent-500' : 'text-[#1c1917]/40 hover:text-[#1c1917]'}`}>
+                    Meeting Links
+                    {view === 'sprints' && <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent-500 rounded-full"></span>}
+                </Link>
+                <Link href={`/associate/projects/${id}/kanban`} className={`pb-4 text-[10px] font-black uppercase tracking-[0.2em] transition-all relative text-[#1c1917]/40 hover:text-[#1c1917] hidden`}>
                     Execution Board
+                </Link>
+                <Link href={`?view=insights`} className={`pb-4 text-[10px] font-black uppercase tracking-[0.2em] transition-all relative ${view === 'insights' ? 'text-accent-500' : 'text-[#1c1917]/40 hover:text-[#1c1917]'}`}>
+                    Advanced Analytics
+                    {view === 'insights' && <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent-500 rounded-full"></span>}
                 </Link>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mt-12">
-                {/* Main Content Area */}
-                <div className="lg:col-span-2 space-y-12">
-                    {/* Meetings Integration */}
-                    <div className="space-y-6">
-                        <div className="flex items-center gap-3">
-                            <span className="w-8 h-px bg-[#d97757]"></span>
-                            <h3 className="text-xl font-semibold text-[#1c1917] tracking-tight uppercase">Strategic Syncs</h3>
-                        </div>
-                        <div className="card bg-white border-[#e5dec9] p-2 overflow-hidden shadow-sm shadow-[#d9cfb0]/10">
-                            <ProjectMeetings
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                {/* Main Content Pane */}
+                <div className="lg:col-span-2 space-y-8">
+                    {view === 'sprints' ? (
+                        <>
+                            <SprintManager
                                 projectId={id}
+                                sprints={sprints}
+                                tasks={tasks}
                                 members={project.user_projects || []}
-                                currentUser={user}
+                                userRole={user.role}
+                                currentUserId={user.id}
                             />
+                            <div className="card bg-white border-[#e5dec9] p-2">
+                                <ProjectMeetings
+                                    projectId={id}
+                                    members={project.user_projects || []}
+                                    currentUser={user}
+                                />
+                            </div>
+                        </>
+                    ) : (
+                        <div className="space-y-8">
+                            <ProjectInsights projectId={id} />
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <TeamWorkload projectId={id} />
+                                <SprintPerformance projectId={id} />
+                            </div>
                         </div>
-                    </div>
-
-                    <div className="card bg-white border-[#e5dec9] p-12 flex flex-col items-center justify-center text-center space-y-4 rounded-[3rem] shadow-sm shadow-[#d9cfb0]/10">
-                        <div className="w-20 h-20 bg-[#f7f3ed] rounded-[2rem] flex items-center justify-center text-[#1c1917]/10 mb-2">
-                            <CalendarIcon className="w-10 h-10" />
-                        </div>
-                        <h3 className="text-3xl font-semibold text-[#1c1917] tracking-tighter uppercase leading-none">Stream Infrastructure</h3>
-                        <p className="text-[#1c1917]/40 text-sm font-bold uppercase tracking-widest mt-2 max-w-sm">
-                            Architectural roadmap for milestones, sprints, and upcoming synchronization events.
-                        </p>
-                    </div>
+                    )}
                 </div>
 
-                {/* Sidebar */}
-                <div className="space-y-12">
-                    <div className="space-y-6">
-                        <div className="flex items-center gap-3">
-                            <span className="w-8 h-px bg-[#d97757]"></span>
-                            <h3 className="text-xl font-semibold text-[#1c1917] tracking-tight uppercase">Project Team</h3>
+                {/* Info Sidebar */}
+                <div className="space-y-8">
+                    {/* Project Configuration */}
+                    <div className="card bg-white border-[#e5dec9] p-8 space-y-6 shadow-xl shadow-[#d9cfb0]/5">
+                        <div className="flex items-center justify-between border-b border-[#f7f3ed] pb-4">
+                            <h3 className="text-[10px] font-black text-[#1c1917] uppercase tracking-[0.3em]">Project Configuration</h3>
                         </div>
-                        <div className="card bg-white border-[#e5dec9] p-8 rounded-[2rem] shadow-sm shadow-[#d9cfb0]/10">
-                            <div className="space-y-6">
-                                {project.user_projects.map((up: any) => {
-                                    const stats = memberStats.get(up.user.id) || { total: 0, completed: 0, in_progress: 0 };
-                                    return (
-                                        <div key={up.user.id} className="space-y-3">
-                                            <div className="flex items-center gap-4 group">
-                                                <div className="w-10 h-10 rounded-xl bg-accent-500 text-white flex items-center justify-center font-bold text-xs shadow-lg shadow-accent-500/20 transition-transform group-hover:scale-110">
-                                                    {up.user.full_name.charAt(0)}
-                                                </div>
-                                                <div className="flex-1 min-w-0">
-                                                    <p className="text-xs font-black text-[#1c1917] truncate uppercase tracking-tight">{up.user.full_name}</p>
-                                                    <p className="text-[9px] font-medium text-accent-500 uppercase tracking-[0.2em]">{up.role === 'associate' ? 'Mission Lead' : 'Specialist'}</p>
-                                                </div>
-                                            </div>
-                                            {up.role !== 'associate' && (
-                                                <div className="pl-14 space-y-2">
-                                                    <div className="flex items-center justify-between text-[8px] font-bold uppercase tracking-widest text-secondary-500">
-                                                        <span>Progress</span>
-                                                        <span>{stats.completed}/{stats.total} Units</span>
-                                                    </div>
-                                                    <div className="w-full h-1 bg-[#f7f3ed] rounded-full overflow-hidden border border-[#e5dec9]">
-                                                        <div
-                                                            className="h-full bg-accent-500 transition-all duration-1000"
-                                                            style={{ width: `${stats.total > 0 ? (stats.completed / stats.total) * 100 : 0}%` }}
-                                                        ></div>
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </div>
-                                    );
-                                })}
+                        <div className="grid grid-cols-1 gap-5">
+                            <div className="flex items-center gap-4 group">
+                                <div className="w-10 h-10 bg-[#f7f3ed] text-accent-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <ClockIcon className="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <div className="text-[9px] font-bold text-[#1c1917]/40 uppercase tracking-widest">Last Activity</div>
+                                    <div className="text-[11px] font-black text-[#1c1917] uppercase tracking-tighter">12 Minutes Ago</div>
+                                </div>
                             </div>
-                        </div>
-
-                        <div className="card p-8 bg-[#1c1917] text-white border-0 rounded-[2rem] shadow-2xl shadow-[#1c1917]/20 relative overflow-hidden group">
-                            <div className="relative z-10">
-                                <VideoCameraIcon className="w-10 h-10 text-accent-500 mb-6 transition-transform group-hover:scale-110" />
-                                <h4 className="text-2xl font-semibold tracking-tight uppercase mb-2">Strategic Sync</h4>
-                                <p className="text-white/40 text-[10px] font-bold uppercase tracking-widest leading-relaxed">
-                                    Direct video communications interface deployed for this stream.
-                                </p>
+                            <div className="flex items-center gap-4 group">
+                                <div className="w-10 h-10 bg-[#f7f3ed] text-indigo-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <TagIcon className="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <div className="text-[9px] font-bold text-[#1c1917]/40 uppercase tracking-widest">Classification</div>
+                                    <div className="flex gap-1 mt-1">
+                                        <span className="badge-primary !bg-[#f7f3ed] !text-accent-500 !border-[#e5dec9] uppercase !text-[8px] !px-2"> {project.category || 'Operational'}</span>
+                                        <span className="badge-primary !bg-[#f7f3ed] !text-accent-500 !border-[#e5dec9] uppercase !text-[8px] !px-2">V8-CORE</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-accent-500/10 blur-3xl -z-0"></div>
+                            <div className="flex items-center gap-4 group">
+                                <div className="w-10 h-10 bg-[#f7f3ed] text-emerald-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <SignalIcon className="w-5 h-5" />
+                                </div>
+                                <div>
+                                    <div className="text-[9px] font-bold text-[#1c1917]/40 uppercase tracking-widest">Current Status</div>
+                                    <div className="text-[11px] font-black text-[#1c1917] uppercase tracking-tighter italic underline decoration-emerald-500/30">Strategic Expansion</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
+                    {/* Team Distribution */}
+                    <TeamManager
+                        projectId={id}
+                        initialMembers={project.user_projects || []}
+                        userRole={user.role}
+                    />
+
                 </div>
             </div>
         </div>

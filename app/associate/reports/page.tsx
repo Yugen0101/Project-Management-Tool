@@ -1,6 +1,9 @@
 import { getCurrentUser } from '@/lib/auth/session';
 import { redirect } from 'next/navigation';
 
+import { createClient } from '@/lib/supabase/server';
+import AssociateAnalyticsClient from '@/components/associate/AssociateAnalyticsClient';
+
 export default async function AssociateReportsPage() {
     const user = await getCurrentUser();
 
@@ -8,24 +11,58 @@ export default async function AssociateReportsPage() {
         redirect('/login');
     }
 
-    return (
-        <div className="space-y-8">
-            <div>
-                <h1 className="text-4xl font-bold text-[#1c1917] tracking-tight">Analytics & Reports</h1>
-                <p className="text-[#1c1917]/60 mt-2 font-medium">View performance metrics and project insights</p>
-            </div>
+    const supabase = await createClient();
 
-            <div className="card p-12 text-center">
-                <div className="max-w-md mx-auto space-y-4">
-                    <div className="w-20 h-20 bg-beige-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span className="text-4xl">📊</span>
-                    </div>
-                    <h3 className="text-2xl font-bold text-[#1c1917]">Analytics Dashboard Coming Soon</h3>
-                    <p className="text-[#1c1917]/60">
-                        Advanced analytics and reporting features are in development. You'll be able to view detailed project metrics and performance data here.
-                    </p>
-                </div>
-            </div>
-        </div>
+    // 1. Fetch project IDs and projects
+    const { data: userProjects } = await supabase
+        .from('user_projects')
+        .select(`
+            project_id,
+            project:projects(
+                id,
+                name,
+                tasks:tasks(id, status, assigned_to, users:users(full_name))
+            )
+        `)
+        .eq('user_id', user.id);
+
+    const projects = userProjects?.map(up => up.project).filter(Boolean) || [];
+
+    // 2. Aggregate Data
+    const nodeHealth = projects.map((p: any) => {
+        const total = p.tasks?.length || 0;
+        const completed = p.tasks?.filter((t: any) => t.status === 'completed').length || 0;
+        return {
+            name: p.name,
+            health: total > 0 ? Math.round((completed / total) * 100) : 0
+        };
+    });
+
+    const allTasks = projects.flatMap((p: any) => p.tasks || []);
+    const activeTasks = allTasks.filter((t: any) => t.status !== 'completed').length;
+    const completedTasks = allTasks.filter((t: any) => t.status === 'completed').length;
+
+    // Team workload distribution
+    const workloadMap: Record<string, number> = {};
+    allTasks.forEach((t: any) => {
+        if (t.status !== 'completed' && t.users?.full_name) {
+            workloadMap[t.users.full_name] = (workloadMap[t.users.full_name] || 0) + 1;
+        }
+    });
+
+    const workload = Object.entries(workloadMap).map(([name, tasks]) => ({ name, tasks }));
+    const teamCount = new Set(allTasks.map((t: any) => t.assigned_to).filter(Boolean)).size;
+
+    const data = {
+        totalProjects: projects.length,
+        activeTasks,
+        completedTasks,
+        teamCount,
+        nodeHealth,
+        workload
+    };
+
+    return (
+        <AssociateAnalyticsClient data={data} />
     );
 }

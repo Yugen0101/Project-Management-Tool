@@ -17,7 +17,6 @@ const navItems = [
     { href: '/associate/dashboard', label: 'Dashboard', icon: HomeIcon },
     { href: '/associate/projects', label: 'My Projects', icon: FolderIcon },
     { href: '/associate/id-card', label: 'ID Card', icon: IdentificationIcon },
-    { href: '/associate/tasks', label: 'All Tasks', icon: ListBulletIcon },
     { href: '/associate/sprints', label: 'Sprints', icon: CalendarIcon },
     { href: '/associate/reports', label: 'Analytics', icon: ChartBarIcon },
     { href: '/associate/meetings', label: 'Meetings', icon: VideoCameraIcon },

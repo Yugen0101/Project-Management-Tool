@@ -248,6 +248,7 @@ export default async function ProjectDetailPage({ params, searchParams }: {
                             <TeamManager
                                 projectId={id}
                                 initialMembers={project.user_projects || []}
+                                userRole={user.role}
                             />
                         </div>
                     </div>

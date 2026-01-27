@@ -1,6 +1,9 @@
 import { getCurrentUser } from '@/lib/auth/session';
 import { redirect } from 'next/navigation';
 
+import { createClient } from '@/lib/supabase/server';
+import AssociateSprintsClient from '@/components/associate/AssociateSprintsClient';
+
 export default async function AssociateSprintsPage() {
     const user = await getCurrentUser();
 
@@ -8,24 +11,35 @@ export default async function AssociateSprintsPage() {
         redirect('/login');
     }
 
-    return (
-        <div className="space-y-8">
-            <div>
-                <h1 className="text-4xl font-bold text-[#1c1917] tracking-tight">Sprint Management</h1>
-                <p className="text-[#1c1917]/60 mt-2 font-medium">Plan and track your project sprints</p>
-            </div>
+    const supabase = await createClient();
 
-            <div className="card p-12 text-center">
-                <div className="max-w-md mx-auto space-y-4">
-                    <div className="w-20 h-20 bg-beige-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span className="text-4xl">📅</span>
-                    </div>
-                    <h3 className="text-2xl font-bold text-[#1c1917]">Sprint Planning Coming Soon</h3>
-                    <p className="text-[#1c1917]/60">
-                        Sprint management features are currently in development. You'll be able to create, track, and manage sprints here.
-                    </p>
-                </div>
-            </div>
-        </div>
+    // 1. Fetch project IDs where the associate is assigned
+    const { data: userProjects } = await supabase
+        .from('user_projects')
+        .select('project_id')
+        .eq('user_id', user.id);
+
+    const projectIds = userProjects?.map(up => up.project_id) || [];
+
+    // 2. Fetch sprints for these projects
+    const { data: sprintsData } = await supabase
+        .from('sprints')
+        .select(`
+            *,
+            project:projects(name),
+            tasks:tasks(id, status)
+        `)
+        .in('project_id', projectIds)
+        .order('start_date', { ascending: false });
+
+    // Transform data for the client component
+    const sprints = (sprintsData || []).map(sprint => ({
+        ...sprint,
+        tasks_count: sprint.tasks?.length || 0,
+        completed_tasks_count: sprint.tasks?.filter((t: any) => t.status === 'completed').length || 0
+    }));
+
+    return (
+        <AssociateSprintsClient initialSprints={sprints as any} />
     );
 }

@@ -6,32 +6,34 @@ import {
     AdjustmentsHorizontalIcon,
 } from '@heroicons/react/24/outline';
 import NotificationCenter from '@/components/notifications/NotificationCenter';
-import MemberMobileMenu from '@/components/navigation/MemberMobileMenu';
+import AdminMobileMenu from '@/components/navigation/AdminMobileMenu';
 import TaskForgeLogo from '@/components/ui/TaskForgeLogo';
 import GlobalSearch from '@/components/navigation/GlobalSearch';
 
-export default function MemberHeader() {
+export default function AdminHeader({ counts }: { counts: { projectCount: number, userCount: number, taskCount: number } }) {
     const pathname = usePathname();
 
     // Determine the page title based on the current path
     const getPageTitle = () => {
-        if (pathname.includes('/member/tasks')) return 'Operational Matrix';
-        if (pathname.includes('/member/projects')) return 'Project Nodes';
-        if (pathname.includes('/member/id-card')) return 'Unit Identification';
-        if (pathname.includes('/member/activity')) return 'Activity Protocol';
-        if (pathname.includes('/member/meetings')) return 'Synchronized Syncs';
-        if (pathname.includes('/member/guide')) return 'Operational Manual';
-        return 'Team Node';
+        if (pathname.includes('/admin/dashboard')) return 'Executive Hub';
+        if (pathname.includes('/admin/projects')) return 'Portfolio Matrix';
+        if (pathname.includes('/admin/users')) return 'Identity Registry';
+        if (pathname.includes('/admin/id-cards')) return 'Credential Authority';
+        if (pathname.includes('/admin/tasks')) return 'Registry Protocol';
+        if (pathname.includes('/admin/meetings')) return 'Collaborative Sync';
+        if (pathname.includes('/admin/guide')) return 'System Manual';
+        return 'System Core';
     };
 
     const getPageSubtitle = () => {
-        if (pathname.includes('/member/tasks')) return 'Workspace';
-        if (pathname.includes('/member/projects')) return 'Deployment Registry';
-        if (pathname.includes('/member/id-card')) return 'Security Clearance';
-        if (pathname.includes('/member/activity')) return 'System Logs';
-        if (pathname.includes('/member/meetings')) return 'Communications';
-        if (pathname.includes('/member/guide')) return 'Documentation';
-        return 'Dashboard';
+        if (pathname.includes('/admin/dashboard')) return 'Management';
+        if (pathname.includes('/admin/projects')) return 'Project Nodes';
+        if (pathname.includes('/admin/users')) return 'User Directory';
+        if (pathname.includes('/admin/id-cards')) return 'ID Security';
+        if (pathname.includes('/admin/tasks')) return 'Central Registry';
+        if (pathname.includes('/admin/meetings')) return 'Communications';
+        if (pathname.includes('/admin/guide')) return 'Documentation';
+        return 'Administrative Control';
     };
 
     return (
@@ -39,9 +41,11 @@ export default function MemberHeader() {
             <div className="flex items-center gap-10 flex-1">
                 {/* Mobile Trigger & Branding fallback */}
                 <div className="lg:hidden flex items-center gap-6">
-                    <MemberMobileMenu />
-                    <div className="h-8 w-px bg-[#e5dec9]"></div>
-                    <TaskForgeLogo size="sm" />
+                    <div className="flex items-center gap-4">
+                        <TaskForgeLogo size="sm" />
+                        <div className="h-6 w-px bg-[#e5dec9]"></div>
+                    </div>
+                    <AdminMobileMenu counts={counts} />
                 </div>
 
                 {/* Dynamic Title Section - Aligned Left for Desktop */}
@@ -55,7 +59,7 @@ export default function MemberHeader() {
                     </h2>
                 </div>
 
-                <div className="h-10 w-px bg-[#e5dec9] hidden md:block mx-6"></div>
+                <div className="h-10 w-px bg-[#e5dec9] hidden xl:block mx-6"></div>
 
                 <GlobalSearch />
             </div>

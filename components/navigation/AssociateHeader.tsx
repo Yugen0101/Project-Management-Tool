@@ -6,32 +6,36 @@ import {
     AdjustmentsHorizontalIcon,
 } from '@heroicons/react/24/outline';
 import NotificationCenter from '@/components/notifications/NotificationCenter';
-import MemberMobileMenu from '@/components/navigation/MemberMobileMenu';
+import AssociateMobileMenu from '@/components/navigation/AssociateMobileMenu';
 import TaskForgeLogo from '@/components/ui/TaskForgeLogo';
 import GlobalSearch from '@/components/navigation/GlobalSearch';
 
-export default function MemberHeader() {
+export default function AssociateHeader() {
     const pathname = usePathname();
 
     // Determine the page title based on the current path
     const getPageTitle = () => {
-        if (pathname.includes('/member/tasks')) return 'Operational Matrix';
-        if (pathname.includes('/member/projects')) return 'Project Nodes';
-        if (pathname.includes('/member/id-card')) return 'Unit Identification';
-        if (pathname.includes('/member/activity')) return 'Activity Protocol';
-        if (pathname.includes('/member/meetings')) return 'Synchronized Syncs';
-        if (pathname.includes('/member/guide')) return 'Operational Manual';
-        return 'Team Node';
+        if (pathname.includes('/associate/dashboard')) return 'Lead Matrix';
+        if (pathname.includes('/associate/projects')) return 'Project Nodes';
+        if (pathname.includes('/associate/tasks')) return 'Registry Protocol';
+        if (pathname.includes('/associate/sprints')) return 'Sprint Hub';
+        if (pathname.includes('/associate/meetings')) return 'Collaborative Sync';
+        if (pathname.includes('/associate/reports')) return 'Strategic Analysis';
+        if (pathname.includes('/associate/id-card')) return 'Identity Hub';
+        if (pathname.includes('/associate/guide')) return 'System Manual';
+        return 'Operational Core';
     };
 
     const getPageSubtitle = () => {
-        if (pathname.includes('/member/tasks')) return 'Workspace';
-        if (pathname.includes('/member/projects')) return 'Deployment Registry';
-        if (pathname.includes('/member/id-card')) return 'Security Clearance';
-        if (pathname.includes('/member/activity')) return 'System Logs';
-        if (pathname.includes('/member/meetings')) return 'Communications';
-        if (pathname.includes('/member/guide')) return 'Documentation';
-        return 'Dashboard';
+        if (pathname.includes('/associate/dashboard')) return 'Management';
+        if (pathname.includes('/associate/projects')) return 'Active Assignments';
+        if (pathname.includes('/associate/tasks')) return 'Coordination';
+        if (pathname.includes('/associate/sprints')) return 'Agile Flow';
+        if (pathname.includes('/associate/meetings')) return 'Communications';
+        if (pathname.includes('/associate/reports')) return 'Performance Data';
+        if (pathname.includes('/associate/id-card')) return 'Lead Credentials';
+        if (pathname.includes('/associate/guide')) return 'Documentation';
+        return 'Project Lead Portal';
     };
 
     return (
@@ -39,9 +43,11 @@ export default function MemberHeader() {
             <div className="flex items-center gap-10 flex-1">
                 {/* Mobile Trigger & Branding fallback */}
                 <div className="lg:hidden flex items-center gap-6">
-                    <MemberMobileMenu />
-                    <div className="h-8 w-px bg-[#e5dec9]"></div>
-                    <TaskForgeLogo size="sm" />
+                    <div className="flex items-center gap-4">
+                        <TaskForgeLogo size="sm" />
+                        <div className="h-6 w-px bg-[#e5dec9]"></div>
+                    </div>
+                    <AssociateMobileMenu />
                 </div>
 
                 {/* Dynamic Title Section - Aligned Left for Desktop */}
@@ -55,7 +61,7 @@ export default function MemberHeader() {
                     </h2>
                 </div>
 
-                <div className="h-10 w-px bg-[#e5dec9] hidden md:block mx-6"></div>
+                <div className="h-10 w-px bg-[#e5dec9] hidden xl:block mx-6"></div>
 
                 <GlobalSearch />
             </div>

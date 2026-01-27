@@ -5,7 +5,8 @@ import {
     PlusIcon,
     XMarkIcon,
     ExclamationTriangleIcon,
-    CheckCircleIcon
+    CheckCircleIcon,
+    MagnifyingGlassIcon
 } from '@heroicons/react/24/outline';
 import { createUser, toggleUserStatus, resetUserPassword, deleteUser } from '@/app/actions/users';
 
@@ -19,11 +20,11 @@ interface User {
 }
 
 export default function UserManagementClient({ initialUsers }: { initialUsers: User[] }) {
-    const [users, setUsers] = useState<User[]>(initialUsers);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
+    const [searchQuery, setSearchQuery] = useState('');
 
     // Form state
     const [formData, setFormData] = useState({
@@ -32,6 +33,19 @@ export default function UserManagementClient({ initialUsers }: { initialUsers: U
         role: 'member',
         password: ''
     });
+
+    const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const query = e.target.value;
+        setSearchQuery(query);
+        // Dispatch custom event or update URL to notify the parent/sibling components
+        const params = new URLSearchParams(window.location.search);
+        if (query) params.set('search', query);
+        else params.delete('search');
+        window.history.replaceState({}, '', `${window.location.pathname}?${params.toString()}`);
+
+        // Trigger a custom event for real-time filtering if table is also client-side
+        window.dispatchEvent(new CustomEvent('user-search', { detail: query }));
+    };
 
     const handleCreateUser = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -46,37 +60,30 @@ export default function UserManagementClient({ initialUsers }: { initialUsers: U
             setSuccess('User created successfully');
             setIsModalOpen(false);
             setFormData({ email: '', full_name: '', role: 'member', password: '' });
-            // Refresh would happen via revalidatePath, but we can optimistically update or rely on router.refresh()
             window.location.reload();
         }
         setLoading(false);
     };
 
-    const handleToggleStatus = async (userId: string, currentStatus: boolean) => {
-        if (!confirm(`Are you sure you want to ${currentStatus ? 'deactivate' : 'activate'} this user?`)) return;
-
-        const result = await toggleUserStatus(userId, !currentStatus);
-        if (!result.success) alert(result.error);
-        else window.location.reload();
-    };
-
-    const handleResetPassword = async (userId: string) => {
-        const result = await resetUserPassword(userId);
-        if (!result.success) alert(result.error);
-        else alert(`Password reset! Temporary password: ${result.data?.tempPassword}`);
-    };
-
-    const handleDeleteUser = async (userId: string) => {
-        if (!confirm('PERMANENTLY delete this user? This cannot be undone.')) return;
-
-        const result = await deleteUser(userId);
-        if (!result.success) alert(result.error);
-        else window.location.reload();
-    };
-
     return (
         <>
-            <div className="flex justify-end">
+            <div className="flex items-center gap-6">
+                {/* Search Registry - Matches Global Style */}
+                <div className="relative group w-80">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[#1c1917]/20 group-focus-within:text-accent-600 transition-colors">
+                        <MagnifyingGlassIcon className="w-5 h-5" />
+                    </div>
+                    <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={handleSearch}
+                        placeholder="Search directory node..."
+                        className="w-full bg-white border border-[#e5dec9] rounded-2xl py-4 pl-12 pr-4 text-xs font-bold focus:ring-8 focus:ring-accent-500/5 focus:border-accent-500/40 transition-all outline-none placeholder:text-[#1c1917]/20 text-[#1c1917]"
+                    />
+                </div>
+
+                <div className="h-10 w-px bg-[#e5dec9]"></div>
+
                 <button
                     onClick={() => setIsModalOpen(true)}
                     className="group relative px-10 py-5 bg-accent-500 text-white rounded-2xl overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-accent-500/30 active:scale-95 border border-accent-400/20"

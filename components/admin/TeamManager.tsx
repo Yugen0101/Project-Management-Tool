@@ -30,10 +30,12 @@ interface User {
 
 export default function TeamManager({
     projectId,
-    initialMembers
+    initialMembers,
+    userRole = 'member'
 }: {
     projectId: string;
     initialMembers: Member[];
+    userRole?: string;
 }) {
     const [members, setMembers] = useState<Member[]>(initialMembers);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -114,14 +116,18 @@ export default function TeamManager({
                         <span className="w-6 h-px bg-[#d97757]"></span>
                         <h3 className="text-[11px] font-semibold text-[#1c1917] uppercase tracking-[0.4em]">Project Team</h3>
                     </div>
-                    <p className="text-[8px] font-semibold text-[#1c1917]/60 uppercase tracking-[0.2em] ml-9 underline decoration-[#d97757]/20 underline-offset-4">Assigned Active Units</p>
+                    {userRole === 'admin' && (
+                        <p className="text-[8px] font-semibold text-[#1c1917]/60 uppercase tracking-[0.2em] ml-9 underline decoration-[#d97757]/20 underline-offset-4">Assigned Active Units</p>
+                    )}
                 </div>
-                <button
-                    onClick={() => setIsModalOpen(true)}
-                    className="w-12 h-12 bg-white border border-[#e5dec9] rounded-2xl flex items-center justify-center text-[#d97757] hover:bg-[#d97757] hover:text-white transition-all shadow-sm group active:scale-95"
-                >
-                    <PlusIcon className="w-6 h-6 group-hover:rotate-90 transition-transform duration-500" />
-                </button>
+                {userRole === 'admin' && (
+                    <button
+                        onClick={() => setIsModalOpen(true)}
+                        className="w-12 h-12 bg-white border border-[#e5dec9] rounded-2xl flex items-center justify-center text-[#d97757] hover:bg-[#d97757] hover:text-white transition-all shadow-sm group active:scale-95"
+                    >
+                        <PlusIcon className="w-6 h-6 group-hover:rotate-90 transition-transform duration-500" />
+                    </button>
+                )}
             </div>
 
             <div className="p-6 space-y-4">
@@ -131,7 +137,7 @@ export default function TeamManager({
                     </div>
                 ) : (
                     <div className="space-y-4">
-                        {members.map((member, i) => (
+                        {members.filter(m => m.users).map((member, i) => (
                             <div key={member.users?.id || i} className="flex items-center justify-between p-5 bg-[#fdfcf9] border border-[#e5dec9] rounded-[2rem] group hover:border-[#d97757] transition-all duration-500">
                                 <div className="flex items-center gap-5">
                                     <div className="w-12 h-12 rounded-2xl bg-white border border-[#e5dec9] flex items-center justify-center font-semibold text-[#d97757] shadow-sm group-hover:bg-[#d97757] group-hover:text-white transition-all transform group-hover:-rotate-3">
@@ -149,12 +155,14 @@ export default function TeamManager({
                                         </div>
                                     </div>
                                 </div>
-                                <button
-                                    onClick={() => member.users?.id && handleRemoveMember(member.users.id)}
-                                    className="opacity-0 group-hover:opacity-100 w-10 h-10 flex items-center justify-center text-[#1c1917]/10 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all"
-                                >
-                                    <TrashIcon className="w-5 h-5" />
-                                </button>
+                                {userRole === 'admin' && (
+                                    <button
+                                        onClick={() => member.users?.id && handleRemoveMember(member.users.id)}
+                                        className="opacity-0 group-hover:opacity-100 w-10 h-10 flex items-center justify-center text-[#1c1917]/10 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all"
+                                    >
+                                        <TrashIcon className="w-5 h-5" />
+                                    </button>
+                                )}
                             </div>
                         ))}
                     </div>

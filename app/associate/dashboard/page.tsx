@@ -111,9 +111,6 @@ export default async function AssociateDashboard() {
                     <h2 className="text-5xl font-semibold">
                         Command Deployed, <span className="text-accent-500">{user?.full_name?.split(' ')[0]}</span>
                     </h2>
-                    <p className="text-[#1c1917]/80 text-xl font-medium leading-relaxed">
-                        You are currently overseeing {activeProjectCount} critical streams and {highPriorityTasks} urgent vectors across {allTasks?.length || 0} active nodes.
-                    </p>
                 </div>
                 {/* Decorative Elements */}
                 <div className="absolute top-[-20%] right-[-10%] w-[50%] h-[140%] bg-[#f7f3ed] blur-3xl -rotate-12 -z-0"></div>
@@ -192,44 +189,6 @@ export default async function AssociateDashboard() {
                                     <ChevronRightIcon className="w-5 h-5 text-[#1c1917]/60 group-hover:translate-x-1 group-hover:text-accent-500 transition-all duration-300" />
                                 </div>
                             </Link>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Task Stream */}
-                <div className="space-y-6">
-                    <div className="flex items-center justify-between px-2">
-                        <h3 className="text-2xl font-semibold">Registry Sync</h3>
-                        <Link href="/associate/tasks" className="btn-secondary !px-4 !py-2 !text-[10px] !rounded-lg !border-[#e5dec9]">MANAGE REGISTRY</Link>
-                    </div>
-                    <div className="card bg-white border-[#e5dec9] divide-y divide-[#f7f3ed] shadow-sm shadow-[#d9cfb0]/10 overflow-hidden p-0">
-                        {allTasks?.slice(0, 10).map((task: any) => (
-                            <div key={task.id} className="p-5 hover:bg-[#f7f3ed]/50 transition-colors flex items-center justify-between group">
-                                <div className="space-y-1">
-                                    <div className="flex items-center gap-2">
-                                        <h5 className="text-sm font-semibold group-hover:text-accent-500 transition-colors uppercase">{task.title}</h5>
-                                        <span className="text-[8px] font-bold text-secondary-400 border border-secondary-100 px-1.5 py-0.5 rounded uppercase">
-                                            {task.assignee?.full_name?.split(' ')[0] || 'UNSET'}
-                                        </span>
-                                    </div>
-                                    <div className="flex items-center gap-3 text-[10px] font-medium uppercase tracking-tight text-[#1c1917]/70">
-                                        <div className={`flex items-center gap-1.5 ${task.priority === 'high' ? 'text-[#d97757]' : 'text-[#1c1917]/40'}`}>
-                                            <span className={`w-1.5 h-1.5 rounded-full ${task.priority === 'high' ? 'bg-[#d97757] animate-pulse' : 'bg-[#e5dec9]'}`}></span>
-                                            {task.priority || 'NORMAL'}
-                                        </div>
-                                        <span className="w-1 h-1 bg-[#e5dec9] rounded-full"></span>
-                                        <span className={`badge shrink-0 scale-75 origin-left ${task.status === 'completed' ? 'badge-success' :
-                                            task.status === 'in_progress' ? 'badge-warning' :
-                                                'badge-info'
-                                            }`}>
-                                            {task.status.replace('_', ' ')}
-                                        </span>
-                                    </div>
-                                </div>
-                                <div className="text-right text-[10px] font-medium text-[#1c1917]/60 uppercase tracking-tight">
-                                    {task.due_date ? format(new Date(task.due_date), 'MMM dd') : 'FLOATING'}
-                                </div>
-                            </div>
                         ))}
                     </div>
                 </div>
