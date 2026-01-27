@@ -191,13 +191,18 @@ export async function getUserIdCard(userId: string) {
         .single();
 
     if (error) {
+        // Handle "no rows found" gracefully
+        if (error.code === 'PGRST116') {
+            return { success: true, data: null };
+        }
+
         console.error('Error fetching ID card:', {
-            message: error.message,
-            details: error.details,
-            hint: error.hint,
-            code: error.code
+            message: error?.message || 'Unknown error',
+            details: error?.details,
+            hint: error?.hint,
+            code: error?.code
         });
-        return { success: false, error: error.message };
+        return { success: false, error: error?.message || 'Failed to fetch ID card' };
     }
 
     return { success: true, data };
