@@ -17,7 +17,8 @@ export default function KanbanColumn({
     wipLimit,
     members = [],
     role,
-    isReadOnly = false
+    isReadOnly = false,
+    currentUserId
 }: {
     id: string,
     projectId: string,
@@ -26,7 +27,8 @@ export default function KanbanColumn({
     wipLimit?: number | null,
     members?: any[],
     role?: string,
-    isReadOnly?: boolean
+    isReadOnly?: boolean,
+    currentUserId?: string
 }) {
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const isWipExceeded = wipLimit ? tasks.length >= wipLimit : false;
@@ -58,7 +60,7 @@ export default function KanbanColumn({
                         )}
                     </div>
                 </div>
-                {!isReadOnly && (
+                {(role !== 'member' && role !== 'guest' && !isReadOnly) && (
                     <button
                         onClick={() => setIsCreateModalOpen(true)}
                         className="text-[#1c1917]/20 hover:text-[#d97757] transition-colors"
@@ -76,7 +78,13 @@ export default function KanbanColumn({
             >
                 <SortableContext items={tasks.map(t => t.id)} strategy={verticalListSortingStrategy}>
                     {tasks.map((task) => (
-                        <KanbanTask key={task.id} task={task} role={role} isReadOnly={isReadOnly} />
+                        <KanbanTask
+                            key={task.id}
+                            task={task}
+                            role={role}
+                            isReadOnly={isReadOnly}
+                            currentUserId={currentUserId}
+                        />
                     ))}
                 </SortableContext>
 

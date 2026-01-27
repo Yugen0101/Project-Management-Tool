@@ -25,14 +25,16 @@ export default function KanbanBoard({
     projectId,
     members = [],
     role = 'member',
-    isReadOnly: initialIsReadOnly = false
+    isReadOnly: initialIsReadOnly = false,
+    currentUserId
 }: {
     initialTasks: any[],
     initialColumns: any[],
     projectId: string,
     members?: any[],
     role?: 'admin' | 'member' | 'associate' | 'guest',
-    isReadOnly?: boolean
+    isReadOnly?: boolean,
+    currentUserId?: string
 }) {
     const isReadOnly = initialIsReadOnly || role === 'guest';
     const [tasks, setTasks] = useState(initialTasks);
@@ -55,6 +57,14 @@ export default function KanbanBoard({
         if (isReadOnly) return;
         const { active } = event;
         const task = tasks.find((t) => t.id === active.id);
+
+        // Members can only move their own tasks
+        if (role === 'member' && task?.assigned_to !== currentUserId) {
+            setError('Access Denied: You can only protocol tasks assigned to you.');
+            setTimeout(() => setError(null), 3000);
+            return;
+        }
+
         setActiveTask(task);
         setError(null);
     }
@@ -136,6 +146,7 @@ export default function KanbanBoard({
                             members={members}
                             role={role}
                             isReadOnly={isReadOnly}
+                            currentUserId={currentUserId}
                         />
                     ))}
 

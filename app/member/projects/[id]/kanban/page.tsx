@@ -72,6 +72,7 @@ export default async function MemberProjectKanbanPage({ params }: { params: Prom
                     projectId={id}
                     members={project.user_projects || []}
                     role="member"
+                    currentUserId={user.id}
                 />
             </div>
         </div>

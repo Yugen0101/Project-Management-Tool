@@ -92,6 +92,8 @@ export default async function MemberProjectDetailPage({ params }: { params: Prom
                             sprints={sprints}
                             tasks={tasks}
                             members={project.user_projects || []}
+                            userRole="member"
+                            currentUserId={user.id}
                         />
                     </div>
                 </div>

@@ -167,6 +167,8 @@ export default async function ProjectDetailPage({ params, searchParams }: {
                                 sprints={sprints}
                                 tasks={tasks}
                                 members={project.user_projects || []}
+                                userRole={user.role}
+                                currentUserId={user.id}
                             />
                             <div className="card">
                                 <ProjectMeetings

@@ -10,13 +10,17 @@ export default function KanbanTask({
     task,
     isOverlay = false,
     role = 'member',
-    isReadOnly = false
+    isReadOnly = false,
+    currentUserId
 }: {
     task: any,
     isOverlay?: boolean,
     role?: string,
-    isReadOnly?: boolean
+    isReadOnly?: boolean,
+    currentUserId?: string
 }) {
+    const isSprintLocked = task.sprint?.status === 'completed';
+    const isDraggable = !isReadOnly && (role === 'admin' || role === 'associate' || task.assigned_to === currentUserId);
     const {
         attributes,
         listeners,
@@ -24,7 +28,7 @@ export default function KanbanTask({
         transform,
         transition,
         isDragging,
-    } = useSortable({ id: task.id, disabled: isReadOnly });
+    } = useSortable({ id: task.id, disabled: !isDraggable || isSprintLocked });
 
     const style = {
         transform: CSS.Translate.toString(transform),
@@ -33,7 +37,6 @@ export default function KanbanTask({
     };
 
     const isBlocked = task.dependencies && task.dependencies.length > 0;
-    const isSprintLocked = task.sprint?.status === 'completed';
 
     return (
         <div
@@ -44,7 +47,7 @@ export default function KanbanTask({
             className={`bg-white border border-[#e5dec9] rounded-2xl p-5 transition-all duration-500 group shadow-sm ${isOverlay ? 'shadow-2xl shadow-[#d97757]/20 ring-2 ring-[#d97757] border-[#d97757] scale-105 z-50' :
                 isBlocked ? 'bg-[#fdfcf9] border-dashed border-red-200 opacity-80 border-2' :
                     'hover:border-[#d97757]/40 hover:shadow-xl hover:shadow-[#d9cfb0]/20'
-                } ${isSprintLocked || isReadOnly ? 'cursor-not-allowed grayscale-[0.2]' : 'cursor-grab active:cursor-grabbing'}`}
+                } ${isDraggable && !isSprintLocked ? 'cursor-grab active:cursor-grabbing' : 'cursor-not-allowed grayscale-[0.2]'}`}
         >
             <div className="space-y-4">
                 {/* Agile Badges */}

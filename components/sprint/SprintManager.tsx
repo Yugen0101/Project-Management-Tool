@@ -30,13 +30,18 @@ export default function SprintManager({
     projectId,
     sprints,
     tasks,
-    members
+    members,
+    userRole = 'member',
+    currentUserId
 }: {
     projectId: string;
     sprints: Sprint[];
     tasks: any[];
     members: any[];
+    userRole?: string;
+    currentUserId?: string;
 }) {
+    const isMember = userRole === 'member';
     const [isCreating, setIsCreating] = useState(false);
     const [isAddingTask, setIsAddingTask] = useState(false);
     const [taskFormData, setTaskFormData] = useState({
@@ -117,13 +122,15 @@ export default function SprintManager({
                     <Bars2Icon className="w-5 h-5 text-accent-500" />
                     <h3 className="text-[10px] font-bold text-[#1c1917]/70 uppercase tracking-[0.4em]">Strategic Roadmap</h3>
                 </div>
-                <button
-                    onClick={() => setIsCreating(true)}
-                    className="btn-primary !py-2.5 !px-6 !text-[10px] !rounded-xl shadow-lg shadow-accent-500/10"
-                >
-                    <PlusIcon className="w-4 h-4" />
-                    Initialize Sprint
-                </button>
+                {!isMember && (
+                    <button
+                        onClick={() => setIsCreating(true)}
+                        className="btn-primary !py-2.5 !px-6 !text-[10px] !rounded-xl shadow-lg shadow-accent-500/10"
+                    >
+                        <PlusIcon className="w-4 h-4" />
+                        Initialize Sprint
+                    </button>
+                )}
             </div>
 
             {/* Create Sprint Modal/Form Overlay */}
@@ -171,12 +178,14 @@ export default function SprintManager({
                             <div className="h-4 w-px bg-white/20 hidden md:block"></div>
                             <span className="text-[10px] text-white/60 font-medium uppercase tracking-widest hidden md:block">{format(new Date(activeSprint.start_date), 'MM.dd')} — {format(new Date(activeSprint.end_date), 'MM.dd')}</span>
                         </div>
-                        <button
-                            onClick={() => handleUpdateStatus(activeSprint.id, 'completed')}
-                            className="bg-white text-accent-500 px-5 py-2.5 rounded-xl font-semibold text-[10px] uppercase tracking-widest hover:bg-[#fdfcf9] transition-all shadow-lg"
-                        >
-                            FINALIZE STREAM
-                        </button>
+                        {!isMember && (
+                            <button
+                                onClick={() => handleUpdateStatus(activeSprint.id, 'completed')}
+                                className="bg-white text-accent-500 px-5 py-2.5 rounded-xl font-semibold text-[10px] uppercase tracking-widest hover:bg-[#fdfcf9] transition-all shadow-lg"
+                            >
+                                FINALIZE STREAM
+                            </button>
+                        )}
                     </div>
                     {expandedSprints[activeSprint.id] && (
                         <div className="p-4 space-y-1 bg-white">
@@ -201,12 +210,14 @@ export default function SprintManager({
                                 <div className="h-4 w-px bg-[#e5dec9]"></div>
                                 <span className="text-[10px] text-secondary-600 font-bold uppercase tracking-widest">{format(new Date(sprint.start_date), 'MM.dd.yyyy')}</span>
                             </div>
-                            <button
-                                onClick={() => handleUpdateStatus(sprint.id, 'active')}
-                                className="btn-secondary !px-5 !py-2.5 !text-[10px] !rounded-xl !border-[#e5dec9] !text-accent-500 hover:!bg-white"
-                            >
-                                COMMENCE
-                            </button>
+                            {!isMember && (
+                                <button
+                                    onClick={() => handleUpdateStatus(sprint.id, 'active')}
+                                    className="btn-secondary !px-5 !py-2.5 !text-[10px] !rounded-xl !border-[#e5dec9] !text-accent-500 hover:!bg-white"
+                                >
+                                    COMMENCE
+                                </button>
+                            )}
                         </div>
                         {expandedSprints[sprint.id] && (
                             <div className="p-4 space-y-1 bg-white">
@@ -231,13 +242,15 @@ export default function SprintManager({
                             {backlogTasks.length} Vectors
                         </span>
                     </div>
-                    <button
-                        onClick={() => setIsAddingTask(true)}
-                        className="btn-primary !py-2.5 !px-5 !text-[10px] !rounded-xl shadow-lg shadow-accent-500/10"
-                    >
-                        <PlusIcon className="w-4 h-4" />
-                        INDEX NEW VECTOR
-                    </button>
+                    {!isMember && (
+                        <button
+                            onClick={() => setIsAddingTask(true)}
+                            className="btn-primary !py-2.5 !px-5 !text-[10px] !rounded-xl shadow-lg shadow-accent-500/10"
+                        >
+                            <PlusIcon className="w-4 h-4" />
+                            INDEX NEW VECTOR
+                        </button>
+                    )}
                 </div>
 
                 {isAddingTask && (

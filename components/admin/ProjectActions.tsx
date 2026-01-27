@@ -71,23 +71,27 @@ export default function ProjectActions({
 
     return (
         <div className="flex gap-3">
-            <button
-                onClick={handleExport}
-                className="btn-secondary flex items-center gap-2"
-            >
-                <ArrowDownTrayIcon className="w-5 h-5" />
-                Export
-            </button>
+            {(userRole === 'admin' || userRole === 'associate') && (
+                <button
+                    onClick={handleExport}
+                    className="btn-secondary flex items-center gap-2"
+                >
+                    <ArrowDownTrayIcon className="w-5 h-5" />
+                    Export
+                </button>
+            )}
 
-            <button
-                onClick={() => setShowShareModal(true)}
-                className="btn-secondary flex items-center gap-2"
-            >
-                <ShareIcon className="w-5 h-5" />
-                Share
-            </button>
+            {(userRole === 'admin' || userRole === 'associate') && (
+                <button
+                    onClick={() => setShowShareModal(true)}
+                    className="btn-secondary flex items-center gap-2"
+                >
+                    <ShareIcon className="w-5 h-5" />
+                    Share
+                </button>
+            )}
 
-            {status !== 'archived' && (
+            {status !== 'archived' && (userRole === 'admin' || userRole === 'associate') && (
                 <button
                     onClick={handleArchive}
                     disabled={isArchiving}

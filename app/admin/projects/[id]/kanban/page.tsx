@@ -9,9 +9,11 @@ import {
     ArrowLeftIcon
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
+import { getCurrentUser } from '@/lib/auth/session';
 
 export default async function AdminProjectKanbanPage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
+    const user = await getCurrentUser();
     const supabase = await createAdminClient();
 
     // Fetch project, its tasks, and columns
@@ -60,6 +62,7 @@ export default async function AdminProjectKanbanPage({ params }: { params: Promi
                     projectId={id}
                     members={project.user_projects || []}
                     role="admin"
+                    currentUserId={user?.id}
                 />
             </div>
         </div>
