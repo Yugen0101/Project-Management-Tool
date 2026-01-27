@@ -60,9 +60,6 @@ export default function ProjectsRegistryClient({
     const tabs = [
         { id: 'active', label: 'Active Projects' },
         ...(isAdmin ? [
-            { id: 'templates', label: 'Project Blueprints' },
-            { id: 'groups', label: 'Project Groups' },
-            { id: 'public', label: 'Public Projects' },
             { id: 'archived', label: 'Archived Projects' },
         ] : []),
     ];
